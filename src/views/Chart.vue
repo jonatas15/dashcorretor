@@ -1,20 +1,46 @@
-<script>
-    import { Line } from "vue-chartjs";
+<template>
+<div class="container text-left">
+    <Doughnut :data="data" :options="options" />
+</div>
+</template>
+<script lang="ts">
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
+import { Doughnut } from 'vue-chartjs'
 
-    export default {
-    extends: Line,
-    props: {
-        chartdata: {
-        type: Object,
-        default: null
-        },
-        options: {
-        type: Object,
-        default: null
-        }
+ChartJS.register(ArcElement, Tooltip, Legend)
+
+
+export default {
+    name: 'Chart',
+    components: {
+        Doughnut
     },
-    mounted() {
-        this.renderChart(this.chartdata, this.options);
+    data() {
+        return {
+            data: {
+                labels: ['Leads recebidos', 'Não recebidos'],
+                datasets: [
+                    {
+                        backgroundColor: ['#e3e3e3', '#2d460b'],
+                        data: [33, 78],
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    display: false
+                }
+            }
+        }
     }
-    };
+}
+  
+
 </script>
+<style>
+.banner img {
+    width: 100%;
+}
+</style>
