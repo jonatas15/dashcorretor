@@ -2,6 +2,9 @@
   import {ref} from 'vue'
   let num = ref(40)
 </script>
+<script>
+  import "@fontsource/open-sans"; // Defaults to weight 400.
+</script>
 <template>
   <!-- Nav Superior e Logo -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -116,6 +119,12 @@
 */
   body, #app, nav, .navbar {
     background-color: #e3e3e3 !important;
+    font-size: 13px;
+    line-height: 18px;
+    color: #053a35;
+    font-weight: 400;
+    font-family: "Open Sans";
+    text-align: center;
   }
   
   #sidebar-cafe {
@@ -134,13 +143,21 @@
   #sidebar-cafe ul li.nav-item {
     margin-bottom: 15% !important;
   }
+  #sidebar-cafe .label-icon {
+    font-size: 10px;
+    line-height: 18px;
+    color: #053a35;
+    font-weight: 400;
+    font-family: "Open Sans";
+    text-align: center;
+  }
   @media only screen and (min-width: 600px) {
     .logomarca {
       margin-left: 250px;
       padding: 50px;
     }
   }
-  @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 800px) {
     #sidebar-cafe {
       display: none !important;
     }

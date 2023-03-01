@@ -15,6 +15,8 @@ import { faThumbtack } from "@fortawesome/free-solid-svg-icons"
 import { faSearch } from "@fortawesome/free-solid-svg-icons"
 import { faBriefcase } from "@fortawesome/free-solid-svg-icons"
 import { faBell } from "@fortawesome/free-solid-svg-icons"
+import { faDownload } from "@fortawesome/free-solid-svg-icons"
+import { faCircleDown } from "@fortawesome/free-solid-svg-icons"
 library.add(faPhone)
 library.add(faHome)
 library.add(faStar)
@@ -26,6 +28,8 @@ library.add(faThumbtack)
 library.add(faSearch)
 library.add(faBriefcase)
 library.add(faBell)
+library.add(faDownload)
+library.add(faCircleDown)
 
 
 // import { Vue } from 'vue'

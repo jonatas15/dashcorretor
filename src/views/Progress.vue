@@ -9,10 +9,10 @@
      :strokeWidth="5"
      :innerStrokeWidth="5"
     >
-        <h5>78%</h5>
+        <h5 class="valor">78%</h5>
     </radial-progress-bar>
     <br>
-    <label style="text-align: center">Leads Recebidos</label>
+    <label class="legenda" style="text-align: center">Leads Recebidos</label>
 </template>
   
 <script lang="ts">
@@ -40,5 +40,19 @@
 <style scoped>
     .vrp__wrapper {
         width: 100% !important;
+    }
+    .legenda {
+        font-size: 12px;
+        line-height: 18px;
+        color: #053a35;
+        font-weight: 700;
+    }
+    .valor {
+        font-size: 22px;
+        line-height: 30px;
+        color: #053a35;
+        font-weight: 400;
+        font-family: "Open Sans";
+        text-align: center;
     }
 </style>
