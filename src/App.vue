@@ -108,15 +108,36 @@
       </div>
     </div>
   </div>
+  <div class="clearfiz"><br></div>
+  <div class="clearfiz"><br></div>
+  <div class="clearfiz"><br></div>
+  <div class="clearfiz"><br></div>
+  <footer class="bg-light text-center">
+    <!-- Copyright -->
+    <div class="text-center p-3" style="">
+      © {{ new Date().getFullYear() }} Copyright:
+      <a class="text-dark" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+  </footer>
 </template>
 <style >
-/**
- cor 1: #e3e3e3 fundo site
- cor 2: #ffffff fundo divs e menus
- cor 3: #2d460b grafico -ativo
- cor 3: #2d460b grafico -nao preenchido
- cor 3: #053a35 textos
-*/
+  /**
+  cor 1: #e3e3e3 fundo site
+  cor 2: #ffffff fundo divs e menus
+  cor 3: #2d460b grafico -ativo
+  cor 3: #2d460b grafico -nao preenchido
+  cor 3: #053a35 textos
+  */
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 56px;
+  }
   body, #app, nav, .navbar {
     background-color: #e3e3e3 !important;
     font-size: 13px;
