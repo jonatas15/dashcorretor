@@ -69,7 +69,7 @@
           <!-- <div class="col-md-2"></div> -->
           <div class="col-md-6">
             <div class="dash-corretor-topico">
-              <img src="src/assets/banner/Tii.png" />
+              <img src="@/assets/banner/Tii.png" />
               <!-- Bora, hora do show porra -->
               <div class="row">
                 <div class="col-md-5"></div>
