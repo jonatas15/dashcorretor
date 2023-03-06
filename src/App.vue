@@ -28,8 +28,8 @@
     </div>
   </nav>
   <!-- Menu Lateral -->
-    <div class="container text-center">
-      <div class="row align-items-start">
+  <div class="container text-center">
+    <div class="row align-items-start">
       <div class="col-md-2" style="">
         <div id="sidebar-cafe" class="d-flex flex-column flex-shrink-0 bg-light" style="width: 70%;float: right !important;margin-right: 15% !important;">
           <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
@@ -108,10 +108,7 @@
       </div>
     </div>
   </div>
-  <div class="clearfiz"><br></div>
-  <div class="clearfiz"><br></div>
-  <div class="clearfiz"><br></div>
-  <div class="clearfiz"><br></div>
+  <div class="clearfix"><br></div>
   <footer class="bg-light text-center">
     <!-- Copyright -->
     <div class="text-center p-3" style="">
