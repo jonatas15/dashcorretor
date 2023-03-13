@@ -17,7 +17,7 @@
           <div class="col-12 col-md-4 item-progresso" style="">
             <div class="row align-items-start subcard-corretor" style="height: 120px; padding: 5px;margin: 0 15px; position: relative;">
               <div class="col-5 col-md-5" style="border-right: 1px solid #e3e3e3; height: 110px; position: relative;">
-                <h3 class="center-center" style="text-align: center;">03</h3>
+                <h3 class="center-center" style="text-align: center;">{{ posicao }}</h3>
               </div>
               <div class="col-6 col-md-7" style="height: 120px !important; position: relative;">
                 <label class="vertical-center" style="margin-left: 30px !important;">
@@ -28,32 +28,14 @@
               </div>
             </div>
           </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
+          <div class="col-6 col-md-2 item-progresso" v-for="macro in macros" v-key="macro">
+            <Progress
+              v-bind:legenda="macro.campo"
+              v-bind:valor="macro.valor"
+              v-bind:param="macro.param"
+            ></Progress>
           </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
-          </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
-          </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
-          </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
-          </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
-          </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
-          </div>
-          <div class="col-6 col-md-2 item-progresso">
-            <Progress></Progress>
-          </div>
-          <div class="col-6 col-md-2 item-progresso">
-          </div>
+          <div class="col-6 col-md-2 item-progresso"></div>
           <div class="col-6 col-md-2 item-progresso" style="margin-top: 60px; text-align: left;">
             <font-awesome-icon icon="circle-down" class="fa-sharp fa-solid" style="font-size: 20px;" />
             <br />
@@ -125,11 +107,114 @@
 
 <script lang="ts">
   import Progress from './Progress.vue';
+  import axios from "axios";
   import "@fontsource/exo-2";
   export default {
     name: 'Home',
+    data() {
+      return {
+        corretor: [],
+        posicao: 0,
+        macros: [{
+                campo: "Leads Recebidos",
+                valor: 0,
+                param: ""
+              },
+              {
+                campo: "Percentual de Conversão",
+                valor: 0,
+                param: "%"
+              },
+              {
+                campo: "Quant. Vendas VGC",
+                valor: 0,
+                param: ""
+              },
+              {
+                campo: "Quant. Vendas VGV",
+                valor: 0,
+                param: ""
+              },
+              {
+                campo: "Quant. de Visitas",
+                valor: 0,
+                param: ""
+              },
+              {
+                campo: "Quant. Imóveis Agenciados",
+                valor: 0,
+                param: ""
+              },
+              {
+                campo: "Ticket Médio de Venda",
+                valor: 0,
+                param: "R$"
+              },
+              {
+                campo: "Custo do Lead",
+                valor: 0,
+                param: "R$"
+              },]
+      }
+    },
     components: {
         Progress
+    },
+    created() {
+      axios.get("http://localhost:8080/api/corretor/view?id=1").then((res) => {
+            console.log(res.data)
+            this.corretor = res.data;
+            console.log("Macros:");
+            console.log(this.corretor.macros[0]);
+            this.posicao = this.corretor.macros[0].pos_ranking_geral_vendas;
+            this.macros = [
+              {
+                campo: "Leads Recebidos",
+                valor: this.corretor.macros[0].leads_recebidos,
+                param: ""
+              },
+              {
+                campo: "Percentual de Conversão",
+                valor: this.corretor.macros[0].percentual_conversao,
+                param: "%"
+              },
+              {
+                campo: "Quant. Vendas VGC",
+                valor: this.corretor.macros[0].quant_vendas_vgc,
+                param: ""
+              },
+              {
+                campo: "Quant. Vendas VGV",
+                valor: this.corretor.macros[0].quant_vendas_vgv,
+                param: ""
+              },
+              {
+                campo: "Quant. de Visitas",
+                valor: this.corretor.macros[0].quant_visitas,
+                param: ""
+              },
+              {
+                campo: "Quant. Imóveis Agenciados",
+                valor: this.corretor.macros[0].quant_imoveis_agenciados,
+                param: ""
+              },
+              {
+                campo: "Ticket Médio de Venda",
+                valor: this.corretor.macros[0].ticket_medio_venda,
+                param: "R$"
+              },
+              {
+                campo: "Custo do Lead",
+                valor: this.corretor.macros[0].custo_lead,
+                param: "R$"
+              },
+            ]
+            console.log("pros circles");
+            console.log(this.macros)
+      })
+      .catch((error) => {
+              console.log(error);
+      });
     }
   }
 </script>

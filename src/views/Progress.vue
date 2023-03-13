@@ -1,18 +1,18 @@
 <template>
     <radial-progress-bar 
      :diameter="90"
-     :completed-steps="100"
-     :total-steps="75"
+     :completed-steps="valor"
+     :total-steps="100"
      :startColor="'#2d460b'"
      :stopColor="'#2d460b'"
      :innerStrokeColor="'#e3e3e3'"
      :strokeWidth="5"
      :innerStrokeWidth="5"
     >
-        <h5 class="valor">78%</h5>
+        <h5 class="valor">{{ valor }} {{ param }}</h5>
     </radial-progress-bar>
     <br>
-    <label class="legenda" style="text-align: center">Leads Recebidos</label>
+    <label class="legenda" style="text-align: center">{{ legenda }}</label>
 </template>
   
 <script lang="ts">
@@ -20,9 +20,30 @@
     import RadialProgressBar from "vue3-radial-progress";
 
     export default {
+        data() {
+            return {
+                valor_formatado: 0
+            }
+        },
         components: {
             RadialProgressBar
         },
+        props: {
+            legenda: String,
+            param: String,
+            valor: Number
+        }
+        // created() {
+        //     switch (this.legenda) {
+        //         case "Percentual de Conversão":
+        //         this.valor_formatado = this.valor
+        //             break;
+            
+        //         default:
+        //             this.valor_formatado = this.valor
+        //             break;
+        //     }
+        // },
     };
   
     //   export default defineComponent({
