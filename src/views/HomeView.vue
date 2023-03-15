@@ -33,6 +33,7 @@
               v-bind:legenda="macro.campo"
               v-bind:valor="macro.valor"
               v-bind:param="macro.param"
+              v-bind:prefixo="macro.prefx"
             ></Progress>
           </div>
           <div class="col-6 col-md-2 item-progresso"></div>
@@ -118,42 +119,50 @@
         macros: [{
                 campo: "Leads Recebidos",
                 valor: 0,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Percentual de Conversão",
                 valor: 0,
-                param: "%"
+                param: "%",
+                prefx: ""
               },
               {
                 campo: "Quant. Vendas VGC",
                 valor: 0,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Quant. Vendas VGV",
                 valor: 0,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Quant. de Visitas",
                 valor: 0,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Quant. Imóveis Agenciados",
                 valor: 0,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Ticket Médio de Venda",
                 valor: 0,
-                param: "R$"
+                param: "",
+                prefx: "R$"
               },
               {
                 campo: "Custo do Lead",
                 valor: 0,
-                param: "R$"
+                param: "",
+                prefx: "R$"
               },]
       }
     },
@@ -171,42 +180,50 @@
               {
                 campo: "Leads Recebidos",
                 valor: this.corretor.macros[0].leads_recebidos,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Percentual de Conversão",
-                valor: this.corretor.macros[0].percentual_conversao,
-                param: "%"
+                valor: Math.round(this.corretor.macros[0].percentual_conversao),
+                param: "%",
+                prefx: ""
               },
               {
                 campo: "Quant. Vendas VGC",
                 valor: this.corretor.macros[0].quant_vendas_vgc,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Quant. Vendas VGV",
                 valor: this.corretor.macros[0].quant_vendas_vgv,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Quant. de Visitas",
                 valor: this.corretor.macros[0].quant_visitas,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Quant. Imóveis Agenciados",
                 valor: this.corretor.macros[0].quant_imoveis_agenciados,
-                param: ""
+                param: "",
+                prefx: ""
               },
               {
                 campo: "Ticket Médio de Venda",
-                valor: this.corretor.macros[0].ticket_medio_venda,
-                param: "R$"
+                valor: Math.round(this.corretor.macros[0].ticket_medio_venda).toLocaleString(),
+                param: "",
+                prefx: "R$"
               },
               {
                 campo: "Custo do Lead",
-                valor: this.corretor.macros[0].custo_lead,
-                param: "R$"
+                valor: Math.round(this.corretor.macros[0].custo_lead),
+                param: "",
+                prefx: "R$"
               },
             ]
             console.log("pros circles");
@@ -245,7 +262,7 @@
     border-radius: 20px;
     margin-top: 5%;
     box-shadow: var(--backshadown);
-    padding: 2%;
+    padding: 2% 4% !important;
   }
   .dash-corretor h4 {
     font-size: 18px;

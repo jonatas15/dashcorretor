@@ -1,7 +1,7 @@
 <template>
     <radial-progress-bar 
-     :diameter="90"
-     :completed-steps="valor"
+     :diameter="110"
+     :completed-steps="prefixo == 'R$' ? 100 : valor"
      :total-steps="100"
      :startColor="'#2d460b'"
      :stopColor="'#2d460b'"
@@ -9,7 +9,8 @@
      :strokeWidth="5"
      :innerStrokeWidth="5"
     >
-        <h5 class="valor">{{ valor }} {{ param }}</h5>
+        <h5 class="valor-monetario" v-if="prefixo == 'R$'">{{ prefixo }} {{ valor }}</h5>
+        <h5 class="valor" v-else>{{ valor }} {{ param }}</h5>
     </radial-progress-bar>
     <br>
     <label class="legenda" style="text-align: center">{{ legenda }}</label>
@@ -31,6 +32,7 @@
         props: {
             legenda: String,
             param: String,
+            prefixo: String,
             valor: Number
         }
         // created() {
@@ -75,5 +77,21 @@
         font-weight: 400;
         font-family: "Open Sans";
         text-align: center;
+        font-weight: 100;
+        text-align: center !important;
+        /* margin-left: 10%; */
+        margin-top: 4%;
+    }
+    .valor-monetario {
+        font-size: 15px;
+        line-height: 30px;
+        color: #053a35;
+        font-weight: 400;
+        font-family: "Open Sans";
+        text-align: center;
+        font-weight: 100;
+        text-align: center !important;
+        /* margin-left: 10%; */
+        margin-top: 4%;
     }
 </style>

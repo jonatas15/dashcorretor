@@ -17,7 +17,7 @@
             </div>
             <sub>Em construção</sub>
             <hr>
-            <h3>Universidade Café</h3>
+            <h3>Registro de Visitas</h3>
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ import { faBriefcase } from "@fortawesome/free-solid-svg-icons"
 import { faBell } from "@fortawesome/free-solid-svg-icons"
 import { faDownload } from "@fortawesome/free-solid-svg-icons"
 import { faCircleDown } from "@fortawesome/free-solid-svg-icons"
+import { faGauge } from "@fortawesome/free-solid-svg-icons"
 library.add(faPhone)
 library.add(faHome)
 library.add(faStar)
@@ -30,6 +31,7 @@ library.add(faBriefcase)
 library.add(faBell)
 library.add(faDownload)
 library.add(faCircleDown)
+library.add(faGauge)
 
 
 // import { Vue } from 'vue'
