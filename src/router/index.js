@@ -16,7 +16,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/about',
@@ -29,47 +34,92 @@ const router = createRouter({
     {
       path: '/universidade',
       name: 'universidade',
-      component: Universidade
+      component: Universidade,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/imoveis',
       name: 'imoveis',
-      component: Imoveis
+      component: Imoveis,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/solicitar-contrato',
       name: 'solicitar-contrato',
-      component: SolicitarContrato
+      component: SolicitarContrato,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/meus-resultados',
       name: 'meus-resultados',
-      component: MeusResultados
+      component: MeusResultados,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/analise-dados',
       name: 'analise-dados',
-      component: AnaliseDados
+      component: AnaliseDados,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/registro-visitas',
       name: 'registro-visitas',
-      component: Visitas
+      component: Visitas,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/buscar-proprietario',
       name: 'buscar-proprietario',
-      component: BuscarProprietario
+      component: BuscarProprietario,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/pesquisar-cliente',
       name: 'pesquisar-cliente',
-      component: PesquisarCliente
+      component: PesquisarCliente,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: false 
+      }
     },
   ]
 });

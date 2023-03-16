@@ -19,7 +19,8 @@ import "@fontsource/open-sans"; // Defaults to weight 400.
 export default {
   data() {
     return {
-      corretor: "Sr. Café"
+      corretor: "Sr. Café",
+      ativo: this.$route.meta.usuarioativo //this.$route.props.usuarioativo
     }
   },
   methods: {
@@ -28,12 +29,14 @@ export default {
       this.$router.push({
         name: "login"
       });
+      this.ativo = false;
     }
   },
   created() {
     if (localStorage.getItem('authUser')) {
       var getnome = JSON.parse(localStorage.getItem('authUser'));
       this.corretor = getnome.nome;
+      // console.log(this.$route.meta)
     }
   },
 }
@@ -53,10 +56,7 @@ export default {
       </button>
       <div class="collapse navbar-collapse collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item menu-mobile v-b-tooltip.hover" style="
-                text-align: end;
-                margin-top: 10px;
-                ">
+          <li class="nav-item menu-mobile v-b-tooltip.hover" style="text-align: end;margin-top: 10px;" v-if="$route.meta.usuarioativo">
             <!-- white-space: nowrap; -->
             <!-- Santa Maria, {{ new Date().getDate() }} de {{ new Date() }} de {{ new Date().getFullYear() }} -->
             Santa Maria, {{ hoje }}
@@ -115,7 +115,7 @@ export default {
           </li>
         </ul>
       </div>
-      <div class="navbar-nav right desktop">
+      <div class="navbar-nav right desktop" v-if="$route.meta.usuarioativo">
         <div class="nav-item v-b-tooltip.hover" style="text-align: end;">
           <!-- Santa Maria, {{ new Date().getDate() }} de {{ new Date() }} de {{ new Date().getFullYear() }} -->
           Santa Maria, {{ hoje }}

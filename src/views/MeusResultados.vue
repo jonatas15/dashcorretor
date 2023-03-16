@@ -1,3 +1,6 @@
+
+import { Chart } from 'chart.js';
+
 <template>
     <div class="container text-left">
       <div class="row align-items-start">
@@ -18,11 +21,19 @@
             <sub>Em construção</sub>
             <hr>
             <h3>Meus Resultados</h3>
+            <Chart></Chart>
         </div>
       </div>
     </div>
   </template>
-  
+  <script>
+  import Chart from './Chart.vue'
+  export default {
+    components: {
+      Chart
+    },
+  }
+  </script>
   <style>
   /* @media (min-width: 1024px) {
     .universidade {

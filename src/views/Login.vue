@@ -105,10 +105,14 @@
                             });
                         }
                     }
+                    this.clearForm();
+                    this.errors.push('Usuário ou senha inválidos');
                 })
             } else {
-                console.log("agora não vai")
+                // console.log("agora não vai")
                 // return false;
+                this.clearForm();
+                this.errors.push('Usuário ou senha inválidos');
             }
             // return false;
         },
