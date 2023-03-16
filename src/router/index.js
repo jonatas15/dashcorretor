@@ -8,6 +8,7 @@ import AnaliseDados from '../views/AnaliseDados.vue';
 import Visitas from '../views/Visitas.vue';
 import BuscarProprietario from '../views/BuscarProprietario.vue';
 import PesquisarCliente from '../views/PesquisarCliente.vue';
+import Login from '../views/Login.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -65,7 +66,20 @@ const router = createRouter({
       name: 'pesquisar-cliente',
       component: PesquisarCliente
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
   ]
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== "login" && !localStorage.getItem('authUser')) {
+    next({name: 'login'})
+  } else {
+    next();
+  }
 })
 
 export default router

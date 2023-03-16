@@ -33,6 +33,8 @@ library.add(faDownload)
 library.add(faCircleDown)
 library.add(faGauge)
 
+// import Vuelidate from 'vuelidate'
+// Vue.use(Vuelidate)
 
 // import { Vue } from 'vue'
 // import BootstrapVue from 'bootstrap-vue'

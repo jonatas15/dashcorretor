@@ -1,9 +1,42 @@
 <script setup>
-  import {ref} from 'vue'
-  let num = ref(40)
+  import {ref} from 'vue';
+  let num = ref(40);
+  function formatDate(date) {
+    let dia = date.getDate()
+    let mes = [
+      'janeiro', 'fevereiro', 'março', 'abril',
+      'maio', 'junho', 'julho', 'agosto', 'setembro', 
+      'outubro', 'novembro', 'dezembro'
+    ][date.getMonth()]
+    let ano = date.getFullYear()
+    
+    return `${dia} de ${mes} de ${ano}`
+  }
+  let hoje = formatDate(new Date())
 </script>
 <script>
   import "@fontsource/open-sans"; // Defaults to weight 400.
+  export default {
+    data() {
+      return {
+        corretor: "Sr. Café"
+      }
+    },
+    methods: {
+      logout() {
+        localStorage.removeItem('authUser');
+        this.$router.push({
+          name: "login"
+        });
+      }
+    },
+    created() {
+      if (localStorage.getItem('authUser')) {
+        var getnome = JSON.parse(localStorage.getItem('authUser'));
+        this.corretor = getnome.nome;
+      }
+    },
+  }
 </script>
 <template>
   <!-- Nav Superior e Logo -->
@@ -17,6 +50,28 @@
       </button>
       <div class="collapse navbar-collapse collapse" id="navbarNav">
         <ul class="navbar-nav">
+          <li
+            class="nav-item menu-mobile v-b-tooltip.hover"
+            style="
+              text-align: end;
+              margin-top: 10px;
+              "
+          >
+            <!-- white-space: nowrap; -->
+            <!-- Santa Maria, {{ new Date().getDate() }} de {{ new Date() }} de {{ new Date().getFullYear() }} -->
+            Santa Maria, {{ hoje }}
+            <br>
+            Seja bem vindo, {{ corretor }}
+            <br>
+            <button
+              class="btn btn-link nav-item v-b-tooltip.hover"
+              @click="logout()"
+              title="Sair"
+              style="float: right; padding-right: 0px;font-weight: bolder;color: black;"
+            >
+              Sair
+            </button>
+          </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/">
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Home
@@ -63,6 +118,29 @@
             </router-link>
           </li>
         </ul>
+      </div>
+      <div class="navbar-nav right desktop">
+        <div
+          class="nav-item v-b-tooltip.hover"
+          style="text-align: end;"
+        >
+          <!-- Santa Maria, {{ new Date().getDate() }} de {{ new Date() }} de {{ new Date().getFullYear() }} -->
+          Santa Maria, {{ hoje }}
+          <br>
+          Seja bem vindo, {{ corretor }}
+          <br>
+          <button
+            class="btn btn-link nav-item v-b-tooltip.hover"
+            @click="logout()"
+            title="Sair"
+            style="float: right; padding-right: 0px;font-weight: bolder;color: black;"
+          >
+            Sair
+          </button>
+        </div>
+        <!-- <div class="nav-item">
+          
+        </div> -->
       </div>
     </div>
   </nav>
@@ -258,10 +336,11 @@
           position: fixed;
           top: 0;
           bottom: 0;
-          left: -45%;
-          transition: all 0.2s ease;
+          left: -70%;
+          transition: all 0.1s ease;
           background-color: white !important;
           z-index: 100 !important;
+          white-space: normal;
       }
 
       .navbar-collapse.show .navbar-nav {
@@ -271,20 +350,30 @@
           left: 0;
           flex-direction: column;
           height: auto;
-          width: 45%;
-          transition: left 0.35s ease;
+          width: 70%;
+          transition: left 0.1s ease;
           box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
           background-color: white !important;
           z-index: 100 !important;
       }
-
       .nav-link {
         font-weight: bolder !important;
         border-bottom: 1px solid lightgray;
-        line-height: 35px;
+        line-height: 30px;
+        padding-left: 5%;
+      }
+      .nav-item {
+        margin-right: 5% !important;
+        text-transform: uppercase !important;
+      }
+      .nav-item button{
+        margin-right: 0px !important;
       }
       .nav-link .svg-inline--fa {
         width: 25px !important;
+      }
+      .desktop {
+        display: none;
       }
   }
 </style>
