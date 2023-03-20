@@ -7,7 +7,7 @@
           <div class="vertical-center" style="padding: 5% !important; text-align: left !important;">
             <h3 style="font-weight: bolder;">FAÇA O LOGIN</h3>
             <br>
-            <form>
+            <form v-on:keyup.enter="envia">
                 <div class="form-group">
                     <p v-if="errors.length">
                         <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
@@ -62,6 +62,8 @@
     name: 'login',
     data() {
         return {
+            // apibase: 'http://localhost:8080/api/corretor',
+            apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
             errors: [],
             corretores: [],
             form: {
@@ -92,7 +94,7 @@
             if (this.checkForm(e)) {
                 this.errors = [];
                 // console.log("agora vai")
-                axios.get('http://localhost:8080/api/corretor')
+                axios.get(this.apibase)
                     .then(response => {
                     this.corretores = response.data
                     // console.log(this.corretores)

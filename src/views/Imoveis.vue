@@ -17,35 +17,37 @@
             </div>
             <sub>Em construção</sub>
             <hr>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                    <th scope="col">Imóvel</th>
-                    <th scope="col">Url - Campanha</th>
-                    <th scope="col">Acessos/Mês</th>
-                    <th scope="col">Visitas feitas</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                    <th scope="row">PIN - 1235</th>
-                    <td>https://cafeimobiliaria.com.br/campanha</td>
-                    <td>243</td>
-                    <td>3</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">PIN - 8734</th>
-                    <td>https://cafeimobiliaria.com.br</td>
-                    <td>454</td>
-                    <td>7</td>
-                    </tr>
-                    <!-- <tr>
-                    <th scope="row">3</th>
-                    <td colspan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                    </tr> -->
-                </tbody>
-            </table>
+            <div class="table-responsive-md">
+              <table class="table table-hover">
+                  <thead>
+                      <tr>
+                      <th scope="col">Imóvel</th>
+                      <th scope="col">Url - Campanha</th>
+                      <th scope="col">Acessos/Mês</th>
+                      <th scope="col">Visitas feitas</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                      <th scope="row">PIN - 1235</th>
+                      <td>https://cafeimobiliaria.com.br/campanha</td>
+                      <td>243</td>
+                      <td>3</td>
+                      </tr>
+                      <tr>
+                      <th scope="row">PIN - 8734</th>
+                      <td>https://cafeimobiliaria.com.br</td>
+                      <td>454</td>
+                      <td>7</td>
+                      </tr>
+                      <!-- <tr>
+                      <th scope="row">3</th>
+                      <td colspan="2">Larry the Bird</td>
+                      <td>@twitter</td>
+                      </tr> -->
+                  </tbody>
+              </table>
+            </div>    
         </div>
       </div>
     </div>
