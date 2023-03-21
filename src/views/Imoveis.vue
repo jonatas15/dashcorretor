@@ -64,121 +64,19 @@
         return {
           corretor: [],
           posicao: 0,
-          macros: [{
-                  campo: "Leads Recebidos",
-                  valor: 0,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Percentual de Conversão",
-                  valor: 0,
-                  param: "%",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. Vendas VGC",
-                  valor: 0,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. Vendas VGV",
-                  valor: 0,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. de Visitas",
-                  valor: 0,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. Imóveis Agenciados",
-                  valor: 0,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Ticket Médio de Venda",
-                  valor: 0,
-                  param: "",
-                  prefx: "R$"
-                },
-                {
-                  campo: "Custo do Lead",
-                  valor: 0,
-                  param: "",
-                  prefx: "R$"
-                },]
+          // urlmarca: "https://cafeimobiliaria.com.br",
+          // urlmarca: "http://localhost",
+          urlmarca: "",
         }
       },
       components: {
           Progress
       },
       created() {
-        axios.get("http://localhost:8080/api/corretor/view?id=1").then((res) => {
-              console.log(res.data)
-              this.corretor = res.data;
-              console.log("Macros:");
-              console.log(this.corretor.macros[0]);
-              this.posicao = this.corretor.macros[0].pos_ranking_geral_vendas;
-              this.macros = [
-                {
-                  campo: "Leads Recebidos",
-                  valor: this.corretor.macros[0].leads_recebidos,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Percentual de Conversão",
-                  valor: Math.round(this.corretor.macros[0].percentual_conversao),
-                  param: "%",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. Vendas VGC",
-                  valor: this.corretor.macros[0].quant_vendas_vgc,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. Vendas VGV",
-                  valor: this.corretor.macros[0].quant_vendas_vgv,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. de Visitas",
-                  valor: this.corretor.macros[0].quant_visitas,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Quant. Imóveis Agenciados",
-                  valor: this.corretor.macros[0].quant_imoveis_agenciados,
-                  param: "",
-                  prefx: ""
-                },
-                {
-                  campo: "Ticket Médio de Venda",
-                  valor: Math.round(this.corretor.macros[0].ticket_medio_venda).toLocaleString(),
-                  param: "",
-                  prefx: "R$"
-                },
-                {
-                  campo: "Custo do Lead",
-                  valor: Math.round(this.corretor.macros[0].custo_lead),
-                  param: "",
-                  prefx: "R$"
-                },
-              ]
-              console.log("pros circles");
-              console.log(this.macros)
-        })
-        .catch((error) => {
-                console.log(error);
+        axios.get(this.urlmarca + "../jsons/cafeimoveiscorretor.json").then((res) => {
+          console.log(res.data)
+        }).catch((error) => {
+          console.log(error);
         });
       }
     }
