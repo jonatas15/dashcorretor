@@ -235,60 +235,63 @@ export default {
     });
     */
     if (localStorage.getItem('authUser')) {
-      this.dadoscorretor = localStorage.getItem('authUser')
+      this.dadoscorretor = localStorage.getItem('authUser');
       this.corretor = JSON.parse(this.dadoscorretor);
-      var varindice = this.corretor.macros.length - 1;
-      this.posicao = this.corretor.macros[varindice].pos_ranking_geral_vendas;
-      this.macros = [
-        {
-          campo: "Leads Recebidos",
-          valor: this.corretor.macros[varindice].leads_recebidos,
-          param: "",
-          prefx: ""
-        },
-        {
-          campo: "Percentual de Conversão",
-          valor: Math.round(this.corretor.macros[varindice].percentual_conversao),
-          param: "%",
-          prefx: ""
-        },
-        {
-          campo: "Quant. Vendas VGC",
-          valor: this.corretor.macros[varindice].quant_vendas_vgc,
-          param: "",
-          prefx: ""
-        },
-        {
-          campo: "Quant. Vendas VGV",
-          valor: this.corretor.macros[varindice].quant_vendas_vgv,
-          param: "",
-          prefx: ""
-        },
-        {
-          campo: "Quant. de Visitas",
-          valor: this.corretor.macros[varindice].quant_visitas,
-          param: "",
-          prefx: ""
-        },
-        {
-          campo: "Quant. Imóveis Agenciados",
-          valor: this.corretor.macros[varindice].quant_imoveis_agenciados,
-          param: "",
-          prefx: ""
-        },
-        {
-          campo: "Ticket Médio de Venda",
-          valor: Math.round(this.corretor.macros[varindice].ticket_medio_venda).toLocaleString(),
-          param: "",
-          prefx: "R$"
-        },
-        {
-          campo: "Custo do Lead",
-          valor: Math.round(this.corretor.macros[varindice].custo_lead).toLocaleString(),
-          param: "",
-          prefx: "R$"
-        },
-      ]
+      // console.log(this.corretor);
+      if (this.corretor.macros.length >= 1) {
+        var varindice = this.corretor.macros.length-1;
+        this.posicao = this.corretor.macros[varindice].pos_ranking_geral_vendas;
+        this.macros = [
+          {
+            campo: "Leads Recebidos",
+            valor: this.corretor.macros[varindice].leads_recebidos,
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Percentual de Conversão",
+            valor: Math.round(this.corretor.macros[varindice].percentual_conversao),
+            param: "%",
+            prefx: ""
+          },
+          {
+            campo: "Quant. Vendas VGC",
+            valor: this.corretor.macros[varindice].quant_vendas_vgc,
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Quant. Vendas VGV",
+            valor: this.corretor.macros[varindice].quant_vendas_vgv,
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Quant. de Visitas",
+            valor: this.corretor.macros[varindice].quant_visitas,
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Quant. Imóveis Agenciados",
+            valor: this.corretor.macros[varindice].quant_imoveis_agenciados,
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Ticket Médio de Venda",
+            valor: Math.round(this.corretor.macros[varindice].ticket_medio_venda).toLocaleString(),
+            param: "",
+            prefx: "R$"
+          },
+          {
+            campo: "Custo do Lead",
+            valor: Math.round(this.corretor.macros[varindice].custo_lead).toLocaleString(),
+            param: "",
+            prefx: "R$"
+          },
+        ]
+      }
     }
   }
 }

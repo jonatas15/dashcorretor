@@ -13,7 +13,7 @@
         </div>
         <div class="col-md-12 dash-corretor">
             <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 90%"></div>
             </div>
             <sub>Em construção</sub>
             <hr>
@@ -122,6 +122,10 @@
         }
       },
       created() {
+        if (localStorage.getItem('authUser')) {
+          var getnome = JSON.parse(localStorage.getItem('authUser'));
+          this.corretor_id = getnome.id;
+        }
         axios.get(this.urlmarca + "/api/imovel").then((res) => {
           console.log(res.data)
           this.todosimoveis = res.data.filter(d => d.corretor_id == this.corretor_id);
