@@ -80,8 +80,9 @@
         return {
           corretor: [],
           posicao: 0,
-          // urlmarca: "https://cafeimobiliaria.com.br",
-          urlmarca: "http://localhost:8080",
+          // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
+          urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
+          // urlmarca: "http://localhost:8080",
           // urlmarca: "",
           imoveis: [],
           todosimoveis: [],
@@ -126,8 +127,9 @@
           var getnome = JSON.parse(localStorage.getItem('authUser'));
           this.corretor_id = getnome.id;
         }
-        axios.get(this.urlmarca + "/api/imovel").then((res) => {
-          console.log(res.data)
+        // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+        axios.get(this.urlmarca).then((res) => {
+          // console.log(res.data)
           this.todosimoveis = res.data.filter(d => d.corretor_id == this.corretor_id);
           this.totalpage = Math.ceil(Number(this.todosimoveis.length)/this.por_pagina);
           this.imoveis = res.data.filter(d => d.corretor_id == this.corretor_id).slice(0, this.por_pagina);
