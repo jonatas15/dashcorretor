@@ -17,6 +17,17 @@
             </div>
             <sub>Em construção</sub>
             <hr>
+            <Bar :title="'sapo'" :data="{
+              labels: graflabels,
+              datasets: [
+                {
+                  label: 'Acessos',
+                  backgroundColor: '#2d460b',
+                  data: grafvalues
+                }
+              ]
+            }" :options="options" />
+            <hr>
             <div class="table-responsive-md">
               <table class="table table-hover" id="my-table">
                   <thead>
@@ -74,27 +85,51 @@
     import Progress from './Progress.vue';
     import axios from "axios";
     import "@fontsource/exo-2";
+
+    import {
+      Chart as ChartJS,
+      Title,
+      Tooltip,
+      Legend,
+      BarElement,
+      CategoryScale,
+      LinearScale
+    } from 'chart.js';
+    import { Bar } from 'vue-chartjs';
+
+    ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
     export default {
-      name: 'Imoveis',
-      data() {
-        return {
-          corretor: [],
-          posicao: 0,
-          // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
-          urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
-          // urlmarca: "http://localhost:8080",
-          // urlmarca: "",
-          imoveis: [],
-          todosimoveis: [],
-          pagina: 1,
-          totalpage: 1,
-          por_pagina: 25,
-          paginas: [],
-          corretor_id: 12
+        name: 'Imoveis',
+        data() {
+          return {
+            corretor: [],
+            posicao: 0,
+            // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
+            // urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
+            urlmarca: "http://localhost:8080/api/imovel",
+            // urlmarca: "",
+            imoveis: [],
+            todosimoveis: [],
+            pagina: 1,
+            totalpage: 1,
+            por_pagina: 25,
+            paginas: [],
+            corretor_id: 12,
+            graflabels: [],
+            grafvalues: [],
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                legend: {
+                    display: false
+                }
+            }
         }
       },
       components: {
-          Progress
+          Progress,
+          Bar
       },
       
       methods: {
@@ -133,10 +168,26 @@
           this.todosimoveis = res.data.filter(d => d.corretor_id == this.corretor_id);
           this.totalpage = Math.ceil(Number(this.todosimoveis.length)/this.por_pagina);
           this.imoveis = res.data.filter(d => d.corretor_id == this.corretor_id).slice(0, this.por_pagina);
+          
+          var prografico = res.data.filter(d => d.corretor_id == this.corretor_id && Number(d.acessos) > 25);
           for (let index = 0; index < this.totalpage; index++) {
             list.push(Number(index + 1)); 
           }
           this.paginas = list;
+          var eixox = [];
+          var eixoy = [];
+          prografico.forEach(element => {
+            // console.log(element.codigo);
+            // console.log(element.acessos);
+            eixox.push('PIN - ' + element.codigo);
+            eixoy.push(element.acessos);
+          });
+          this.graflabels = eixox;
+          this.grafvalues = eixoy;
+          // console.log(this.graflabels)
+          // console.log(this.grafvalues)
+          // this.chartData.labels = this.graflabels;
+          // this.chartData.datasets.data = this.grafvalues;
         }).catch((error) => {
           console.log(error);
         });
