@@ -42,10 +42,13 @@ library.add(faGauge)
 
 // import './assets/main.css'
 
-const app = createApp(App)
+import VueTheMask from 'vue-the-mask'
 
-app.component('font-awesome-icon', FontAwesomeIcon)
-app.use(router)
+const app = createApp(App);
+
+app.component('font-awesome-icon', FontAwesomeIcon);
+app.use(router);
+app.use(VueTheMask);
 
 
 

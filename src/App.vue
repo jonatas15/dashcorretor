@@ -20,7 +20,8 @@ export default {
   data() {
     return {
       corretor: "Sr. Café",
-      ativo: this.$route.meta.usuarioativo //this.$route.props.usuarioativo
+      ativo: this.$route.meta.usuarioativo, //this.$route.props.usuarioativo
+      sidebar: this.$route.meta.sidebar
     }
   },
   methods: {
@@ -30,6 +31,9 @@ export default {
         name: "login"
       });
       this.ativo = false;
+    },
+    handleFocusOut() {
+      console.log('eita')
     }
   },
   created() {
@@ -54,7 +58,7 @@ export default {
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse collapse" id="navbarNav">
+      <div class="collapse navbar-collapse collapse" id="navbarNav" @focusout="handleFocusOut">
         <ul class="navbar-nav">
           <li class="nav-item menu-mobile v-b-tooltip.hover" style="text-align: end;margin-top: 10px;" v-if="$route.meta.usuarioativo">
             <!-- white-space: nowrap; -->
@@ -403,4 +407,5 @@ a {
   .desktop {
     display: none;
   }
-}</style>
+}
+</style>
