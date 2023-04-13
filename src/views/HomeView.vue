@@ -442,7 +442,7 @@ export default {
 }
 
 .banner {
-  height: 240px;
+  height: 170px;
   border-radius: 30px;
   background-image: url('/src/assets/banner/banner-1.png');
   background-repeat: no-repeat;

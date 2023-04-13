@@ -51,7 +51,7 @@ export default {
     <div class="container-fluid ">
       <div class="navbar-nav left">
         <router-link class="navbar-brand logomarca" to="#">
-          <img src="@/assets/logo/1.png" alt="" width="200">
+          <img src="@/assets/logo/1.png" alt="" width="100">
         </router-link>
       </div>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -333,7 +333,7 @@ a {
 @media only screen and (min-width: 600px) {
   .logomarca {
     /* margin-left: 250px; */
-    padding: 50px;
+    padding: 29px;
   }
 
   .left {
@@ -408,4 +408,9 @@ a {
     display: none;
   }
 }
+/* @media (min-width: 1400px) {
+  .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    max-width: 1250px !important;
+  }
+} */
 </style>

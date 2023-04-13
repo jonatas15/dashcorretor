@@ -29,6 +29,11 @@
             }" :options="options" />
             <hr>
             <div class="table-responsive-md">
+              <!-- 
+                Incluir campo de Filtros
+                Acessos por imóvel: mostrar evolução pra cada imóvel
+                  - Abrir detalhes do Imovel (Modal)
+              -->
               <table class="table table-hover" id="my-table">
                   <thead>
                       <tr>
@@ -42,7 +47,7 @@
                       <tr v-for="imv in imoveis">
                         <th scope="row">
                           <a :href="'https://cafeimobiliaria.com.br/imovel/' + imv.codigo" target="_blank">
-                            PIN - {{ imv.codigo }}
+                            {{ imv.codigo }}
                           </a>
                         </th>
                         <td>Acesso normal</td>
