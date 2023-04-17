@@ -33,6 +33,7 @@
                 Incluir campo de Filtros
                 Acessos por imóvel: mostrar evolução pra cada imóvel
                   - Abrir detalhes do Imovel (Modal)
+                  - É isso
               -->
               <table class="table table-hover" id="my-table">
                   <thead>
