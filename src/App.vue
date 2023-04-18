@@ -263,8 +263,9 @@ export default {
   cor 3: #053a35 textos
   */
 footer {
-  position: fixed;
-  bottom: 0;
+  /* position: fixed; */
+  margin-bottom: 0px !important;
+  bottom: 0px !important;
   width: 100%;
   display: flex;
   align-items: center;

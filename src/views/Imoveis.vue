@@ -35,6 +35,15 @@
                   - Abrir detalhes do Imovel (Modal)
                   - É isso
               -->
+              <br>
+              <div class="form-group" style="text-align: left;">
+                <label for="pesquisa-imoveis" style="font-size: 15px; font-weight: 800;">Pesquisar Código</label>
+                <input id="pesquisa-imoveis" class="form-control" v-model="searchText" @keyup="filtrar()">
+              </div>
+              <br>
+              <!-- <ul>
+                <li v-repeat="users | filterBy searchText">{{ name }}</li>
+              </ul> -->
               <table class="table table-hover" id="my-table">
                   <thead>
                       <tr>
@@ -45,7 +54,7 @@
                       </tr>
                   </thead>
                   <tbody>
-                      <tr v-for="imv in imoveis">
+                      <tr v-for="imv in imoveis" :key="imv">
                         <th scope="row">
                           <a :href="'https://cafeimobiliaria.com.br/imovel/' + imv.codigo" target="_blank">
                             {{ imv.codigo }}
@@ -110,7 +119,11 @@
         data() {
           return {
             corretor: [],
+            users: [
+              { name: 'Jack', phone: '555-123-4567' }
+            ],
             posicao: 0,
+            searchText: "",
             // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
             // urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
             urlmarca: "http://localhost:8080/api/imovel",
@@ -161,6 +174,10 @@
             this.imoveis = this.todosimoveis.filter(d => d.corretor_id == this.corretor_id).slice(initpage, fimdpage);
             
           }
+        },
+        filtrar () {
+          this.imoveis = this.todosimoveis.filter(d => d.corretor_id == this.corretor_id && d.codigo.indexOf(this.searchText) != -1);
+          // this.todosimoveis = this.todosimoveis.filter(d => d.corretor_id == this.corretor_id && d.codigo == this.searchText);
         }
       },
       created() {
@@ -185,7 +202,7 @@
           prografico.forEach(element => {
             // console.log(element.codigo);
             // console.log(element.acessos);
-            eixox.push('PIN - ' + element.codigo);
+            eixox.push(element.codigo);
             eixoy.push(element.acessos);
           });
           this.graflabels = eixox;
