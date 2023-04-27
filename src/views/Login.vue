@@ -99,7 +99,21 @@
                     this.corretores = response.data
                     // console.log(this.corretores)
                     for(let u of this.corretores) {
-                        if (this.form.email == u.email && this.form.password == u.registro) {
+                        // Testte de Login
+
+                        // if (this.form.email.trim() == u.email.trim()) {
+                        //     console.log('email correto');
+                        // } else {
+                        //     console.log('email incorreto');
+                        // }
+                        // if (this.form.password.trim() == u.registro.trim()) {
+                        //     console.log('senha correta');
+                        // } else {
+                        //     console.log('senha incorreta');
+                        // }
+
+                        // Testte de Login
+                        if (this.form.email.trim() == u.email.trim() && this.form.password.trim() == u.registro.trim()) {
                             // console.log("usuário válido");
                             localStorage.setItem('authUser', JSON.stringify(u));
                             this.$router.push({
