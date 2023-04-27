@@ -125,10 +125,18 @@
                           <tbody>
                             <tr>
                               <th scope="row">
-                                Valor
+                                Valor de Venda
                               </th>
                               <td scope="row">
                                 {{ valorimovelnamodal }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <th scope="row">
+                                Valor de Aluguel
+                              </th>
+                              <td scope="row">
+                                {{ valorimovelnamodalaluguel }}
                               </td>
                             </tr>
                           </tbody>
@@ -153,7 +161,7 @@
                 <li v-repeat="users | filterBy searchText">{{ name }}</li>
               </ul> -->
               <div v-show="carregando">
-                <img src="src/assets/actions/please-wait.gif" />
+                <img src="@/assets/actions/please-wait.gif" />
               </div>
               <table class="table table-hover" id="my-table">
                 <thead>
@@ -249,6 +257,7 @@
             corretor: [],
             posicao: 0,
             valorimovelnamodal: "Indefinido",
+            valorimovelnamodalaluguel: "Indefinido",
             imovelselecionadocodigo: "Indefinido",
             searchText: "",
             searchTime: "",
@@ -378,6 +387,7 @@
           this.grafvalues = eixoy;
           this.tabelavisitas = visit;
           this.valorimovelnamodal = "R$ " + Math.round(imv.venda).toLocaleString();
+          this.valorimovelnamodalaluguel = "R$ " + Math.round(imv.locacao).toLocaleString();
           this.imovelselecionadocodigo = imv.codigo;
         },
         closeModal() {
@@ -395,8 +405,13 @@
         // axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
         axios.get(this.urlmarca).then((res) => {
           // console.log(res.data)
-          this.todosimoveis = res.data.filter(d => d.corretor_id == this.corretor_id);
+          this.todosimoveis = res.data.filter(
+            d => d.corretor_id == this.corretor_id &&
+            d.corretor_id !== "" &&
+            d.corretor_id !== null
+          );
           this.totalpage = Math.ceil(Number(this.todosimoveis.length)/this.por_pagina);
+          this.filtrados = this.todosimoveis;
           this.imoveis = this.todosimoveis.slice(0, this.por_pagina);
           // console.log(this.corretor_id)
           // console.log(this.imoveis)

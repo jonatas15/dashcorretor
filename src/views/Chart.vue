@@ -7,8 +7,11 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title,
 BarElement,
 CategoryScale,
-LinearScale, PointElement, LineElement } from 'chart.js'
-import { Doughnut, Bar, Line } from 'vue-chartjs'
+LinearScale, PointElement, LineElement } from 'chart.js';
+import { Doughnut, Bar, Line } from 'vue-chartjs';
+
+import moment from 'moment';
+
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend, PointElement, LineElement)
 
@@ -78,7 +81,7 @@ export default {
             var quant_imoveis_agenciados = [];
 
             for(let mc of this.corretor.macros) {
-                this.corretorlabels.push(this.retornames(mc.mes_referencia));
+                this.corretorlabels.push(moment(String(mc.data)).format('DD/MM/YYYY'));
                 for(let mc2 of this.corretor.macros) {
                     leadsrecebidos.push(mc2.leads_recebidos);
                     percentual_conversao.push(mc2.percentual_conversao);
