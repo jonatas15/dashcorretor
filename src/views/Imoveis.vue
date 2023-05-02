@@ -41,6 +41,14 @@
                     <option value="Fevereiro">Fevereiro</option>
                     <option value="Março">Março</option>
                     <option value="Abril">Abril</option>
+                    <option value="Maio">Maio</option>
+                    <option value="Junho">Junho</option>
+                    <option value="Julho">Julho</option>
+                    <option value="Agosto">Agosto</option>
+                    <option value="Setembro">Setembro</option>
+                    <option value="Outubro">Outubro</option>
+                    <option value="Novembro">Novembro</option>
+                    <option value="Dezembro">Dezembro</option>
                   </select>
                 </div>
               </div>
@@ -95,7 +103,7 @@
                         <br />
                       </div>
                       <div class="col-md-1"></div>
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <!-- {{ tabelavisitas }} -->
                         <h4>Visitas ao Imóvel</h4>
                         <table class="table table-hover" id="my-table">
@@ -103,6 +111,8 @@
                             <tr>
                               <th scope="col">Período</th>
                               <th scope="col">Nº de visitas</th>
+                              <th scope="col">Conversões (form)</th>
+                              <th scope="col">Conversões (whats)</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -112,6 +122,12 @@
                               </th>
                               <td scope="row">
                                 {{ visita.visitas }}
+                              </td>
+                              <td scope="row">
+                                {{ visita.convfrm }}
+                              </td>
+                              <td scope="row">
+                                {{ visita.convwht }}
                               </td>
                             </tr>
                           </tbody>
@@ -171,6 +187,8 @@
                     <th scope="col">Acessos</th>
                     <th scope="col">Visitas feitas</th>
                     <th scope="col">Período</th>
+                    <!-- <th scope="col">convwht</th> -->
+                    <!-- <th scope="col">convpag</th> -->
                     <th scope="col">Detalhes</th>
                   </tr>
                 </thead>
@@ -185,6 +203,8 @@
                     <td>{{imv.acessos}}</td>
                     <td>{{imv.visitas}}</td>
                     <td>{{imv.periodo}}</td>
+                    <!-- <td>{{imv.convwht}}</td> -->
+                    <!-- <td>{{imv.convpag}}</td> -->
                     <td>
                       <button
                         type="button"
@@ -210,7 +230,7 @@
                   <span class="sr-only">Previous</span>
                 </a>
               </li>
-              <li v-for="page in paginas" class="page-item" :class="page == pagina ? ' active' : ''">
+              <li v-for="page in paginas" class="page-item" :class="page == pagina ? ' active' : ''" :key="page">
                 <a class="page-link" @click="paginar(page)">{{page}}</a>
               </li>
               <li class="page-item">
@@ -380,7 +400,9 @@
             eixoy.push(element.acessos);
             visit.push({
               periodo: element.periodo,
-              visitas: element.visitas
+              visitas: element.visitas,
+              convfrm: element.convwht,
+              convwht: element.convpag
             });
           });
           this.graflabels = eixox;

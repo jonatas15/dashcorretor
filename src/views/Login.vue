@@ -12,7 +12,7 @@
                     <p v-if="errors.length">
                         <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
                         <ul>
-                        <li v-for="error in errors">{{ error }}</li>
+                        <li v-for="error in errors" :key="error">{{ error }}</li>
                         </ul>
                     </p>
                 </div>
@@ -62,8 +62,8 @@
     name: 'login',
     data() {
         return {
-            // apibase: 'http://localhost:8080/api/corretor',
-            apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
+            apibase: 'http://localhost:8080/api/corretor',
+            // apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
             errors: [],
             corretores: [],
             form: {
