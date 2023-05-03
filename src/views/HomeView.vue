@@ -14,7 +14,7 @@
       <div class="col-md-12 dash-corretor">
         <h4>Seu <br>Dashboard</h4>
         <div class="row align-items-start">
-          <div class="col-12 col-md-4 item-progresso" style="">
+          <div class="col-12 col-md-8 col-lg-4 item-progresso" style="">
             <div class="row align-items-start subcard-corretor"
               style="height: 120px; padding: 5px;margin: 0 15px; position: relative;">
               <div class="col-5 col-md-5" style="border-right: 1px solid #e3e3e3; height: 110px; position: relative;">
@@ -29,12 +29,12 @@
               </div>
             </div>
           </div>
-          <div class="col-6 col-md-2 item-progresso" v-for="macro in macros" v-key="macro">
+          <div class="col-6 col-lg-2 col-md-4 col-sm-6 item-progresso" v-for="macro in macros" :key="macro.id">
             <Progress v-bind:legenda="macro.campo" v-bind:valor="macro.valor" v-bind:param="macro.param"
               v-bind:prefixo="macro.prefx"></Progress>
           </div>
-          <div class="col-6 col-md-2 item-progresso"></div>
-          <div class="col-6 col-md-2 item-progresso" style="margin-top: 60px; text-align: left;">
+          <div class="col-6 col-md-4 col-lg-2 item-progresso"></div>
+          <div class="col-6 col-md-4 col-lg-2 item-progresso" style="margin-top: 60px; text-align: left;">
             <font-awesome-icon icon="circle-down" class="fa-sharp fa-solid" style="font-size: 20px;" />
             <br />
             <span>
@@ -52,8 +52,10 @@
               <img src="@/assets/banner/Tii.png" />
               <!-- Bora, hora do show porra -->
               <div class="row">
-                <div class="col-md-5"></div>
-                <div class="col-md-7">
+                <div class="col-12 col-lg-5 col-md-12 col-sm-12">
+                  <div style="width: 100% !important; height: 200px !important;"></div>
+                </div>
+                <div class="col-12 col-lg-7 col-md-12 col-sm-12">
                   <br>
                   <strong class="dash-corretor-topico-titulo" style="float: left">Incentivo Semanal</strong>
                   <br>
@@ -510,7 +512,7 @@ export default {
   margin-left: 5%;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1200px) {
   .banner {
     height: 240px;
     border-radius: 30px;

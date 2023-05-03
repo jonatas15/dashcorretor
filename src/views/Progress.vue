@@ -1,6 +1,6 @@
 <template>
     <radial-progress-bar 
-     :diameter="110"
+     :diameter="100"
      :completed-steps="prefixo == 'R$' ? 100 : valor"
      :total-steps="100"
      :startColor="'#2d460b'"
@@ -9,7 +9,7 @@
      :strokeWidth="5"
      :innerStrokeWidth="5"
     >
-        <h5 class="valor-monetario" v-if="prefixo == 'R$'">{{ prefixo }} {{ valor }}</h5>
+        <h5 class="valor-monetario" v-if="prefixo == 'R$'">{{ prefixo }}<br> {{ valor }}</h5>
         <h5 class="valor" v-else>{{ valor }} {{ param }}</h5>
     </radial-progress-bar>
     <br>

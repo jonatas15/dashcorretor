@@ -346,7 +346,7 @@ a {
   }
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 990px) {
   #sidebar-cafe {
     display: none !important;
   }
@@ -357,7 +357,7 @@ a {
 }
 
 /* navbar becomes mobile sidebar under lg breakpoint */
-@media (max-width: 992px) {
+@media (max-width: 990px) {
 
   .navbar-collapse.collapsing .navbar-nav {
     display: block;

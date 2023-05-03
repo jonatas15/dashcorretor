@@ -47,14 +47,14 @@
           <slot name="footer">
             This is the default footer!
           </slot>
-          <button
+          <!-- <button
             type="button"
-            class="btn-green"
+            class="btn-red"
             @click="close"
             aria-label="Close modal"
           >
             Fechar
-          </button>
+          </button> -->
         </footer>
       </div>
     </div>
@@ -81,8 +81,8 @@
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    width: 70% !important;
-    height: 700px;
+    width: 50% !important;
+    height: auto;
     margin: 0;
     position: absolute;
     top: 50%;
@@ -96,6 +96,13 @@
   .modal .modal-body {
     overflow-y: scroll;
     overflow-x: hidden;
+  }
+
+  @media only screen and (max-width: 990px) {
+    .modal {
+      width: 90% !important;
+      height: 80% !important;
+    }
   }
 
   .modal-header,

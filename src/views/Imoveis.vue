@@ -223,7 +223,7 @@
                 :per-page="20"
                 aria-controls="my-table"
             ></b-pagination> -->
-            <ul class="pagination">
+            <ul class="pagination" style="display: contents !important;">
               <li class="page-item">
                 <a v-if="pagina > 1" class="page-link" @click="paginarmenos()" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
