@@ -11,8 +11,15 @@
             Nome do Visitante
             Observações
             Imobiliária parceira
-          
+            -- Basic Alert
+            // duration of transistions (ms)
+            // if you dont have this, you can close the alert manually
           -->
+          <vue-basic-alert 
+            :duration="300"
+            :closeIn="2000"
+            ref="alert"
+          />
           <div class="vertical-center" style="width: 305px !important;">
             <h5 class="titulo-dash" style="">
               Veja como estipular suas<br>
@@ -23,15 +30,18 @@
         </div>
         <div class="col-md-12 dash-corretor">
             <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 50%"></div>
+                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 85%"></div>
             </div>
             <sub>Em construção</sub>
             <hr>
-            <h3>Registro de Visitas</h3>
+            <h3>Registro de Visitas (Ref.: 2023)</h3>
+            <br />
+            <br />
             <!-- <p>Message is: {{ form.cliente }}</p> -->
             <!-- <input v-model="form.cliente" placeholder="edit me" /> -->
-            <div class="container-fluid">
+            <div class="container-fluid row">
               <div class="col-md-6 col-sm-12">
+                <h4><strong>Cadastrar Nova Visita</strong></h4>
                 <div class="row my-1 campo-formulario">
                   <div class="col-sm-3">
                     <label class="for-label" for="visitadata">Data da Visita:</label>
@@ -71,25 +81,47 @@
                 </div>
                 <div class="row my-1 campo-formulario">
                   <div class="col-sm-3">
-                    <label class="for-label" for="visitacliente">imobiliaria Parceira:</label>
+                    <label class="for-label" for="visitaimobparceira">imobiliaria Parceira:</label>
                   </div>
                   <div class="col-sm-9">
-                    <input type="text" id="visitacliente" class="form-control" v-model="form.imobiliaria" placeholder="Se houver"/>
+                    <input type="text" id="visitaimobparceira" class="form-control" v-model="form.imobiliaria" placeholder="Se houver"/>
                   </div>
                 </div>
                 <div class="row my-1 campo-formulario">
                   <div class="col-sm-3">
-                    <label class="for-label" for="visitacliente">Observações:</label>
+                    <label class="for-label" for="visitaobs">Observações:</label>
                   </div>
                   <div class="col-sm-9">
-                    <textarea type="text" id="visitacliente" class="form-control" v-model="form.obs"/>
+                    <textarea type="text" id="visitaobs" class="form-control" v-model="form.obs"/>
                   </div>
                 </div>
-                <div class="row my-1 campo-formulario">
-                  <button class="btn btn-successNo" @click="cadastrar">Registrar</button>
+                <!-- background-color: #198754 -->
+                <div class="row my-1 campo-formulario" style="">
+                  <button class="btn btn-success" @click="cadastrar">Registrar</button>
                 </div>
               </div>
               <!-- Recebida as visitas, agora faremos a Tabela de Listagem -->
+              <div class="col-md-6 col-sm-12 row">
+                <h4><strong>Análises</strong></h4>
+                <div class="col-md-12 col-sm-12">
+                  <Line :data="{
+                    labels: data.labels,
+                    datasets: data.datasets
+                  }" :options="options" />
+                </div>
+                <div class="row">
+                  <!-- <div class="col-4"></div> -->
+                  <div class="col-12" style="height: 210px !important;">
+                    <!-- <center> -->
+                    <Pie :data="{
+                      labels: pizza.labels,
+                      datasets: pizza.datasets
+                    }" :options="pizzaoptions" />
+                      <!-- </center> -->
+                  </div>
+                  <!-- <div class="col-4"></div> -->
+                </div>
+              </div>
               <div class="col-md-12">
                 <br />
                 <br />
@@ -102,8 +134,8 @@
                       <th scope="col">Data</th>
                       <th scope="col">Imóvel</th>
                       <th scope="col">Visitante</th>
-                      <th scope="col">Observações</th>
-                      <th scope="col">Imobiliária Parceira</th>
+                      <th scope="col" class="desktop">Observações</th>
+                      <th scope="col" class="desktop">Imobiliária Parceira</th>
                       <th scope="col">Convertido</th>
                     </tr>
                   </thead>
@@ -112,14 +144,16 @@
                       <td>{{ visita.dia_visita }}</td>
                       <td>{{ visita.codigo_imovel }}</td>
                       <td>{{ visita.nome_cliente }}</td>
-                      <td>{{ visita.observacoes }}</td>
-                      <td>{{ visita.imobiliaria_parceira }}</td>
+                      <td class="desktop">{{ visita.observacoes }}</td>
+                      <td class="desktop">{{ visita.imobiliaria_parceria }}</td>
                       <td>
+                        <!-- {{ visita.convertido }} -->
                         <Toggle
                           id="visitacontrato"
                           v-model="visita.convertido"
                           v-bind="form.contrato"
                           class="toggle-blue"
+                          @click="converter(visita.idvisita, Number(visita.convertido))"
                         />
                       </td>
                     </tr>
@@ -141,15 +175,19 @@
     Title,
     Tooltip,
     Legend,
+    ArcElement,
     BarElement,
     CategoryScale,
     LinearScale
   } from 'chart.js';
-  import { Bar } from 'vue-chartjs';
+  import { Bar, Line, Pie } from 'vue-chartjs';
 
-  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+  ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
   import Toggle from '@vueform/toggle';
+
+  import moment from 'moment';
+  import VueBasicAlert from 'vue-basic-alert'
 
   export default {
       name: 'Imoveis',
@@ -171,29 +209,64 @@
           corretor_id: 12,
           graflabels: [],
           grafvalues: [],
-          corretor: "",
+          idcorretor: "",
           visitas: [],
-          options: {
-              responsive: true,
-              maintainAspectRatio: true,
-              legend: {
-                  display: false
+          pizza: {
+            labels: ['Convertidos', 'Não convertidos'],
+            datasets: [
+              {
+                backgroundColor: ['green', 'gray'],
+                data: [40, 20]
               }
+            ]
+          },
+          pizzaoptions: {
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {
+              display: true,
+              position: 'right',
+              align: 'center'
+            }
+          },
+          myStyles: {
+              height: '200px',
+              position: 'center',
+              // width: '100%'
+          },
+          data: {
+            labels: ['Jan', 'Fev', 'Mxxar', 'Abr'],
+            datasets: [
+              {
+                label: "Visitas",
+                backgroundColor: '#e3e3e3',
+                borderColor: '#e3e3e3',
+                data: [33, 78, 34, 67],
+                fill: false,
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            legend: {
+              display: true
+            }
           },
           form: {
-            cliente: "Jonatas A. Silva",
-            codigo: "12345",
-            datavisita: "12/05/2023",
+            cliente: "",
+            codigo: "",
+            datavisita: "",
             marcado: true,
             contrato: {
               value: true,
-              trueValue: 'on',
-              falseValue: 'off',
+              trueValue: 1,
+              falseValue: 0,
               onLabel: 'SIM',
               offLabel: 'NÃO',
             },
-            imobiliaria: "Café",
-            obs: "Registro de visita de teste"
+            imobiliaria: "",
+            obs: ""
 
           }
       }
@@ -201,35 +274,156 @@
     components: {
         Progress,
         Bar,
-        Toggle
+        Pie,
+        Toggle,
+        Line,
+        VueBasicAlert
     },
     methods: {
-      cadastrar () {
-        console.log("bora chamar a API");
-        axios.post("https://www.cafeimobiliaria.com/sistema/api/visita/create", {
+      cadastrar (self) {
+        // console.log("bora chamar a API");
+        axios.post("https://www.cafeimobiliaria.com.br/sistema/api/visita/create", {
           usuario_id: 1,
-          data_visita: this.form.datavisita,
+          data_visita: moment(String(this.form.datavisita)).format('YYYY-DD-MM'),
           observacoes: this.form.obs,
           codigo_imovel: this.form.codigo,
           nome_cliente: this.form.cliente,
-          id_corretor: this.corretor
+          id_corretor: this.idcorretor,
+          imobiliaria_parceria: this.form.imobiliaria
+        }).then(response => {
+          // console.log(response.status);
+          this.$refs.alert.showAlert(
+            'success', // There are 4 types of alert: success, info, warning, error
+            'Sua visita foi cadastrada', // Message of the alert
+            'Sucesso', // Header of the alert
+            { iconSize: 35, // Size of the icon (px)
+              iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
+              position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+          )
+          this.form.datavisita = "";
+          this.form.obs = "";
+          this.form.codigo = "";
+          this.form.cliente = "";
+          this.idcorretor = "";
+          this.form.imobiliaria = "";
+        }).catch(response => {
+          // console.log(response.status);
+          this.$refs.alert.showAlert(
+            'error', // There are 4 types of alert: success, info, warning, error
+            'Sua visita não foi cadastrada; preencha o formulário corretamente', // Message of the alert
+            'Erro', // Header of the alert
+            { iconSize: 35, // Size of the icon (px)
+              iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
+              position: 'center center' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+          )
+        });
+      },
+      converter (id, recebeinvertido) {
+        axios.put("https://www.cafeimobiliaria.com.br/sistema/api/visita/update?id=" + id, {
+          convertido: recebeinvertido
+        }).then(response => {
+          console.log(response);
+          this.$refs.alert.showAlert(
+            'success', // There are 4 types of alert: success, info, warning, error
+            'Sua visita foi Atualizada', // Message of the alert
+            'Sucesso', // Header of the alert
+            { iconSize: 35, // Size of the icon (px)
+              iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
+              position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+          )
         })
       }
+      // alerta() {
+      //   console.log("alerta!!!");
+      //   this.$refs.alert.showAlert(
+      //         'success', // There are 4 types of alert: success, info, warning, error
+      //         'This is the information of something you may know Success.', // Message of the alert
+      //         'Success 200', // Header of the alert
+      //         { iconSize: 35, // Size of the icon (px)
+      //           iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
+      //           position: 'top right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+      //       )
+      //   }
     },
     created() {
+      // console.log("Data:");
+      // console.log(moment(String(this.form.datavisita)).format('YYYY-DD-MM'));
       if (localStorage.getItem('authUser')) {
         var getnome = JSON.parse(localStorage.getItem('authUser'));
-        this.corretor = getnome.idsistema;
+        this.idcorretor = getnome.idsistema;
         // console.log(getnome);
         axios.get(this.urlvisitas).then((res) => {
           // console.log(res.data)
           this.visitas = res.data.filter(
-            d => d.id_corretor == this.corretor &&
+            d => d.id_corretor == this.idcorretor &&
             d.id_corretor !== "" &&
             d.id_corretor !== null &&
             d.data_visita.indexOf("2023") !== -1
           );
+          /**
+           for(let mc of this.corretor.macros) {
+                this.corretorlabels.push(moment(String(mc.data)).format('DD/MM/YYYY'));
+                for(let mc2 of this.corretor.macros) {
+                    leadsrecebidos.push(mc2.leads_recebidos);
+                    percentual_conversao.push(mc2.percentual_conversao);
+                    quant_vendas_vgc.push(mc2.quant_vendas_vgc);
+                    quant_vendas_vgv.push(mc2.quant_vendas_vgv);
+                    quant_visitas.push(mc2.quant_visitas);
+                    quant_imoveis_agenciados.push(mc2.quant_imoveis_agenciados);
+                }
+            }
+           */
           // console.log(this.visitas)
+          var legendas = [];
+          var meses = [
+            "Jan",
+            "Fev",
+            "Mar",
+            "Abr",
+            "Mai",
+            "Jun",
+            "Jul",
+            "Ago",
+            "Set",
+            "Out",
+            "Nov",
+            "Dez"
+          ];
+          var valores = [];
+          // console.log(meses);
+          for(let mes of meses) {
+            var convertidos = 0;
+            var naoconvertidos = 0;
+            var contames = 0;
+            for(let mc of this.visitas) {
+              if (mc.mes == mes) {
+                contames = contames + 1;
+              }
+              if (mc.convertido == 1) {
+                convertidos += 1;
+              } else {
+                naoconvertidos += 1;
+              }
+            }
+            if (contames > 0) {
+              legendas.push(mes);
+              valores.push(contames);
+            }
+          }
+          // console.log(valores);
+          // console.log(legendas);
+          this.data.labels = legendas;
+          this.data.datasets = [{
+            label: "Visitas",
+            backgroundColor: 'green',
+            borderColor: 'green',
+            data: valores,
+            fill: false,
+          }];
+          this.pizza.datasets = [{
+            backgroundColor: ['green', 'gray'],
+            data: [convertidos, naoconvertidos]
+          }];
         })
       }
     },
@@ -258,7 +452,7 @@
     font-weight: bolder;
   }
   .campo-formulario {
-    margin: 10px 1px !important;
+    margin: 10px 0px !important;
     border: 1px solid lightgray;
     padding: 2% 5%;
     border-radius: 10px;;
