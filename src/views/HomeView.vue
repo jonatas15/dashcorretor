@@ -12,7 +12,29 @@
         </div>
       </div>
       <div class="col-md-12 dash-corretor">
-        <h4>Seu <br>Dashboard</h4>
+        <h4>Seu <br>Dashboard |
+        <span>
+          <select id="" class="form-de-topo" v-model="searchTime" @change="filtrar()" style="width: 187px;">
+            <option value="Atual">Média geral</option>
+            <option value="1">Janeiro</option>
+            <option value="2">Fevereiro</option>
+            <option value="3">Março</option>
+            <option value="4">Abril</option>
+            <option value="5">Maio</option>
+            <option value="6">Junho</option>
+            <option value="7">Julho</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setembro</option>
+            <option value="10">Outubro</option>
+            <option value="11">Novembro</option>
+            <option value="12">Dezembro</option>
+            <option value="trimestre_1">1º Trimestre</option>
+            <option value="trimestre_2">2º Trimestre</option>
+            <option value="trimestre_3">3º Trimestre</option>
+            <option value="trimestre_4">4º Trimestre</option>
+          </select>
+        </span>
+        </h4>
         <div class="row align-items-start">
           <div class="col-12 col-md-8 col-lg-4 item-progresso" style="">
             <div class="row align-items-start subcard-corretor"
@@ -117,6 +139,7 @@ export default {
     return {
       corretor: [],
       dadoscorretor: [],
+      searchTime: 5,
       posicao: 0,
       macros: [{
         campo: "Leads Recebidos",
@@ -170,6 +193,179 @@ export default {
   },
   components: {
     Progress
+  },
+  methods: {
+    filtrar () {
+      // console.log(this.searchTime)
+      if (this.corretor.macros.length >= 1) {
+        var varindice = this.searchTime;
+        // temos que ajustar pra somar os valores inseridos NO MÊS
+        // Usar Foreach
+        var leadsrecebidos = 0;
+        var percentual_conversao = 0;
+        var quant_vendas_vgc = 0;
+        var quant_vendas_vgv = 0;
+        var quant_visitas = 0;
+        var quant_imoveis_agenciados = 0;
+        var ticket_medio_venda = 0;
+        var custo_lead = 0;
+
+        var i = 0; // Contador
+
+        var trimestre1 = [1, 2, 3];
+        var trimestre2 = [4, 5, 6];
+        var trimestre3 = [7, 8, 9];
+        var trimestre4 = [10, 11, 12];
+
+        for(let mc of this.corretor.macros) {
+          // this.corretorlabels.push(moment(String(mc.data)).format('DD/MM/YYYY'));
+          // for(let mc2 of this.corretor.macros) {
+            // leadsrecebidos.push(mc2.leads_recebidos);
+            // percentual_conversao.push(mc2.percentual_conversao);
+            // quant_vendas_vgc.push(mc2.quant_vendas_vgc);
+            // quant_vendas_vgv.push(mc2.quant_vendas_vgv);
+            // quant_visitas.push(mc2.quant_visitas);
+            // quant_imoveis_agenciados.push(mc2.quant_imoveis_agenciados);
+          // }
+          if (varindice == "Atual") {
+            // console.log(mc);
+            leadsrecebidos += mc.leads_recebidos;
+            percentual_conversao += Number(mc.percentual_conversao);
+            quant_vendas_vgc += mc.quant_vendas_vgc;
+            quant_vendas_vgv += mc.quant_vendas_vgv;
+            quant_visitas += mc.quant_visitas;
+            quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+            ticket_medio_venda += Number(mc.ticket_medio_venda);
+            custo_lead += Number(mc.custo_lead);
+            i++;
+          } 
+          else if(varindice == "trimestre_1") {
+            if (trimestre1.includes(mc.mes_referencia)) {
+              leadsrecebidos += mc.leads_recebidos;
+              percentual_conversao += Number(mc.percentual_conversao);
+              quant_vendas_vgc += mc.quant_vendas_vgc;
+              quant_vendas_vgv += mc.quant_vendas_vgv;
+              quant_visitas += mc.quant_visitas;
+              quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+              ticket_medio_venda += Number(mc.ticket_medio_venda);
+              custo_lead += Number(mc.custo_lead);
+              i++;
+            }
+          }
+          else if(varindice == "trimestre_2") {
+            if (trimestre2.includes(mc.mes_referencia)) {
+              leadsrecebidos += mc.leads_recebidos;
+              percentual_conversao += Number(mc.percentual_conversao);
+              quant_vendas_vgc += mc.quant_vendas_vgc;
+              quant_vendas_vgv += mc.quant_vendas_vgv;
+              quant_visitas += mc.quant_visitas;
+              quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+              ticket_medio_venda += Number(mc.ticket_medio_venda);
+              custo_lead += Number(mc.custo_lead);
+              i++;
+            }
+          }
+          else if(varindice == "trimestre_3") {
+            if (trimestre3.includes(mc.mes_referencia)) {
+              leadsrecebidos += mc.leads_recebidos;
+              percentual_conversao += Number(mc.percentual_conversao);
+              quant_vendas_vgc += mc.quant_vendas_vgc;
+              quant_vendas_vgv += mc.quant_vendas_vgv;
+              quant_visitas += mc.quant_visitas;
+              quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+              ticket_medio_venda += Number(mc.ticket_medio_venda);
+              custo_lead += Number(mc.custo_lead);
+              i++;
+            }
+          }
+          else if(varindice == "trimestre_4") {
+            if (trimestre4.includes(mc.mes_referencia)) {
+              leadsrecebidos += mc.leads_recebidos;
+              percentual_conversao += Number(mc.percentual_conversao);
+              quant_vendas_vgc += mc.quant_vendas_vgc;
+              quant_vendas_vgv += mc.quant_vendas_vgv;
+              quant_visitas += mc.quant_visitas;
+              quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+              ticket_medio_venda += Number(mc.ticket_medio_venda);
+              custo_lead += Number(mc.custo_lead);
+              i++;
+            }
+          } 
+          else {
+            if (mc.mes_referencia == varindice) {
+              // console.log("conjunto de etapa filtrado:");
+              // console.log(mc);
+              leadsrecebidos += mc.leads_recebidos;
+              percentual_conversao += Number(mc.percentual_conversao);
+              quant_vendas_vgc += mc.quant_vendas_vgc;
+              quant_vendas_vgv += mc.quant_vendas_vgv;
+              quant_visitas += mc.quant_visitas;
+              quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+              ticket_medio_venda += Number(mc.ticket_medio_venda);
+              custo_lead += Number(mc.custo_lead);
+              i++;
+            }
+          }
+        }
+
+        // console.log("" + Math.round(leadsrecebidos/i))
+
+        // ------------------------------------------------------------
+        // Última posição registrada:
+        var ultimo_indice = this.corretor.macros.length-1;
+        this.posicao = this.corretor.macros[ultimo_indice].pos_ranking_geral_vendas;
+        this.macros = [
+          {
+            campo: "Leads Recebidos",
+            valor: Math.round(leadsrecebidos/i),
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Percentual de Conversão",
+            valor: Math.round(percentual_conversao/i),
+            param: "%",
+            prefx: ""
+          },
+          {
+            campo: "Quant. Vendas VGC",
+            valor: Math.round(quant_vendas_vgc/i),
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Quant. Vendas VGV",
+            valor: Math.round(quant_vendas_vgv/i),
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Quant. de Visitas",
+            valor: Math.round(quant_visitas/i),
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Quant. Imóveis Agenciados",
+            valor: Math.round(quant_imoveis_agenciados/i),
+            param: "",
+            prefx: ""
+          },
+          {
+            campo: "Ticket Médio de Venda",
+            valor: Math.round(ticket_medio_venda/i).toLocaleString(),
+            param: "",
+            prefx: "R$"
+          },
+          {
+            campo: "Custo do Lead",
+            valor: Math.round(custo_lead/i).toLocaleString(),
+            param: "",
+            prefx: "R$"
+          },
+        ]
+      }
+    }
   },
   created() {
     /*
@@ -239,61 +435,7 @@ export default {
     if (localStorage.getItem('authUser')) {
       this.dadoscorretor = localStorage.getItem('authUser');
       this.corretor = JSON.parse(this.dadoscorretor);
-      // console.log(this.corretor);
-      if (this.corretor.macros.length >= 1) {
-        var varindice = this.corretor.macros.length-1;
-        this.posicao = this.corretor.macros[varindice].pos_ranking_geral_vendas;
-        this.macros = [
-          {
-            campo: "Leads Recebidos",
-            valor: this.corretor.macros[varindice].leads_recebidos,
-            param: "",
-            prefx: ""
-          },
-          {
-            campo: "Percentual de Conversão",
-            valor: Math.round(this.corretor.macros[varindice].percentual_conversao),
-            param: "%",
-            prefx: ""
-          },
-          {
-            campo: "Quant. Vendas VGC",
-            valor: this.corretor.macros[varindice].quant_vendas_vgc,
-            param: "",
-            prefx: ""
-          },
-          {
-            campo: "Quant. Vendas VGV",
-            valor: this.corretor.macros[varindice].quant_vendas_vgv,
-            param: "",
-            prefx: ""
-          },
-          {
-            campo: "Quant. de Visitas",
-            valor: this.corretor.macros[varindice].quant_visitas,
-            param: "",
-            prefx: ""
-          },
-          {
-            campo: "Quant. Imóveis Agenciados",
-            valor: this.corretor.macros[varindice].quant_imoveis_agenciados,
-            param: "",
-            prefx: ""
-          },
-          {
-            campo: "Ticket Médio de Venda",
-            valor: Math.round(this.corretor.macros[varindice].ticket_medio_venda).toLocaleString(),
-            param: "",
-            prefx: "R$"
-          },
-          {
-            campo: "Custo do Lead",
-            valor: Math.round(this.corretor.macros[varindice].custo_lead).toLocaleString(),
-            param: "",
-            prefx: "R$"
-          },
-        ]
-      }
+      this.filtrar();
     }
   }
 }
@@ -307,6 +449,16 @@ export default {
   --backshadown: 23.16px 17.453px 32.5px rgba(0, 0, 0, 0.16);
   --backshadown-rank: 12.778px 9.629px 16px rgba(0, 0, 0, 0.16);
   --backshadown-subcard: 12.778px 9.629px 17.5px rgba(0, 0, 0, 0.11);
+}
+
+.form-de-topo {
+  border: 1px solid ghostwhite;
+  border-radius: 10px;
+  box-shadow: var(--backshadown-rank);
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  color: #053a35;
+  background-color: white;
 }
 
 /* var backshadown = drop-shadow(23.16px 17.453px 32.5px rgba(0,0,0,0.16)); */
