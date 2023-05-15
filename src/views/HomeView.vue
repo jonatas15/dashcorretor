@@ -256,6 +256,7 @@ export default {
             if (trimestre2.includes(mc.mes_referencia)) {
               leadsrecebidos += mc.leads_recebidos;
               percentual_conversao += Number(mc.percentual_conversao);
+              console.log(mc.percentual_conversao);
               quant_vendas_vgc += mc.quant_vendas_vgc;
               quant_vendas_vgv += mc.quant_vendas_vgv;
               quant_visitas += mc.quant_visitas;
@@ -317,49 +318,49 @@ export default {
         this.macros = [
           {
             campo: "Leads Recebidos",
-            valor: Math.round(leadsrecebidos/i),
+            valor: (i > 0 ? Math.round(leadsrecebidos/i) : leadsrecebidos),
             param: "",
             prefx: ""
           },
           {
             campo: "Percentual de Conversão",
-            valor: Math.round(percentual_conversao/i),
+            valor: (i > 0 ? Math.round(percentual_conversao/i) : percentual_conversao),
             param: "%",
             prefx: ""
           },
           {
             campo: "Quant. Vendas VGC",
-            valor: Math.round(quant_vendas_vgc/i),
+            valor: (i > 0 ? Math.round(quant_vendas_vgc/i) : quant_vendas_vgc),
             param: "",
             prefx: ""
           },
           {
             campo: "Quant. Vendas VGV",
-            valor: Math.round(quant_vendas_vgv/i),
+            valor: (i > 0 ? Math.round(quant_vendas_vgv/i) : quant_vendas_vgv),
             param: "",
             prefx: ""
           },
           {
             campo: "Quant. de Visitas",
-            valor: Math.round(quant_visitas/i),
+            valor: (i > 0 ? Math.round(quant_visitas/i) : quant_visitas),
             param: "",
             prefx: ""
           },
           {
             campo: "Quant. Imóveis Agenciados",
-            valor: Math.round(quant_imoveis_agenciados/i),
+            valor: (i > 0 ? Math.round(quant_imoveis_agenciados/i) : quant_imoveis_agenciados),
             param: "",
             prefx: ""
           },
           {
             campo: "Ticket Médio de Venda",
-            valor: Math.round(ticket_medio_venda/i).toLocaleString(),
+            valor: (i > 0 ? Math.round(ticket_medio_venda/i).toLocaleString() : ticket_medio_venda),
             param: "",
             prefx: "R$"
           },
           {
             campo: "Custo do Lead",
-            valor: Math.round(custo_lead/i).toLocaleString(),
+            valor: (i > 0 ? Math.round(custo_lead/i).toLocaleString() : custo_lead),
             param: "",
             prefx: "R$"
           },
