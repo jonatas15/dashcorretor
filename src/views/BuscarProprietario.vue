@@ -1,5 +1,10 @@
 <template>
   <div class="container text-left">
+    <vue-basic-alert 
+      :duration="300"
+      :closeIn="2000"
+      ref="alert"
+    />
     <div class="row align-items-start">
       <div class="col-md-12 banner" style="position: relative">
         <!-- <img src="src/assets/banner/banner-1.png" /> -->
@@ -62,6 +67,7 @@
                 <th scope="col">Endereço</th>
                 <th scope="col">Contato</th>
                 <th scope="col">Documento</th>
+                <th scope="col">Maps</th>
               </tr>
             </thead>
             <tbody>
@@ -70,6 +76,7 @@
                 <td>{{ prop.endereco }}</td>
                 <td>{{ prop.telefone }}</td>
                 <td>{{ prop.cpf }}</td>
+                <td><a :href="prop.linkmaps" target="_blank">🗺️</a></td>
               </tr>
             </tbody>
           </table>
@@ -91,37 +98,39 @@
           idcorretor: '',
           proprietarios: [],
           urlproprietario: 'http://localhost:8080/api/proprietario',
-          // urlproprietario: 'https://cafeimobiliaria.com.br/dadoscorretor/api/proprietario',
+          // urlproprietario: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/proprietario',
           form: {
-            nome: "",
-            endereco: "",
-            linkmaps: ""
+            nome: "Fulano",
+            endereco: "Fulanópoles 171",
+            linkmaps: "https://google.com.br"
           }
         }
       },
+      components: {
+        VueBasicAlert
+      },
       methods: {
-        cadastrar() {
-          axios.post("https://www.cafeimobiliaria.com.br/sistema/api/visita/create", {
-            usuario_id: 1,
-            data_visita: moment(String(this.form.datavisita)).format('YYYY-DD-MM'),
-            observacoes: this.form.obs,
-            codigo_imovel: this.form.codigo,
-            nome_cliente: this.form.cliente,
-            id_corretor: this.idcorretor,
-            imobiliaria_parceria: this.form.imobiliaria
-          }).then(response => {
+        cadastrar(self) {
+          var formData = new FormData();
+          formData.append('corretor_id', this.idcorretor);
+          formData.append('nome', this.form.nome);
+          formData.append('endereco', this.form.endereco);
+          formData.append('linkmaps', this.form.linkmaps);
+          axios.post(this.urlproprietario + "/create", formData).then(response => {
             // console.log(response.status);
             this.$refs.alert.showAlert(
               'success', // There are 4 types of alert: success, info, warning, error
-              'Sua visita foi cadastrada', // Message of the alert
+              'As informações foram cadastradas', // Message of the alert
               'Sucesso', // Header of the alert
               { iconSize: 35, // Size of the icon (px)
                 iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
                 position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
             )
             this.form.nome = "";
+            this.form.endereco = "";
+            this.form.linkmaps = "";
           }).catch(response => {
-            // console.log(response.status);
+            // console.log(response);
             this.$refs.alert.showAlert(
               'error', // There are 4 types of alert: success, info, warning, error
               'Sua visita não foi cadastrada; preencha o formulário corretamente', // Message of the alert
@@ -136,12 +145,13 @@
       created() {
         if (localStorage.getItem('authUser')) {
           var getnome = JSON.parse(localStorage.getItem('authUser'));
+          // console.log(getnome)
           this.idcorretor = getnome.id;
         }
         axios.get(this.urlproprietario).then((res) => {
           // console.log(res.data)
           this.proprietarios = res.data.filter(
-            d => d.corretor_id == 1 &&
+            d => d.corretor_id == this.idcorretor &&
             d.corretor_id !== "" &&
             d.corretor_id !== null
           );
