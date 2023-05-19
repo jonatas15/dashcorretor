@@ -46,8 +46,13 @@
                   <div class="col-sm-3">
                     <label class="for-label" for="visitadata">Data da Visita:</label>
                   </div>
-                  <div class="col-sm-9">
-                    <input v-mask="'##/##/####'" type="text" id="visitadata" class="form-control" v-model="form.datavisita" placeholder="__/__/_____"/>
+                  <div class="col-7 col-sm-5">
+                    <input v-mask="'##/##/####'" ref="campodatavisita" type="text" id="visitadata" class="form-control" v-model="form.datavisita" placeholder="__/__/_____"/>
+                  </div>
+                  <div class="col-5 col-sm-4">
+                    <button :class="'btn btn-' + stylebtnhoje" style="width: 100%" @click="dehoje()">
+                      {{ botaodehoje }}
+                    </button>
                   </div>
                 </div>
                 <div class="row my-1 campo-formulario">
@@ -55,7 +60,7 @@
                     <label class="for-label" for="visitacodimovel">Código do Imóvel:</label>
                   </div>
                   <div class="col-sm-9">
-                    <input type="text" id="visitacodimovel" class="form-control" v-model="form.codigo" placeholder="Código do Imóvel nos registros"/>
+                    <input ref="codigoimv" type="text" id="visitacodimovel" class="form-control" v-model="form.codigo" placeholder="Código do Imóvel nos registros"/>
                   </div>
                 </div>
                 <!-- <div class="row my-1 campo-formulario">
@@ -97,8 +102,22 @@
                 </div>
                 <!-- background-color: #198754 -->
                 <div class="row my-1 campo-formulario" style="">
-                  <button class="btn btn-success" @click="cadastrar">Registrar</button>
+                  <div class="col-6 col-sm-6">
+                    <button class="btn btn-success" @click="cadastrar">Cadastrar em sequência</button>
+                  </div>
+                  <div class="col-6 col-sm-6">
+                    <button class="btn btn-warning" @click="limpar">Limpar os dados do formulário</button>
+                  </div>
+                  <div class="col-12">
+                    <hr>
+                    <p>
+                      Para mais de uma visita, complete o registo clicando em "Cadastrar em Sequência". Em seguida apenas informe o código do imóvel seguinte
+                      mantendo os mesmos outros dados no formulário, clicando novamente no botão a cada novo código de imóvel visitado.
+                    </p>
+                  </div>
                 </div>
+                <!-- <div class="row my-1 campo-formulario" style="">
+                </div> -->
               </div>
               <!-- Recebida as visitas, agora faremos a Tabela de Listagem -->
               <div class="col-md-6 col-sm-12 row">
@@ -194,6 +213,8 @@
       data() {
         return {
           corretor: [],
+          botaodehoje: "Hoje",
+          stylebtnhoje: "info",
           posicao: 0,
           // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
           // urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
@@ -256,7 +277,7 @@
           form: {
             cliente: "",
             codigo: "",
-            datavisita: "",
+            datavisita: "", // moment(Date()).format('DD/MM/YYYY'),
             marcado: true,
             contrato: {
               value: true,
@@ -284,7 +305,8 @@
         // console.log("bora chamar a API");
         axios.post("https://www.cafeimobiliaria.com.br/sistema/api/visita/create", {
           usuario_id: 1,
-          data_visita: moment(String(this.form.datavisita)).format('YYYY-DD-MM'),
+          data_visita: this.formataStringData(this.form.datavisita), //moment(String(this.form.datavisita)).format('Y-MM-D'),
+          // data_visita: moment(String(this.form.datavisita)).format('YYYY-MM-DD'),
           observacoes: this.form.obs,
           codigo_imovel: this.form.codigo,
           nome_cliente: this.form.cliente,
@@ -300,12 +322,8 @@
               iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
               position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
           )
-          this.form.datavisita = "";
-          this.form.obs = "";
           this.form.codigo = "";
-          this.form.cliente = "";
-          this.idcorretor = "";
-          this.form.imobiliaria = "";
+          this.$refs.codigoimv.focus();
         }).catch(response => {
           // console.log(response.status);
           this.$refs.alert.showAlert(
@@ -317,6 +335,28 @@
               position: 'center center' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
           )
         });
+      },
+      dehoje () {
+        if (this.form.datavisita == "") {
+          this.botaodehoje = "Outro dia";
+          this.form.datavisita = moment(Date()).format('DD/MM/YYYY');
+          this.stylebtnhoje = 'warning';
+        } else {
+          this.$refs.campodatavisita.focus();
+          this.stylebtnhoje = 'info';
+          this.botaodehoje = "Hoje";
+          this.form.datavisita = "";
+        }
+      },
+      limpar () {
+        this.form.cliente = "";
+        this.form.codigo = "";
+        // this.form.datavisita = "";
+        this.form.marcado = "";
+        this.form.contrato = "";
+        this.form.imobiliaria = "";
+        this.form.obs = "";
+        this.$refs.codigoimv.focus();
       },
       converter (id, recebeinvertido) {
         axios.put("https://www.cafeimobiliaria.com.br/sistema/api/visita/update?id=" + id, {
@@ -332,6 +372,14 @@
               position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
           )
         })
+      },
+      formataStringData(data) {
+        var dia  = data.split("/")[0];
+        var mes  = data.split("/")[1];
+        var ano  = data.split("/")[2];
+
+        return ano + '-' + ("0"+mes).slice(-2) + '-' + ("0"+dia).slice(-2);
+        // Utilizo o .slice(-2) para garantir o formato com 2 digitos.
       }
       // alerta() {
       //   console.log("alerta!!!");
@@ -346,7 +394,10 @@
       //   }
     },
     created() {
-      // console.log("Data:");
+      
+      // console.log("Data formatada:");
+      // console.log(this.formataStringData("15/05/2023"));
+      // console.log("_________________________________________________");
       // console.log(moment(String(this.form.datavisita)).format('YYYY-DD-MM'));
       if (localStorage.getItem('authUser')) {
         var getnome = JSON.parse(localStorage.getItem('authUser'));

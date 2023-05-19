@@ -31,7 +31,7 @@ export default {
             corretormacros: [],
             meses: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr'],
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
                 datasets: [
                     {
                         label: "Leads",

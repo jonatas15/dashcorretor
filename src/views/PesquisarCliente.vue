@@ -26,11 +26,23 @@
                   <a href="https://painel.assertivasolucoes.com.br/login" target="_blank" class="btn btn-default botao-logo">
                     <img src="@/assets/logo/assertiva-logo.png" alt="">
                   </a>
+                  <!-- <hr> -->
+                  <p class="caixa">
+                    <strong>contato@cafeimobiliaria.com.br</strong><br>
+                    <hr>
+                    <strong>Caf3imob88@</strong><br>
+                  </p>
                 </div>
                 <div class="col-md-6">
                   <a href="https://consulta5.confirmeonline.com.br/validarLogin/confirmeOnline.xhtml" target="_blank" class="btn btn-default botao-logo">
                     <img src="@/assets/logo/img_logo_login.jpg" alt="">
                   </a>
+                  <!-- <hr> -->
+                  <p class="caixa">
+                    <strong>Usuario: cafen00001 | Senha: LEYmh60N</strong><br>
+                    <hr>
+                    <strong>Usuario: cafen00002 | Senha: pGT65E2V</strong><br>
+                  </p>
                 </div>
               </div>
             </p>
@@ -47,7 +59,15 @@
       align-items: center;
     }
   } */
+  .caixa {
+    box-shadow: 5px 5px 6px rgba(0, 0, 0, 0.1);
+    padding: 10%;
+    border: 1px solid ghostwhite;
+    margin: 0% 5%;
+    z-index: -1;
+  }
   .botao-logo {
+    z-index: 100;
     border: 1px solid ghostwhite;
     width: 100%;
     padding: 10%;
