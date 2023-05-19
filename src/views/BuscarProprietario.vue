@@ -21,10 +21,10 @@
           <div
             class="progress-bar progress-bar-striped progress-bar-animated bg-success"
             role="progressbar"
-            aria-valuenow="75"
+            aria-valuenow="80"
             aria-valuemin="0"
             aria-valuemax="100"
-            style="width: 50%"
+            style="width: 80%"
           ></div>
         </div>
         <sub>Em construção</sub>
@@ -56,10 +56,14 @@
             </div>
           </div>
           <div class="row my-1 campo-formulario" style="">
-            <button class="btn btn-success" @click="cadastrar">Registrar</button>
+            <button class="btn btn-success" @click="cadastrar">Cadastrar</button>
           </div>
         </p>
+        <br>
+        <br>
+        <br>
         <p>
+          <h3>Lista</h3>
           <table class="table table-hover" id="my-table">
             <thead>
               <tr>
@@ -97,12 +101,12 @@
           corretor: [],
           idcorretor: '',
           proprietarios: [],
-          urlproprietario: 'http://localhost:8080/api/proprietario',
-          // urlproprietario: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/proprietario',
+          // urlproprietario: 'http://localhost:8080/api/proprietario',
+          urlproprietario: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/proprietario',
           form: {
-            nome: "Fulano",
-            endereco: "Fulanópoles 171",
-            linkmaps: "https://google.com.br"
+            nome: "",
+            endereco: "",
+            linkmaps: ""
           }
         }
       },

@@ -21,7 +21,8 @@ export default {
     return {
       corretor: "Sr. Café",
       ativo: this.$route.meta.usuarioativo, //this.$route.props.usuarioativo
-      sidebar: this.$route.meta.sidebar
+      sidebar: this.$route.meta.sidebar,
+      ativamenumobile: ""
     }
   },
   methods: {
@@ -33,10 +34,20 @@ export default {
       this.ativo = false;
     },
     handleFocusOut() {
-      console.log('eita')
+      console.log('out');
+      this.ativamenumobile = "";
+    },
+    handleFocusOn() {
+      console.log('on');
+      if (this.ativamenumobile == "") {
+        this.ativamenumobile = " show";
+      } else {
+        this.ativamenumobile = "";
+      }
     }
   },
   created() {
+    console.log(this.ativo);
     if (localStorage.getItem('authUser')) {
       var getnome = JSON.parse(localStorage.getItem('authUser'));
       this.corretor = getnome.nome;
@@ -54,11 +65,10 @@ export default {
           <img src="@/assets/logo/1.png" alt="" width="100">
         </router-link>
       </div>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" @click="handleFocusOn">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse collapse" id="navbarNav" @focusout="handleFocusOut">
+      <div :class="'collapse navbar-collapse collapse' + ativamenumobile" id="navbarNav" @mouseleave="handleFocusOut()">
         <ul class="navbar-nav">
           <li class="nav-item menu-mobile v-b-tooltip.hover" style="text-align: end;margin-top: 10px;" v-if="$route.meta.usuarioativo">
             <!-- white-space: nowrap; -->

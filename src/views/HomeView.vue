@@ -313,12 +313,13 @@ export default {
 
         // ------------------------------------------------------------
         // Última posição registrada:
+        // Divide por "i" para valores médios
         var ultimo_indice = this.corretor.macros.length-1;
         this.posicao = this.corretor.macros[ultimo_indice].pos_ranking_geral_vendas;
         this.macros = [
           {
             campo: "Leads Recebidos",
-            valor: (i > 0 ? Math.round(leadsrecebidos/i) : leadsrecebidos),
+            valor: (i > 0 ? Math.round(leadsrecebidos) : leadsrecebidos),
             param: "",
             prefx: ""
           },
@@ -330,25 +331,25 @@ export default {
           },
           {
             campo: "Quant. Vendas VGC",
-            valor: (i > 0 ? Math.round(quant_vendas_vgc/i) : quant_vendas_vgc),
+            valor: (i > 0 ? Math.round(quant_vendas_vgc) : quant_vendas_vgc),
             param: "",
             prefx: ""
           },
           {
             campo: "Quant. Vendas VGV",
-            valor: (i > 0 ? Math.round(quant_vendas_vgv/i) : quant_vendas_vgv),
+            valor: (i > 0 ? Math.round(quant_vendas_vgv) : quant_vendas_vgv),
             param: "",
             prefx: ""
           },
           {
             campo: "Quant. de Visitas",
-            valor: (i > 0 ? Math.round(quant_visitas/i) : quant_visitas),
+            valor: (i > 0 ? Math.round(quant_visitas) : quant_visitas),
             param: "",
             prefx: ""
           },
           {
             campo: "Quant. Imóveis Agenciados",
-            valor: (i > 0 ? Math.round(quant_imoveis_agenciados/i) : quant_imoveis_agenciados),
+            valor: (i > 0 ? Math.round(quant_imoveis_agenciados) : quant_imoveis_agenciados),
             param: "",
             prefx: ""
           },
