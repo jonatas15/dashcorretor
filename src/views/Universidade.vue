@@ -18,6 +18,10 @@
             <sub>Em construção</sub>
             <hr>
             <h3>Universidade Café</h3>
+            <br>
+            <label class="aviso-cafe">Em breve!</label>
+            <br>
+            <img src="@/assets/logo/coffee.png" alt="" width="200">
         </div>
       </div>
     </div>
@@ -31,5 +35,12 @@
       align-items: center;
     }
   } */
+  .aviso-cafe {
+    font-size: 30px;
+    color: white;
+    /* border: 1px solid gray; */
+    /* background-color: black; */
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+  }
   </style>
   
