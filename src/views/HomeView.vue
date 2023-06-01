@@ -85,8 +85,9 @@
                     <br>
                     <br>
                     <br>
-                    Ganhe<br>
-                    R$ <strong>150,00</strong> ao cadastrar<br><strong>5 imóveis</strong> acima de R$ 500 mil
+                    Em  breve!
+                    <!-- Ganhe<br> -->
+                    <!-- R$ <strong>150,00</strong> ao cadastrar<br><strong>5 imóveis</strong> acima de R$ 500 mil -->
                   </p>
                 </div>
               </div>

@@ -119,6 +119,12 @@
                             this.$router.push({
                                 name: 'home'
                             });
+                            // location.reload();
+                            // this.$router.push({
+                            //     meta: {
+                            //         usuarioativo: true
+                            //     }
+                            // });
                         }
                     }
                     this.clearForm();

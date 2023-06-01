@@ -228,13 +228,16 @@
                 <a v-if="pagina > 1" class="page-link" @click="paginarmenos()" aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                   <span class="sr-only">Previous</span>
+                  {{ pagina - 1 }}
                 </a>
               </li>
-              <li v-for="page in paginas" class="page-item" :class="page == pagina ? ' active' : ''" :key="page">
+              <!-- <li v-for="page in paginas" class="page-item" :class="page == pagina ? ' active' : ''" :key="page">
                 <a class="page-link" @click="paginar(page)">{{page}}</a>
-              </li>
+              </li> -->
+              <li class="page-item"><a class="page-link active">{{ pagina }}</a></li>
               <li class="page-item">
                 <a v-if="pagina < totalpage" class="page-link" @click="paginarmais()" aria-label="Next">
+                  {{ pagina + 1 }}
                   <span aria-hidden="true">&raquo;</span>
                   <span class="sr-only">Next</span>
                 </a>
@@ -428,10 +431,13 @@
         axios.get(this.urlmarca).then((res) => {
           // console.log(res.data)
           this.todosimoveis = res.data.filter(
-            d => d.corretor_id == this.corretor_id &&
-            d.corretor_id !== "" &&
-            d.corretor_id !== null
+            d => d.codigo != ""
           );
+          // this.todosimoveis = res.data.filter(
+          //   d => d.corretor_id == this.corretor_id &&
+          //   d.corretor_id !== "" &&
+          //   d.corretor_id !== null
+          // );
           this.totalpage = Math.ceil(Number(this.todosimoveis.length)/this.por_pagina);
           this.filtrados = this.todosimoveis;
           this.imoveis = this.todosimoveis.slice(0, this.por_pagina);

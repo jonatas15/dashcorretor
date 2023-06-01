@@ -22,8 +22,12 @@ export default {
       corretor: "Sr. Café",
       ativo: this.$route.meta.usuarioativo, //this.$route.props.usuarioativo
       sidebar: this.$route.meta.sidebar,
-      ativamenumobile: ""
+      ativamenumobile: "",
+      menuativo: localStorage.getItem('authUser') ? true : false
     }
+  },
+  props: {
+    title: String,
   },
   methods: {
     logout() {
@@ -31,14 +35,14 @@ export default {
       this.$router.push({
         name: "login"
       });
-      this.ativo = false;
+      this.menuativo = false;
     },
     handleFocusOut() {
-      console.log('out');
+      // console.log('out');
       this.ativamenumobile = "";
     },
     handleFocusOn() {
-      console.log('on');
+      // console.log('on');
       if (this.ativamenumobile == "") {
         this.ativamenumobile = " show";
       } else {
@@ -46,12 +50,32 @@ export default {
       }
     }
   },
+  mounted() {
+  },
+  watch:{
+    $route (to, from){
+        // this.show = false;
+        // console.log(this.$route.meta);
+        this.menuativo = this.$route.meta.usuarioativo;
+        if (localStorage.getItem('authUser')) {
+          var getnome = JSON.parse(localStorage.getItem('authUser'));
+          this.corretor = getnome.nome;
+          // console.log(this.$route.meta)
+          this.menuativo = true;
+        } else {
+          this.menuativo = false;
+          this.corretor = "Logar";
+        }
+    }
+  },
   created() {
-    console.log(this.ativo);
     if (localStorage.getItem('authUser')) {
       var getnome = JSON.parse(localStorage.getItem('authUser'));
       this.corretor = getnome.nome;
       // console.log(this.$route.meta)
+      this.menuativo = true;
+    } else {
+      this.menuativo = false;
     }
   },
 }
@@ -65,7 +89,7 @@ export default {
           <img src="@/assets/logo/1.png" alt="" width="100">
         </router-link>
       </div>
-      <button class="navbar-toggler" type="button" @click="handleFocusOn">
+      <button v-if="menuativo" class="navbar-toggler" type="button" @click="handleFocusOn">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div :class="'collapse navbar-collapse collapse' + ativamenumobile" id="navbarNav" @mouseleave="handleFocusOut()">
@@ -129,7 +153,7 @@ export default {
           </li>
         </ul>
       </div>
-      <div class="navbar-nav right desktop" v-if="$route.meta.usuarioativo">
+      <div class="navbar-nav right desktop">
         <div class="nav-item v-b-tooltip.hover" style="text-align: end;">
           <!-- Santa Maria, {{ new Date().getDate() }} de {{ new Date() }} de {{ new Date().getFullYear() }} -->
           Santa Maria, {{ hoje }}
@@ -148,9 +172,9 @@ export default {
     </div>
   </nav>
   <!-- Menu Lateral -->
-  <div class="container text-center">
+  <div  class="container text-center">
     <div class="row align-items-start">
-      <div class="col-md-2" style="">
+      <div v-if="menuativo" class="col-md-2" style="">
         <div id="sidebar-cafe" class="d-flex flex-column flex-shrink-0 bg-light"
           style="width: 70%;float: right !important;margin-right: 15% !important;">
           <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
