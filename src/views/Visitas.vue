@@ -156,10 +156,11 @@
                       <th scope="col" class="desktop">Observações</th>
                       <th scope="col" class="desktop">Imobiliária Parceira</th>
                       <th scope="col">Convertido</th>
+                      <th scope="col">Excluir</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="visita in visitas">
+                    <tr v-for="visita in visitas" :key="visita.idvisita">
                       <td>{{ visita.dia_visita }}</td>
                       <td>{{ visita.codigo_imovel }}</td>
                       <td>{{ visita.nome_cliente }}</td>
@@ -174,6 +175,9 @@
                           class="toggle-blue"
                           @click="converter(visita.idvisita, Number(visita.convertido))"
                         />
+                      </td>
+                      <td>
+                        <button class="btn btn-danger" @click="excluir(visita.idvisita)">x</button>
                       </td>
                     </tr>
                   </tbody>
@@ -372,6 +376,27 @@
               position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
           )
         })
+        this.$forceUpdate();
+      },
+      excluir (id) {
+        axios.delete("https://www.cafeimobiliaria.com.br/sistema/api/visita/delete?id=" + id).then(response => {
+          console.log(response);
+          this.$refs.alert.showAlert(
+            'success', // There are 4 types of alert: success, info, warning, error
+            'Sua visita foi Excluida', // Message of the alert
+            'Sucesso', // Header of the alert
+            { iconSize: 35, // Size of the icon (px)
+              iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
+              position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+          )
+        })
+        this.removerdalista(id);
+      },
+      removerdalista (id) {
+        // console.log("devia remover o " + id);
+        // this.visitas.splice(id, 1);
+        let updateStudentList = this.visitas.filter((el) => el.idvisita !== id);
+        this.visitas = updateStudentList;
       },
       formataStringData(data) {
         var dia  = data.split("/")[0];
