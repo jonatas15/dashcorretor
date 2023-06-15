@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="col-md-12 dash-corretor">
-        <div class="progress">
+        <!-- <div class="progress">
           <div
             class="progress-bar progress-bar-striped progress-bar-animated bg-success"
             role="progressbar"
@@ -28,7 +28,7 @@
           ></div>
         </div>
         <sub>Em construção</sub>
-        <hr />
+        <hr /> -->
         <h3>Buscar Proprietários</h3>
         <p>
           <div class="row my-1 campo-formulario">
