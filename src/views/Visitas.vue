@@ -104,7 +104,14 @@
                 <!-- background-color: #198754 -->
                 <div class="row my-1 campo-formulario" style="">
                   <div class="col-6 col-sm-6">
-                    <button class="btn btn-success" @click="cadastrar">Cadastrar em sequência</button>
+                    <button class="btn btn-success" @click="cadastrar">Cadastrar</button>
+                    <br/>
+                    <br/>
+                    <input type="checkbox" v-model="form.checked" id="checkemsequencia">
+                      <label for="checkemsequencia" style="margin-left: 5px">
+                        <b>Em sequência</b>    
+                      </label>
+                    <!-- {{ form.checked }} -->
                   </div>
                   <div class="col-6 col-sm-6">
                     <button class="btn btn-warning" @click="limpar">Limpar os dados do formulário</button>
@@ -112,8 +119,7 @@
                   <div class="col-12">
                     <hr>
                     <p>
-                      Para mais de uma visita, complete o registo clicando em "Cadastrar em Sequência". Em seguida apenas informe o código do imóvel seguinte
-                      mantendo os mesmos outros dados no formulário, clicando novamente no botão a cada novo código de imóvel visitado.
+                      Em sequência: mantém os campos inseridos para mais cadastros em sequência, limpando apenas o campo código.
                     </p>
                   </div>
                 </div>
@@ -292,7 +298,8 @@
               offLabel: 'NÃO',
             },
             imobiliaria: "",
-            obs: ""
+            obs: "",
+            checked: true
 
           }
       }
@@ -320,15 +327,25 @@
         }).then(response => {
           // console.log(response.status);
           this.$refs.alert.showAlert(
-            'success', // There are 4 types of alert: success, info, warning, error
-            'Sua visita foi cadastrada', // Message of the alert
-            'Sucesso', // Header of the alert
-            { iconSize: 35, // Size of the icon (px)
-              iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
-              position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+            'success', 
+            'Sua visita foi cadastrada',
+            'Sucesso',
+            {
+              iconSize: 35,
+              iconType: 'solid',
+              position: 'center right' 
+            }
           )
-          this.form.codigo = "";
-          this.$refs.codigoimv.focus();
+          if (this.form.checked) {
+            this.form.codigo = "";
+            this.$refs.codigoimv.focus();
+          } else {
+            this.form.obs = "";
+            this.form.codigo = "";
+            this.form.cliente = "";
+            this.idcorretor = "";
+            this.form.imobiliaria = "";
+          }
         }).catch(response => {
           // console.log(response.status);
           this.$refs.alert.showAlert(
