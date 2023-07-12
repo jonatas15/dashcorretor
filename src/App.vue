@@ -24,7 +24,8 @@ export default {
       ativo: this.$route.meta.usuarioativo, //this.$route.props.usuarioativo
       sidebar: this.$route.meta.sidebar,
       ativamenumobile: "",
-      menuativo: localStorage.getItem('authUser') ? true : false
+      menuativo: localStorage.getItem('authUser') ? true : false,
+      corretoresadmin: false
     }
   },
   props: {
@@ -74,6 +75,9 @@ export default {
       var getnome = JSON.parse(localStorage.getItem('authUser'));
       this.corretor = getnome.nome;
       this.corretorid = getnome.id;
+      if (this.corretorid == 1 || this.corretorid == 10 || this.corretorid == 73) {
+        this.corretoresadmin = true;
+      }
       // console.log(this.$route.meta)
       this.menuativo = true;
     } else {
@@ -113,7 +117,7 @@ export default {
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Home
             </router-link>
           </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretorid == 1 || corretorid == 10">
+          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretoresadmin">
             <router-link class="nav-link" aria-current="page" to="/administracao">
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Administração
             </router-link>
@@ -197,7 +201,7 @@ export default {
                 <label class="label-icon">Dashboard</label>
               </router-link>
             </li>
-            <li class="nav-item" v-if="corretorid == 1 || corretorid == 10">
+            <li class="nav-item" v-if="corretoresadmin">
               <router-link to="/administracao" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Administração">
                 <font-awesome-icon icon="gauge" class="fa-2xl" />
