@@ -106,7 +106,7 @@ export default {
       corretor: [],
       dadoscorretor: [],
       searchTime: 7,
-      searchCorretor: 10,
+      searchCorretor: 1,
       posicao: 0,
       apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
       macros: [{
@@ -359,6 +359,7 @@ export default {
     if (localStorage.getItem('authUser')) {
       this.dadoscorretor = localStorage.getItem('authUser');
       this.corretor = JSON.parse(this.dadoscorretor);
+      this.searchCorretor = this.corretor.id;
       this.filtrar();
     }
     axios.get(this.apibase).then(response => {
