@@ -20,6 +20,7 @@ export default {
   data() {
     return {
       corretor: "Sr. Café",
+      corretorid: 0,
       ativo: this.$route.meta.usuarioativo, //this.$route.props.usuarioativo
       sidebar: this.$route.meta.sidebar,
       ativamenumobile: "",
@@ -72,6 +73,7 @@ export default {
     if (localStorage.getItem('authUser')) {
       var getnome = JSON.parse(localStorage.getItem('authUser'));
       this.corretor = getnome.nome;
+      this.corretorid = getnome.id;
       // console.log(this.$route.meta)
       this.menuativo = true;
     } else {
@@ -109,6 +111,11 @@ export default {
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/">
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Home
+            </router-link>
+          </li>
+          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretorid == 1 || corretorid == 12">
+            <router-link class="nav-link" aria-current="page" to="/administracao">
+              <font-awesome-icon icon="gauge" class="fa-2xl" /> Administração
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
@@ -188,6 +195,14 @@ export default {
                 <font-awesome-icon icon="gauge" class="fa-2xl" />
                 <br>
                 <label class="label-icon">Dashboard</label>
+              </router-link>
+            </li>
+            <li class="nav-item" v-if="corretorid == 1 || corretorid == 12">
+              <router-link to="/administracao" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Administração">
+                <font-awesome-icon icon="gauge" class="fa-2xl" />
+                <br>
+                <label class="label-icon">Administração</label>
               </router-link>
             </li>
             <li class="nav-item">
