@@ -318,7 +318,7 @@ export default {
         var ultimo_indice = this.corretor.macros.length-1;
         this.posicao = this.corretor.macros[ultimo_indice].pos_ranking_geral_vendas;
         this.macros = [
-          {
+        {
             campo: "Leads Recebidos",
             valor: (i > 0 ? Math.round(leadsrecebidos) : leadsrecebidos),
             param: "",
@@ -326,20 +326,8 @@ export default {
           },
           {
             campo: "Percentual de Conversão",
-            valor: (i > 0 ? Math.round(percentual_conversao/i) : percentual_conversao),
+            valor: (leadsrecebidos > 0 ? Math.round((custo_lead/leadsrecebidos)/0.01) : 0),
             param: "%",
-            prefx: ""
-          },
-          {
-            campo: "Quant. Vendas VGC",
-            valor: (i > 0 ? Math.round(quant_vendas_vgc) : quant_vendas_vgc),
-            param: "",
-            prefx: ""
-          },
-          {
-            campo: "Quant. Vendas VGV",
-            valor: (i > 0 ? Math.round(quant_vendas_vgv) : quant_vendas_vgv),
-            param: "",
             prefx: ""
           },
           {
@@ -355,16 +343,28 @@ export default {
             prefx: ""
           },
           {
-            campo: "Ticket Médio de Venda",
-            valor: (i > 0 ? Math.round(ticket_medio_venda/i).toLocaleString() : ticket_medio_venda),
+            campo: "Vendas VGC",
+            valor: (i > 0 ? Math.round(quant_vendas_vgc).toLocaleString() : quant_vendas_vgc),
             param: "",
             prefx: "R$"
           },
           {
-            campo: "Custo do Lead",
-            valor: (i > 0 ? Math.round(custo_lead/i).toLocaleString() : custo_lead),
+            campo: "Vendas VGV",
+            valor: (i > 0 ? Math.round(quant_vendas_vgv).toLocaleString() : quant_vendas_vgv),
             param: "",
             prefx: "R$"
+          },
+          {
+            campo: "Ticket Médio de Venda",
+            valor: (custo_lead > 0 ? Math.round(((quant_vendas_vgc + quant_vendas_vgv)/custo_lead)).toLocaleString() : 0),
+            param: "",
+            prefx: "R$"
+          },
+          {
+            campo: "Vendas",
+            valor: custo_lead,
+            param: "",
+            prefx: ""
           },
         ]
       }
