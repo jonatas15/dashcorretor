@@ -133,16 +133,16 @@ export default {
                 pointStyle: 'point',
                 pointRadius: 4
             });
-            corretormacros.push({
-                label: "Percentual de Conversão",
-                backgroundColor: 'red',
-                borderColor: 'red',
-                data: percentual_conversao,
-                fill: false,
-                borderWidth: borderlinhagrafico,
-                pointStyle: '',
-                pointRadius: 5
-            });
+            // corretormacros.push({
+            //     label: "Percentual de Conversão",
+            //     backgroundColor: 'red',
+            //     borderColor: 'red',
+            //     data: percentual_conversao,
+            //     fill: false,
+            //     borderWidth: borderlinhagrafico,
+            //     pointStyle: '',
+            //     pointRadius: 5
+            // });
             /**
             corretormacros.push({
                 label: "Vendas VGC (*1.000)",

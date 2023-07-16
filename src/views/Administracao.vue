@@ -333,7 +333,7 @@ export default {
           },
           {
             campo: "Percentual de Conversão",
-            valor: (i > 0 ? Math.round(percentual_conversao/i) : percentual_conversao),
+            valor: (leadsrecebidos > 0 ? Math.round((custo_lead/leadsrecebidos)/0.01) : 0),
             param: "%",
             prefx: ""
           },
@@ -363,15 +363,15 @@ export default {
           },
           {
             campo: "Ticket Médio de Venda",
-            valor: (i > 0 ? Math.round(ticket_medio_venda/i).toLocaleString() : ticket_medio_venda),
+            valor: (custo_lead > 0 ? Math.round(((quant_vendas_vgc + quant_vendas_vgv)/custo_lead)).toLocaleString() : 0),
             param: "",
             prefx: "R$"
           },
           {
-            campo: "Custo do Lead",
-            valor: (i > 0 ? Math.round(custo_lead/i).toLocaleString() : custo_lead),
+            campo: "Vendas",
+            valor: custo_lead,
             param: "",
-            prefx: "R$"
+            prefx: ""
           },
         ]
         
