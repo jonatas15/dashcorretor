@@ -105,7 +105,7 @@ export default {
       meses: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
       corretor: [],
       dadoscorretor: [],
-      searchTime: 7,
+      searchTime: "Atual",
       searchCorretor: 1,
       posicao: 0,
       apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
@@ -194,6 +194,7 @@ export default {
         var custo_lead = 0;
 
         var i = 0; // Contador
+        var j = 0; // Contador de Mês-Entradas de registro
 
         var trimestre1 = [1, 2, 3];
         var trimestre2 = [4, 5, 6];
@@ -210,6 +211,7 @@ export default {
             // quant_visitas.push(mc2.quant_visitas);
             // quant_imoveis_agenciados.push(mc2.quant_imoveis_agenciados);
           // }
+          // console.log(mc.percentual_conversao);
           if (varindice == "Atual") {
             // console.log(mc);
             leadsrecebidos += mc.leads_recebidos;
@@ -221,6 +223,9 @@ export default {
             ticket_medio_venda += Number(mc.ticket_medio_venda);
             custo_lead += Number(mc.custo_lead);
             i++;
+            if (mc.percentual_conversao > 1) {
+              j++;
+            }
           } 
           else if(varindice == "trimestre_1") {
             if (trimestre1.includes(mc.mes_referencia)) {
@@ -233,6 +238,9 @@ export default {
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
               i++;
+              if (mc.percentual_conversao > 1) {
+                j++;
+              }
             }
           }
           else if(varindice == "trimestre_2") {
@@ -247,6 +255,9 @@ export default {
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
               i++;
+              if (mc.percentual_conversao > 1) {
+                j++;
+              }
             }
           }
           else if(varindice == "trimestre_3") {
@@ -260,6 +271,9 @@ export default {
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
               i++;
+              if (mc.percentual_conversao > 1) {
+                j++;
+              }
             }
           }
           else if(varindice == "trimestre_4") {
@@ -273,6 +287,9 @@ export default {
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
               i++;
+              if (mc.percentual_conversao > 1) {
+                j++;
+              }
             }
           } 
           else {
@@ -288,6 +305,9 @@ export default {
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
               i++;
+              if (mc.percentual_conversao > 1) {
+                j++;
+              }
             }
           }
         }
@@ -297,6 +317,8 @@ export default {
         // ------------------------------------------------------------
         // Última posição registrada:
         // Divide por "i" para valores médios
+        // console.log("contagem: " + i);
+        // console.log("contagem meses com registro: " + j);
         
         var ultimo_indice = this.corretor.macros.length-1;
         if (this.corretor.macros.length >= 1) {
@@ -316,18 +338,6 @@ export default {
             prefx: ""
           },
           {
-            campo: "Quant. Vendas VGC",
-            valor: (i > 0 ? Math.round(quant_vendas_vgc) : quant_vendas_vgc),
-            param: "",
-            prefx: ""
-          },
-          {
-            campo: "Quant. Vendas VGV",
-            valor: (i > 0 ? Math.round(quant_vendas_vgv) : quant_vendas_vgv),
-            param: "",
-            prefx: ""
-          },
-          {
             campo: "Quant. de Visitas",
             valor: (i > 0 ? Math.round(quant_visitas) : quant_visitas),
             param: "",
@@ -338,6 +348,18 @@ export default {
             valor: (i > 0 ? Math.round(quant_imoveis_agenciados) : quant_imoveis_agenciados),
             param: "",
             prefx: ""
+          },
+          {
+            campo: "Vendas VGC",
+            valor: (i > 0 ? Math.round(quant_vendas_vgc).toLocaleString() : quant_vendas_vgc),
+            param: "",
+            prefx: "R$"
+          },
+          {
+            campo: "Vendas VGV",
+            valor: (i > 0 ? Math.round(quant_vendas_vgv).toLocaleString() : quant_vendas_vgv),
+            param: "",
+            prefx: "R$"
           },
           {
             campo: "Ticket Médio de Venda",

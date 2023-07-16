@@ -135,16 +135,17 @@ export default {
             });
             corretormacros.push({
                 label: "Percentual de Conversão",
-                backgroundColor: 'lime',
-                borderColor: 'lime',
+                backgroundColor: 'red',
+                borderColor: 'red',
                 data: percentual_conversao,
                 fill: false,
                 borderWidth: borderlinhagrafico,
-                pointStyle: 'point',
-                pointRadius: 4
+                pointStyle: '',
+                pointRadius: 5
             });
+            /**
             corretormacros.push({
-                label: "Vendas VGC",
+                label: "Vendas VGC (*1.000)",
                 backgroundColor: 'darkgreen',
                 borderColor: 'darkgreen',
                 data: quant_vendas_vgc,
@@ -163,6 +164,7 @@ export default {
                 pointStyle: 'point',
                 pointRadius: 4
             });
+             */
             corretormacros.push({
                 label: "Vsitas",
                 backgroundColor: 'greenyellow',
