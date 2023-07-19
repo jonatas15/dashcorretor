@@ -65,15 +65,16 @@ export default {
         mudagrafico: function() {
             
             // console.log("muda gráfico: " + this.corretor.id);
+            // console.log(this.corretor.macros);
             var corretormacros = [];
             var corretorlabels = [];
             var leadsrecebidos = [];
+            var vendasfeitas = [];
             var percentual_conversao = [];
             var quant_vendas_vgc = [];
             var quant_vendas_vgv = [];
             var quant_visitas = [];
             var quant_imoveis_agenciados = [];
-
             
             var new_ticket_medio_venda = 0;
             var new_custo_lead = 0;
@@ -88,6 +89,7 @@ export default {
                 var new_quant_vendas_vgv = 0;
                 var new_quant_visitas = 0;
                 var new_quant_imoveis_agenciados = 0;
+                var new_quant_vendasfeitas = 0;
                 for(let mc of this.corretor.macros) {
                     if (mc.mes_referencia == mes) {
                         new_leadsrecebidos += mc.leads_recebidos;
@@ -96,6 +98,7 @@ export default {
                         new_quant_vendas_vgv += mc.quant_vendas_vgv;
                         new_quant_visitas += mc.quant_visitas;
                         new_quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+                        new_quant_vendasfeitas += mc.custo_lead;
                         // Manda para os array
                     }
                     
@@ -106,7 +109,8 @@ export default {
                     new_quant_vendas_vgc > 0 ||
                     new_quant_vendas_vgv > 0 ||
                     new_quant_visitas > 0 ||
-                    new_quant_imoveis_agenciados > 0
+                    new_quant_imoveis_agenciados > 0 ||
+                    new_quant_vendasfeitas > 0
                 ) {
 
                     corretorlabels.push(this.meses[Number(mes-1)]);
@@ -116,6 +120,7 @@ export default {
                     quant_vendas_vgv.push(new_quant_vendas_vgv);
                     quant_visitas.push(new_quant_visitas);
                     quant_imoveis_agenciados.push(new_quant_imoveis_agenciados);
+                    vendasfeitas.push(new_quant_vendasfeitas);
                 }
             }
             // console.log(new_labels);
@@ -166,7 +171,7 @@ export default {
             });
              */
             corretormacros.push({
-                label: "Vsitas",
+                label: "Visitas",
                 backgroundColor: 'greenyellow',
                 borderColor: 'greenyellow',
                 data: quant_visitas,
@@ -180,6 +185,16 @@ export default {
                 backgroundColor: 'olive',
                 borderColor: 'olive',
                 data: quant_imoveis_agenciados,
+                fill: false,
+                borderWidth: borderlinhagrafico,
+                pointStyle: 'point',
+                pointRadius: 4
+            });
+            corretormacros.push({
+                label: "Vendas",
+                backgroundColor: 'red',
+                borderColor: 'red',
+                data: vendasfeitas,
                 fill: false,
                 borderWidth: borderlinhagrafico,
                 pointStyle: 'point',

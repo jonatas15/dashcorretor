@@ -385,7 +385,7 @@ export default {
       this.filtrar();
     }
     axios.get(this.apibase).then(response => {
-      this.corretores = response.data
+      this.corretores = response.data.filter(den => den.ativo == 1);
     });
     
   }

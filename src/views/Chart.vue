@@ -74,7 +74,10 @@ export default {
             this.corretor = JSON.parse(this.varcorretor);
             // console.log(this.corretor.macros);
 
+            var corretormacros = [];
+            var corretorlabels = [];
             var leadsrecebidos = [];
+            var vendasfeitas = [];
             var percentual_conversao = [];
             var quant_vendas_vgc = [];
             var quant_vendas_vgv = [];
@@ -95,6 +98,7 @@ export default {
                 var new_quant_vendas_vgv = 0;
                 var new_quant_visitas = 0;
                 var new_quant_imoveis_agenciados = 0;
+                var new_quant_vendasfeitas = 0;
                 for(let mc of this.corretor.macros) {
                     if (mc.mes_referencia == mes) {
                         new_leadsrecebidos += mc.leads_recebidos;
@@ -103,6 +107,7 @@ export default {
                         new_quant_vendas_vgv += mc.quant_vendas_vgv;
                         new_quant_visitas += mc.quant_visitas;
                         new_quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
+                        new_quant_vendasfeitas += mc.custo_lead;
                         // Manda para os array
                     }
                     
@@ -113,16 +118,18 @@ export default {
                     new_quant_vendas_vgc > 0 ||
                     new_quant_vendas_vgv > 0 ||
                     new_quant_visitas > 0 ||
-                    new_quant_imoveis_agenciados > 0
+                    new_quant_imoveis_agenciados > 0 ||
+                    new_quant_vendasfeitas > 0
                 ) {
 
-                    this.corretorlabels.push(this.meses[Number(mes-1)]);
+                    corretorlabels.push(this.meses[Number(mes-1)]);
                     leadsrecebidos.push(new_leadsrecebidos);
                     percentual_conversao.push(new_percentual_conversao);
                     quant_vendas_vgc.push(new_quant_vendas_vgc);
                     quant_vendas_vgv.push(new_quant_vendas_vgv);
                     quant_visitas.push(new_quant_visitas);
                     quant_imoveis_agenciados.push(new_quant_imoveis_agenciados);
+                    vendasfeitas.push(new_quant_vendasfeitas);
                 }
             }
             // console.log(new_labels);
@@ -130,7 +137,7 @@ export default {
 
             var borderlinhagrafico = 0.8;
 
-            this.corretormacros.push({
+            corretormacros.push({
                 label: "Leads Recebidos",
                 backgroundColor: 'green',
                 borderColor: 'green',
@@ -140,18 +147,19 @@ export default {
                 pointStyle: 'point',
                 pointRadius: 4
             });
-            this.corretormacros.push({
-                label: "Percentual de Conversão",
-                backgroundColor: 'lime',
-                borderColor: 'lime',
-                data: percentual_conversao,
-                fill: false,
-                borderWidth: borderlinhagrafico,
-                pointStyle: 'point',
-                pointRadius: 4
-            });
-            this.corretormacros.push({
-                label: "Vendas VGC",
+            // corretormacros.push({
+            //     label: "Percentual de Conversão",
+            //     backgroundColor: 'red',
+            //     borderColor: 'red',
+            //     data: percentual_conversao,
+            //     fill: false,
+            //     borderWidth: borderlinhagrafico,
+            //     pointStyle: '',
+            //     pointRadius: 5
+            // });
+            /**
+            corretormacros.push({
+                label: "Vendas VGC (*1.000)",
                 backgroundColor: 'darkgreen',
                 borderColor: 'darkgreen',
                 data: quant_vendas_vgc,
@@ -160,7 +168,7 @@ export default {
                 pointStyle: 'point',
                 pointRadius: 4
             });
-            this.corretormacros.push({
+            corretormacros.push({
                 label: "Vendas VGV",
                 backgroundColor: 'lawngreen',
                 borderColor: 'lawngreen',
@@ -170,8 +178,9 @@ export default {
                 pointStyle: 'point',
                 pointRadius: 4
             });
-            this.corretormacros.push({
-                label: "Vsitas",
+             */
+            corretormacros.push({
+                label: "Visitas",
                 backgroundColor: 'greenyellow',
                 borderColor: 'greenyellow',
                 data: quant_visitas,
@@ -180,7 +189,7 @@ export default {
                 pointStyle: 'point',
                 pointRadius: 4
             });
-            this.corretormacros.push({
+            corretormacros.push({
                 label: "Imóveis agenciados",
                 backgroundColor: 'olive',
                 borderColor: 'olive',
@@ -190,10 +199,28 @@ export default {
                 pointStyle: 'point',
                 pointRadius: 4
             });
+            corretormacros.push({
+                label: "Vendas",
+                backgroundColor: 'red',
+                borderColor: 'red',
+                data: vendasfeitas,
+                fill: false,
+                borderWidth: borderlinhagrafico,
+                pointStyle: 'point',
+                pointRadius: 4
+            });
+            // console.log("meses");
+            // return this.data.labels = this.corretorlabels;
+            // return this.data.datasets = this.corretormacros;
+            // console.log(this.corretormacros);
+            // return {
+            //     labels: corretorlabels,
+            //     datasets: corretormacros
+            // };
             // console.log("meses");
             // console.log(this.corretorlabels);
-            this.data.labels = this.corretorlabels;
-            this.data.datasets = this.corretormacros;
+            this.data.labels = corretorlabels;
+            this.data.datasets = corretormacros;
 
         }
     },
