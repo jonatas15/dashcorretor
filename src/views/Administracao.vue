@@ -229,6 +229,7 @@ export default {
       corretormacros: [],
       corretorlabels: [],
       listacorretoresvgc: [],
+      sociosids: [10, 42, 43, 1]
     };
   },
   components: {
@@ -240,13 +241,15 @@ export default {
       var listadecorretores = [];
       for (let corretor of this.corretores) {
         var somatoria = 0;
-        for (let macro of corretor.macros) {
-          somatoria = somatoria + macro.quant_vendas_vgc;
+        if (!this.sociosids.includes(corretor.id)) {
+          for (let macro of corretor.macros) {
+            somatoria = somatoria + macro.quant_vendas_vgc;
+          }
+          listadecorretores.push({
+            id: corretor.id,
+            vgc: somatoria,
+          });
         }
-        listadecorretores.push({
-          id: corretor.id,
-          vgc: somatoria,
-        });
       }
       listadecorretores.sort(function (a, b) {
         return b.vgc - a.vgc;

@@ -60,8 +60,14 @@
                   <div class="col-sm-3">
                     <label class="for-label" for="visitacodimovel">Código do Imóvel:</label>
                   </div>
-                  <div class="col-sm-9">
-                    <input ref="codigoimv" type="text" id="visitacodimovel" class="form-control" v-model="form.codigo" placeholder="Código do Imóvel nos registros"/>
+                  <div class="col-sm-6">
+                    <input ref="codigoimv" type="text" id="visitacodimovel" class="form-control" v-model="form.codigo" placeholder="Código no site" :disabled="isFieldDisabled"/>
+                  </div>
+                  <div class="col-sm-3 py-2">
+                    <input type="checkbox" v-model="form.semcodigo" id="checksemcodigo" @change="actionsemcodigo">
+                      <label for="checksemcodigo" style="margin-left: 5px">
+                        <b>Imóvel não cadastrado</b>    
+                      </label>
                   </div>
                 </div>
                 <!-- <div class="row my-1 campo-formulario">
@@ -176,7 +182,7 @@
                       <td>
                         <!-- {{ visita.convertido }} -->
                         <Toggle
-                          id="visitacontrato"
+                          :id="'visitacontrato_' + visita.idvisita"
                           v-model="visita.convertido"
                           v-bind="form.contrato"
                           class="toggle-blue"
@@ -285,11 +291,13 @@
               display: true
             }
           },
+          isFieldDisabled: false,
           form: {
             cliente: "",
             codigo: "",
             datavisita: "", // moment(Date()).format('DD/MM/YYYY'),
             marcado: true,
+            semcodigo: false,
             contrato: {
               value: true,
               trueValue: 1,
@@ -313,6 +321,19 @@
         VueBasicAlert
     },
     methods: {
+      actionsemcodigo() {
+        if(this.form.semcodigo) {
+          this.form.codigo = '00000';
+        } else {
+          this.form.codigo = '';
+          // this.$refs.codigoimv.focus();
+          // this.form.codigo.focus();
+        }
+        this.toggleField();
+      },
+      toggleField() {
+        this.isFieldDisabled = !this.isFieldDisabled;
+      },
       cadastrar (self) {
         // console.log("bora chamar a API");
         axios.post("https://www.cafeimobiliaria.com.br/sistema/api/visita/create", {
@@ -345,7 +366,10 @@
             this.form.cliente = "";
             this.idcorretor = "";
             this.form.imobiliaria = "";
+            // this.toggleField();
           }
+          this.form.semcodigo = false;
+          this.toggleField();
         }).catch(response => {
           // console.log(response.status);
           this.$refs.alert.showAlert(
@@ -375,7 +399,7 @@
         this.form.codigo = "";
         // this.form.datavisita = "";
         this.form.marcado = "";
-        this.form.contrato = "";
+        // this.form.contrato = "";
         this.form.imobiliaria = "";
         this.form.obs = "";
         this.$refs.codigoimv.focus();
