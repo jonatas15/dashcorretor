@@ -60,13 +60,13 @@
                   <div class="col-sm-3">
                     <label class="for-label" for="visitacodimovel">Código do Imóvel:</label>
                   </div>
-                  <div class="col-sm-6">
+                  <div class="col-sm-9">
                     <input ref="codigoimv" type="text" id="visitacodimovel" class="form-control" v-model="form.codigo" placeholder="Código no site" :disabled="isFieldDisabled"/>
                   </div>
-                  <div class="col-sm-3 py-2">
-                    <input type="checkbox" v-model="form.semcodigo" id="checksemcodigo" @change="actionsemcodigo">
-                      <label for="checksemcodigo" style="margin-left: 5px">
-                        <b>Imóvel não cadastrado</b>    
+                  <div class="col-sm-12 py-2 float-start">
+                    <input type="checkbox" class="mx-2 float-start" v-model="form.semcodigo" id="checksemcodigo" @change="actionsemcodigo">
+                      <label class="fs-6 float-start" for="checksemcodigo" style="">
+                        <b>Visita de Prospecção</b>    
                       </label>
                   </div>
                 </div>
@@ -175,7 +175,8 @@
                   <tbody>
                     <tr v-for="visita in visitas" :key="visita.idvisita">
                       <td>{{ visita.dia_visita }}</td>
-                      <td>{{ visita.codigo_imovel }}</td>
+                      <td v-if="visita.codigo_imovel == '00000'">Prospecção</td>
+                      <td v-else>{{ visita.codigo_imovel }}</td>
                       <td>{{ visita.nome_cliente }}</td>
                       <td class="desktop">{{ visita.observacoes }}</td>
                       <td class="desktop">{{ visita.imobiliaria_parceria }}</td>
