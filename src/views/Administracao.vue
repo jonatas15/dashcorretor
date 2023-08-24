@@ -274,6 +274,10 @@ export default {
       this.filtrar();
     },
     filtrar() {
+      // ##############################################################################
+      // NOTA: O campo custo_lead refere-se agora a Quant. Vendas
+      // ##############################################################################
+
       // console.log(this.searchTime)
       // if (this.corretor.macros.length >= 1) {
       var varindice = this.searchTime;
@@ -394,6 +398,7 @@ export default {
             quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
             ticket_medio_venda += Number(mc.ticket_medio_venda);
             custo_lead += Number(mc.custo_lead);
+            this.posicao = mc.pos_ranking_geral_vendas;
             i++;
             if (mc.percentual_conversao > 1) {
               j++;
@@ -413,11 +418,12 @@ export default {
       var ultimo_indice = this.corretor.macros.length - 1;
       if (this.searchTime == "Atual") {
         this.posicao = this.ordemCorretores(this.corretor.id);
-      } else {
-        if (this.corretor.macros.length >= 1) {
-          this.posicao = this.corretor.macros[this.searchTime-1].pos_ranking_geral_vendas;
-        }
-      }
+      } 
+      // else {
+      //   if (this.corretor.macros.length >= 1) {
+      //     this.posicao = this.corretor.macros[this.searchTime-1].pos_ranking_geral_vendas;
+      //   }
+      // }
       this.macros = [
         {
           campo: "Leads Recebidos",
@@ -429,7 +435,7 @@ export default {
           campo: "Percentual de Conversão",
           valor:
             leadsrecebidos > 0
-              ? Math.round(custo_lead / leadsrecebidos / 0.01)
+              ? Math.round(custo_lead / (leadsrecebidos + quant_imoveis_agenciados) / 0.01)
               : 0,
           param: "%",
           prefx: "",

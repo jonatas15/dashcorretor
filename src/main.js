@@ -18,6 +18,11 @@ import { faBell } from "@fortawesome/free-solid-svg-icons"
 import { faDownload } from "@fortawesome/free-solid-svg-icons"
 import { faCircleDown } from "@fortawesome/free-solid-svg-icons"
 import { faGauge } from "@fortawesome/free-solid-svg-icons"
+import { faMap } from "@fortawesome/free-solid-svg-icons"
+import { faMapPin } from "@fortawesome/free-solid-svg-icons"
+import { faMapMarked } from "@fortawesome/free-solid-svg-icons"
+import { faMapMarker } from "@fortawesome/free-solid-svg-icons"
+// import { faWhatsapp } from "@fortawesome/free-regular-svg-icons"
 library.add(faPhone)
 library.add(faHome)
 library.add(faStar)
@@ -32,6 +37,11 @@ library.add(faBell)
 library.add(faDownload)
 library.add(faCircleDown)
 library.add(faGauge)
+library.add(faMap)
+library.add(faMapPin)
+library.add(faMapMarked)
+library.add(faMapMarker)
+// library.add(faWhatsapp)
 
 // import Vuelidate from 'vuelidate'
 // Vue.use(Vuelidate)
@@ -43,6 +53,7 @@ library.add(faGauge)
 // import './assets/main.css'
 
 import VueTheMask from 'vue-the-mask'
+import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons'
 
 const app = createApp(App);
 
