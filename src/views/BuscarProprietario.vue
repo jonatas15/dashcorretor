@@ -125,13 +125,19 @@
       },
       methods: {
         cadastrar(self) {
-          var formData = new FormData();
-          formData.append('corretor_id', this.idcorretor);
-          formData.append('nome', this.form.nome);
-          formData.append('endereco', this.form.endereco);
-          formData.append('linkmaps', this.form.linkmaps);
-          formData.append('whatsapp', this.form.whatsapp);
-          axios.post(this.urlproprietario + "/create", formData).then(response => {
+          // var formData = new FormData();
+          // formData.append('corretor_id', this.idcorretor);
+          // formData.append('nome', this.form.nome);
+          // formData.append('endereco', this.form.endereco);
+          // formData.append('linkmaps', this.form.linkmaps);
+          // formData.append('telefone', this.form.whatsapp);
+          axios.post("https://www.cafeimobiliaria.com.br/dadoscorretor/api/proprietario/create", {
+            corretor_id: this.idcorretor,
+            nome: this.form.nome,
+            endereco: this.form.endereco,
+            linkmaps: this.form.linkmaps,
+            telefone: this.form.whatsapp
+          }).then(response => {
             // console.log(response.status);
             this.$refs.alert.showAlert(
               'success', // There are 4 types of alert: success, info, warning, error
@@ -141,10 +147,10 @@
                 iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
                 position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
             )
-            this.form.nome = "";
+            // this.form.nome = "";
             this.form.endereco = "";
             this.form.linkmaps = "";
-            this.form.whatsapp = "";
+            // this.form.whatsapp = "";
           }).catch(response => {
             // console.log(response);
             this.$refs.alert.showAlert(
@@ -166,15 +172,15 @@
           this.form.whatsapp = getnome.celular;
           this.form.nome = getnome.nome;
         }
-        axios.get(this.urlproprietario).then((res) => {
-          // console.log(res.data)
-          this.proprietarios = res.data.filter(
-            d => d.corretor_id == this.idcorretor &&
-            d.corretor_id !== "" &&
-            d.corretor_id !== null
-          );
-          console.log(this.proprietarios)
-        });
+        // axios.get(this.urlproprietario).then((res) => {
+        //   // console.log(res.data)
+        //   this.proprietarios = res.data.filter(
+        //     d => d.corretor_id == this.idcorretor &&
+        //     d.corretor_id !== "" &&
+        //     d.corretor_id !== null
+        //   );
+        //   console.log(this.proprietarios)
+        // });
       },
         
     };

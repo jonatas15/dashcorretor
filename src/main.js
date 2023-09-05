@@ -22,6 +22,8 @@ import { faMap } from "@fortawesome/free-solid-svg-icons"
 import { faMapPin } from "@fortawesome/free-solid-svg-icons"
 import { faMapMarked } from "@fortawesome/free-solid-svg-icons"
 import { faMapMarker } from "@fortawesome/free-solid-svg-icons"
+import { faChartArea } from "@fortawesome/free-solid-svg-icons"
+import { faChartColumn } from "@fortawesome/free-solid-svg-icons"
 // import { faWhatsapp } from "@fortawesome/free-regular-svg-icons"
 library.add(faPhone)
 library.add(faHome)
@@ -41,6 +43,8 @@ library.add(faMap)
 library.add(faMapPin)
 library.add(faMapMarked)
 library.add(faMapMarker)
+library.add(faChartArea)
+library.add(faChartColumn)
 // library.add(faWhatsapp)
 
 // import Vuelidate from 'vuelidate'

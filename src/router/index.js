@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import Administracao from '../views/Administracao.vue';
+import AdmVisitas from '../views/AdmVisitas.vue';
 import Imoveis from '../views/Imoveis.vue';
 import Universidade from '../views/Universidade.vue';
 import SolicitarContrato from '../views/SolicitarContrato.vue';
@@ -28,6 +29,16 @@ const router = createRouter({
       path: '/administracao',
       name: 'administracao',
       component: Administracao,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/admvisitas',
+      name: 'admvisitas',
+      component: AdmVisitas,
       meta: { 
         default: true,
         sidebar: false,
