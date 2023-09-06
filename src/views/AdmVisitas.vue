@@ -12,8 +12,8 @@
         </div>
       </div>
       <div class="col-md-12 dash-corretor">
-        <h4>
-          Relatórios de Visitas e<br>Prospecções |
+        <h4 class="">
+          <span class="col">Relatórios de Visitas e<br>Prospecções |</span>
           <span>
             <select
               id="lista-de-corretores"
@@ -22,7 +22,7 @@
               @change="filtrarCorretor()"
               style="width: 187px"
             >
-              <!-- <option value="Atual">Corretores</option> -->
+              <option value="0">Todos os corretores</option>
               <option
                 v-for="corretor in corretores"
                 :key="corretor.id"
@@ -41,49 +41,40 @@
               style="width: 187px"
             >
               <option value="Atual">Ano 2023</option>
-              <option value="1">Janeiro</option>
-              <option value="2">Fevereiro</option>
-              <option value="3">Março</option>
-              <option value="4">Abril</option>
-              <option value="5">Maio</option>
-              <option value="6">Junho</option>
-              <option value="7">Julho</option>
-              <option value="8">Agosto</option>
-              <option value="9">Setembro</option>
-              <option value="10">Outubro</option>
-              <option value="11">Novembro</option>
-              <option value="12">Dezembro</option>
-              <option value="trimestre_1">1º Trimestre</option>
+              <option value="Jan">Janeiro</option>
+              <option value="Fev">Fevereiro</option>
+              <option value="Mar">Março</option>
+              <option value="Abr">Abril</option>
+              <option value="Mai">Maio</option>
+              <option value="Jun">Junho</option>
+              <option value="Jul">Julho</option>
+              <option value="Ago">Agosto</option>
+              <option value="Set">Setembro</option>
+              <option value="Out">Outubro</option>
+              <option value="Nov">Novembro</option>
+              <option value="Dez">Dezembro</option>
+              <!-- <option value="trimestre_1">1º Trimestre</option>
               <option value="trimestre_2">2º Trimestre</option>
               <option value="trimestre_3">3º Trimestre</option>
-              <option value="trimestre_4">4º Trimestre</option>
+              <option value="trimestre_4">4º Trimestre</option> -->
             </select>
             <!-- <button @click="ordemCorretores(54)">VerOrdem</button> -->
           </span>
         </h4>
-        <div class="row align-items-start">
-          <div class="col-12"></div>
-          <div class="col-10"></div>
-          <div
-            class="col-6 col-md-4 col-lg-2 item-progresso"
-            style="margin-top: 60px; text-align: left"
-          >
-            <font-awesome-icon
-              icon="circle-down"
-              class="fa-sharp fa-solid"
-              style="font-size: 20px"
-            />
-            <br />
-            <span>
-              Baixar relatório<br />
-              completo
-            </span>
-          </div>
-        </div>
+        <span>
+          <Toggle
+            :id="'visitacontrato__'"
+            v-model="filtrarconvertidos"
+            v-bind="form.contrato"
+            class="toggle-blue form-de-topo mx-2"
+          />
+        </span>
       </div>
       <div class="col-md-12 dash-corretor">
         <ChartVisitas
           v-bind:corretores="corretores"
+          v-bind:propidsistema="propcorretor"
+          v-bind:tempo="searchTime"
         >
         </ChartVisitas>
       </div>
@@ -97,10 +88,29 @@ import Progress from "./Progress.vue";
 import ChartVisitas from "./ChartVisitas.vue";
 import axios from "axios";
 import "@fontsource/exo-2";
+import Toggle from '@vueform/toggle';
 export default {
   name: "admvisitas",
   data() {
     return {
+      filtrarconvertidos: false,
+      form: {
+          cliente: "",
+          codigo: "",
+          datavisita: "", // moment(Date()).format('DD/MM/YYYY'),
+          marcado: true,
+          semcodigo: false,
+          contrato: {
+            value: true,
+            trueValue: 1,
+            falseValue: 0,
+            onLabel: 'Convertidos',
+            offLabel: 'Não convertidos',
+          },
+          imobiliaria: "",
+          obs: "",
+          checked: true
+      },
       meses: [
         "Jan",
         "Fev",
@@ -118,7 +128,8 @@ export default {
       corretor: [],
       dadoscorretor: [],
       searchTime: "Atual",
-      searchCorretor: 1,
+      searchCorretor: 0,
+      propcorretor: 0,
       posicao: 0,
       apibase: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor",
       urlvisitas: "https://www.cafeimobiliaria.com.br/sistema/api/visita",
@@ -181,7 +192,8 @@ export default {
   },
   components: {
     Progress,
-    ChartVisitas
+    ChartVisitas,
+    Toggle
   },
   methods: {
     ordemCorretores(idcorretor) {
@@ -212,13 +224,16 @@ export default {
     },
     filtrarCorretor() {
       // console.log("corretor: " + this.searchCorretor);
+      var spropcorretor = 0;
       for (let corretor of this.corretores) {
         if (corretor.id == this.searchCorretor) {
           this.corretor = corretor;
           // break;
+          spropcorretor = corretor.idsistema
         }
       }
       this.filtrar();
+      this.propcorretor = spropcorretor;
     },
     filtrar() {
       // ##############################################################################
@@ -444,7 +459,7 @@ export default {
     if (localStorage.getItem("authUser")) {
       this.dadoscorretor = localStorage.getItem("authUser");
       this.corretor = JSON.parse(this.dadoscorretor);
-      this.searchCorretor = this.corretor.id;
+      // this.searchCorretor = this.corretor.id;
       this.filtrar();
     }
     axios.get(this.apibase).then((response) => {
@@ -453,7 +468,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 :root {
   --blue: #1e90ff;
   --white: #ffffff;
@@ -726,4 +741,44 @@ export default {
     margin-left: 0%;
   }
 }
+.toggle-red {
+    --toggle-bg-on: red;
+    --toggle-border-on: red;
+  }
+
+  .toggle-blue {
+    --toggle-width: 8.5rem !important;
+    --toggle-height: 1.8rem;
+    --toggle-border: 0.125rem;
+    --toggle-border-radius: 0.025rem;
+    --toggle-font-size: 0.75rem;
+    --toggle-duration: 150ms;
+    --toggle-bg-on: #009261;
+    --toggle-bg-off: darkred;
+    --toggle-bg-on-disabled: #d1d5db;
+    --toggle-bg-off-disabled: #e5e7eb;
+    --toggle-border-on: #009261;
+    --toggle-border-off: darkred;
+    --toggle-border-on-disabled: #d1d5db;
+    --toggle-border-off-disabled: #e5e7eb;
+    --toggle-ring-width: 3px;
+    --toggle-ring-color: #10B98130;
+    --toggle-text-on: #ffffff;
+    --toggle-text-off: #ffffff;
+    --toggle-text-on-disabled: #9ca3af;
+    --toggle-text-off-disabled: #9ca3af;
+    --toggle-handle-enabled: #ffffff;
+    --toggle-handle-disabled: #f3f4f6;
+    /* --toggle-width: 80px; */
+    float: left;
+    font-size: 18px !important;
+    font-weight: bold
+    
+  }
+  .toggle {
+    border-radius: 10px !important;
+  }
+  .toggle-handle {
+    border-radius: 8px !important;
+  }
 </style>

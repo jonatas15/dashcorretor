@@ -1,8 +1,53 @@
 <template>
-    <div class="lh-lg" style="height: 400px;">
-      <Bar :data="mudagrafico" :options="chartOptions"></Bar>
-      <!-- {{ mudagrafico }} -->
+  <div class="row">
+    <div class="col-12">
+
+      <div class="lh-lg" style="height: 400px;">
+        <Bar :data="mudagrafico" :options="chartOptions"></Bar>
+        <!-- {{ mudagrafico }} -->
+      </div>
     </div>
+    <div class="col-12">
+      <div class="col-md-12">
+                <table class="table table-hover" id="my-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Data</th>
+                      <th scope="col">Imóvel</th>
+                      <th scope="col">Visitante</th>
+                      <th scope="col" class="desktop">Observações</th>
+                      <th scope="col" class="desktop">Imobiliária Parceira</th>
+                      <th scope="col">Convertido</th>
+                      <th scope="col">Excluir</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="visita in mudatabela" :key="visita.idvisita">
+                      <td>{{ visita.dia_visita }}</td>
+                      <td v-if="visita.codigo_imovel == '00000'">Prospecção</td>
+                      <td v-else>{{ visita.codigo_imovel }}</td>
+                      <td>{{ visita.nome_cliente }}</td>
+                      <td class="desktop">{{ visita.observacoes }}</td>
+                      <td class="desktop">{{ visita.imobiliaria_parceria }}</td>
+                      <td>
+                        <!-- {{ visita.convertido }} -->
+                        <Toggle
+                          :id="'visitacontrato_' + visita.idvisita"
+                          v-model="visita.convertido"
+                          v-bind="form.contrato"
+                          class="toggle-blue"
+                        />
+                        <!-- @click="converter(visita.idvisita, Number(visita.convertido))" -->
+                      </td>
+                      <td>
+                        <button class="btn btn-danger" @click="excluir(visita.idvisita)">x</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+    </div>
+  </div>
   </template>
   
   <script lang="ts">
@@ -15,6 +60,8 @@
   import { Bar } from 'vue-chartjs';
   ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend, PointElement, LineElement);
   import axios from "axios";
+
+  import Toggle from '@vueform/toggle';
   
   export default {
     data() {
@@ -22,6 +69,7 @@
         visitas: [],
         corretores: [],
         corretoresdata: [],
+        filtrarconvertidos: false,
         chartData: {
           labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set'],
           datasets: [
@@ -44,7 +92,7 @@
         },
         chartOptions: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
           scales: {
             x: {
               stacked: false,
@@ -54,42 +102,117 @@
             },
           },
         },
+        form: {
+          cliente: "",
+          codigo: "",
+          datavisita: "", // moment(Date()).format('DD/MM/YYYY'),
+          marcado: true,
+          semcodigo: false,
+          contrato: {
+            value: true,
+            trueValue: 1,
+            falseValue: 0,
+            onLabel: 'SIM',
+            offLabel: 'NÃO',
+          },
+          imobiliaria: "",
+          obs: "",
+          checked: true
+
+        }
       };
     },
+    props: {
+      propidsistema: Number,
+      tempo: String
+    },
     components: {
-        Bar
+        Bar,
+        Toggle
     },
     computed: {
         mudagrafico: function() {
             var corrs = [];
-            
-            for(let corretor of this.corretores) {
+            var corretorfiltrado_s = [];
+            var intervalotempo = [];
+            var eixox = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set'];
+            // console.log(this.propidsistema);
+            corretorfiltrado_s = this.corretores;
+            if (this.propidsistema != 0) {
+              corretorfiltrado_s = this.corretores.filter(d=> d.idsistema == this.propidsistema)
+            }
+            intervalotempo = this.visitas;
+            if (this.tempo !== 'Atual') {
+              intervalotempo = this.visitas.filter(d => d.mes == this.tempo);
+              eixox = [this.tempo];
+              // console.log(eixox)
+              for(let mesgrafico of eixox) {
+                for(let corretor of corretorfiltrado_s) {
+                  if (corretor.ativo == 1) {
+                    var visitas_por_mes = [];
+                    var contagem = 0;
+                    for (let visita of intervalotempo) {
+                      if (visita.mes == mesgrafico && visita.id_corretor == corretor.idsistema) {
+                        contagem++;
+                        cor_graphic = visita.cor;
+                      }
+                    }
+                    visitas_por_mes.push(contagem);
+                    if (visitas_por_mes.reduce((acc, valor) => acc + valor, 0) > 0) {
+                      corrs.push({
+                        label: corretor.nome,
+                        backgroundColor: cor_graphic,
+                        data: visitas_por_mes
+                      });
+                    }
+                  }
+                }
+              }
+            } else {
+              for(let corretor of corretorfiltrado_s) {
                 if (corretor.ativo == 1) {
 
                     var visitas_por_mes = [];
-                    var cor_graphic = 'blue';
+                    var cor_graphic = '#000000';
                     for (let mes of this.chartData.labels) {
                         var contagem = 0;
                         for (let visita of this.visitas) {
                             if (visita.mes == mes && visita.id_corretor == corretor.idsistema) {
                                 contagem++;
-                                cor_graphic = visita.cor;
+                                if (visita.cor != '') {
+                                  cor_graphic = visita.cor;
+                                }
                             }
                         }
                         visitas_por_mes.push(contagem);
                     }
-                    // console.log(visitas_por_mes);
-                    corrs.push({
+                    // console.log(visitas_por_mes.reduce((acc, valor) => acc + valor, 0));
+                    if (visitas_por_mes.reduce((acc, valor) => acc + valor, 0) > 0) {
+                      corrs.push({
                         label: corretor.nome,
                         backgroundColor: cor_graphic,
                         data: visitas_por_mes
-                    });
+                      });
+                    }
                 }
+              }
             }
+            var cor_graphic = 'blue';
+            
             return {
-                labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro'],
+                labels: eixox,
                 datasets: corrs
             }
+        },
+        mudatabela: function() {
+            var tabeladevisitas = this.visitas;
+            if (this.propidsistema != 0) {
+              tabeladevisitas = this.visitas.filter(d=> d.id_corretor == this.propidsistema)
+            }
+            if (this.tempo != 'Atual') {
+              tabeladevisitas = this.visitas.filter(d=> d.mes == this.tempo)
+            }
+            return tabeladevisitas;
         }
     },
     created() {
@@ -107,9 +230,51 @@
         });
         axios.get('https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor').then((response) => {
             this.corretores = response.data;
-            console.log(this.corretores)
+            // console.log(this.corretores)
         });
     }
   };
   </script>
-  
+  <style src="@vueform/toggle/themes/default.css"></style>
+<style>
+  .toggle-red {
+    --toggle-bg-on: red;
+    --toggle-border-on: red;
+  }
+
+  .toggle-blue {
+    --toggle-width: 4.5rem;
+    --toggle-height: 1.8rem;
+    --toggle-border: 0.125rem;
+    --toggle-border-radius: 0.025rem;
+    --toggle-font-size: 0.75rem;
+    --toggle-duration: 150ms;
+    --toggle-bg-on: #009261;
+    --toggle-bg-off: darkred;
+    --toggle-bg-on-disabled: #d1d5db;
+    --toggle-bg-off-disabled: #e5e7eb;
+    --toggle-border-on: #009261;
+    --toggle-border-off: darkred;
+    --toggle-border-on-disabled: #d1d5db;
+    --toggle-border-off-disabled: #e5e7eb;
+    --toggle-ring-width: 3px;
+    --toggle-ring-color: #10B98130;
+    --toggle-text-on: #ffffff;
+    --toggle-text-off: #ffffff;
+    --toggle-text-on-disabled: #9ca3af;
+    --toggle-text-off-disabled: #9ca3af;
+    --toggle-handle-enabled: #ffffff;
+    --toggle-handle-disabled: #f3f4f6;
+    /* --toggle-width: 80px; */
+    float: left;
+    font-size: 18px !important;
+    font-weight: bold
+    
+  }
+  .toggle {
+    border-radius: 10px !important;
+  }
+  .toggle-handle {
+    border-radius: 8px !important;
+  }
+</style>
