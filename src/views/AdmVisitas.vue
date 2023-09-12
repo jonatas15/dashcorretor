@@ -20,7 +20,7 @@
               class="form-de-topo mx-2"
               v-model="searchCorretor"
               @change="filtrarCorretor()"
-              style="width: 187px"
+              style="width: 210px"
             >
               <option value="0">Todos os corretores</option>
               <option
@@ -35,7 +35,7 @@
           <span>
             <select
               id=""
-              class="form-de-topo"
+              class="form-de-topo mx-2"
               v-model="searchTime"
               @change="filtrar()"
               style="width: 187px"
@@ -60,14 +60,22 @@
             </select>
             <!-- <button @click="ordemCorretores(54)">VerOrdem</button> -->
           </span>
+          <span>
+            <label for="estagio-situacao" class="mx-2">Estágio:</label>
+            <select
+              id="estagio-situacao"
+              class="form-de-topo"
+              v-model="filtrarconvertidos"
+              style="width: 150px"
+            >
+              <option value="2">Todos</option>
+              <option value="1">Convertidos</option>
+              <option value="0">Não convertidos</option>
+              <option value="3">Prospecção</option>
+            </select>
+          </span>
         </h4>
         <span>
-          <Toggle
-            :id="'visitacontrato__'"
-            v-model="filtrarconvertidos"
-            v-bind="form.contrato"
-            class="toggle-blue form-de-topo mx-2"
-          />
         </span>
       </div>
       <div class="col-md-12 dash-corretor">
@@ -75,6 +83,7 @@
           v-bind:corretores="corretores"
           v-bind:propidsistema="propcorretor"
           v-bind:tempo="searchTime"
+          v-bind:estagio="filtrarconvertidos"
         >
         </ChartVisitas>
       </div>
@@ -93,7 +102,7 @@ export default {
   name: "admvisitas",
   data() {
     return {
-      filtrarconvertidos: false,
+      filtrarconvertidos: 2,
       form: {
           cliente: "",
           codigo: "",
