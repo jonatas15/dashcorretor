@@ -61,14 +61,14 @@
             <!-- <button @click="ordemCorretores(54)">VerOrdem</button> -->
           </span>
           <span>
-            <label for="estagio-situacao" class="mx-2">Estágio:</label>
+            <!-- <label for="estagio-situacao" class="mx-2">Estágio:</label> -->
             <select
               id="estagio-situacao"
-              class="form-de-topo"
+              class="form-de-topo mx-2"
               v-model="filtrarconvertidos"
-              style="width: 150px"
+              style="width: 210px"
             >
-              <option value="2">Todos</option>
+              <option value="2">Estágio: Todos</option>
               <option value="1">Convertidos</option>
               <option value="0">Não convertidos</option>
               <option value="3">Prospecção</option>
@@ -78,7 +78,7 @@
         <span>
         </span>
       </div>
-      <div class="col-md-12 dash-corretor">
+      <div class="col-md-12 dash-corretor my-3">
         <ChartVisitas
           v-bind:corretores="corretores"
           v-bind:propidsistema="propcorretor"

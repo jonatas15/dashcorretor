@@ -3,44 +3,46 @@
     <div class="col-12">
       <div class="" style="height: 400px;">
         <Bar :data="mudagrafico" :options="chartOptions" :width="'100%'"></Bar>
-        Estágio: {{ estagio }}
+        <!-- Estágio: {{ estagio }} -->
       </div>
     </div>
-    <div class="col-12">
+    <div class="col-12 my-3">
       <div class="col-md-12">
         <table class="table table-hover" id="my-table">
           <thead>
             <tr>
               <th scope="col">Data</th>
               <th scope="col">Imóvel</th>
+              <th scope="col" class="desktop">Contrato</th>
+              <th scope="col">Corretor</th>
               <th scope="col">Visitante</th>
               <th scope="col" class="desktop">Observações</th>
               <th scope="col" class="desktop">Imobiliária Parceira</th>
-              <th scope="col">Convertido</th>
-              <th scope="col">Excluir</th>
+              <!-- <th scope="col">Convertido</th>
+              <th scope="col">Excluir</th> -->
             </tr>
           </thead>
           <tbody>
             <tr v-for="visita in mudatabela" :key="visita.idvisita">
               <td>{{ visita.dia_visita }}</td>
-              <td v-if="visita.codigo_imovel == '00000'">Prospecção</td>
-              <td v-else>{{ visita.codigo_imovel }}</td>
+              <td v-if="visita.codigo_imovel == '00000'">Prospecção  {{ visita.convertido ? '✅' : '' }}</td>
+              <td v-else>{{ visita.codigo_imovel }}  {{ visita.convertido ? '✅' : '' }}</td>
+              <td class="desktop">{{ visita.contrato }}</td>
+              <td :style="'font-weight: bolder;color:'+(visita.cor ? visita.cor:'')">{{ visita.nomecorretor }}</td>
               <td>{{ visita.nome_cliente }}</td>
               <td class="desktop">{{ visita.observacoes }}</td>
               <td class="desktop">{{ visita.imobiliaria_parceria }}</td>
-              <td>
-                <!-- {{ visita.convertido }} -->
+              <!-- <td>
                 <Toggle
                   :id="'visitacontrato_' + visita.idvisita"
                   v-model="visita.convertido"
                   v-bind="form.contrato"
                   class="toggle-blue"
                 />
-                <!-- @click="converter(visita.idvisita, Number(visita.convertido))" -->
               </td>
               <td>
                 <button class="btn btn-danger" @click="excluir(visita.idvisita)">x</button>
-              </td>
+              </td> -->
             </tr>
           </tbody>
         </table>
@@ -158,7 +160,7 @@ export default {
         "Jun",
         "Jul",
         "Ago",
-        "Set",
+        "Set"
       ];
       // console.log(this.propidsistema);
       corretorfiltrado_s = this.corretores;

@@ -128,6 +128,11 @@ export default {
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+            <router-link class="nav-link" aria-current="page" to="/registro-visitas">
+              <font-awesome-icon icon="thumbtack" class="fa-2xl" /> Registrar as visitas
+            </router-link>
+          </li>
+          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/imoveis">
               <font-awesome-icon icon="house" class="fa-2xl" /> Imóveis
             </router-link>
@@ -152,11 +157,6 @@ export default {
               <font-awesome-icon icon="gear" class="fa-2xl" /> Análise de dados
             </router-link>
           </li> -->
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/registro-visitas">
-              <font-awesome-icon icon="thumbtack" class="fa-2xl" /> Registrar as visitas
-            </router-link>
-          </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/buscar-proprietario">
               <font-awesome-icon icon="search" class="fa-2xl" /> Buscar proprietário
@@ -223,6 +223,14 @@ export default {
               </router-link>
             </li>
             <li class="nav-item">
+              <router-link to="/registro-visitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                <font-awesome-icon icon="thumbtack" class="fa-2xl" />
+                <br>
+                <label class="label-icon">Registrar as visitas</label>
+              </router-link>
+            </li>
+            <li class="nav-item">
               <router-link to="/imoveis" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="house" class="fa-2xl" />
@@ -262,14 +270,6 @@ export default {
                 <label class="label-icon">Análise de dados</label>
               </router-link>
             </li> -->
-            <li class="nav-item">
-              <router-link to="/registro-visitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <font-awesome-icon icon="thumbtack" class="fa-2xl" />
-                <br>
-                <label class="label-icon">Registrar as visitas</label>
-              </router-link>
-            </li>
             <li class="nav-item">
               <router-link to="/buscar-proprietario" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
