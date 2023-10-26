@@ -40,7 +40,7 @@
                   </a>
                   <!-- <hr> -->
                   <p class="caixa">
-                    <strong>Usuario: cafen00001 | Senha: LEYmh60N</strong><br>
+                    <strong>Usuario: cafen00001 | Senha: 3bTGqXti</strong><br>
                     <hr>
                     <strong>Usuario: cafen00002 | Senha: pGT65E2V</strong><br>
                   </p>

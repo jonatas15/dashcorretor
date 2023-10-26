@@ -87,7 +87,7 @@ export default {
       corretoresdata: [],
       filtrarconvertidos: false,
       chartData: {
-        labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set"],
+        labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", 'Out', 'Nov', 'Dez'],
         datasets: [
           {
             label: "Corretor A",
@@ -160,7 +160,10 @@ export default {
         "Jun",
         "Jul",
         "Ago",
-        "Set"
+        "Set",
+        "Out",
+        "Nov",
+        "Dez"
       ];
       // console.log(this.propidsistema);
       corretorfiltrado_s = this.corretores;
@@ -182,7 +185,6 @@ export default {
       if (this.tempo !== "Atual") {
         intervalotempo = intervalotempo.filter((d) => d.mes == this.tempo);
         eixox = [this.tempo];
-        // console.log(eixox)
         for (let mesgrafico of eixox) {
           for (let corretor of corretorfiltrado_s) {
             if (corretor.ativo == 1) {

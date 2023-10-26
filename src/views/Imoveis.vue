@@ -40,7 +40,7 @@
                 <div class="form-group" style="text-align: left;">
                   <label for="pesquisa-imoveis-periodo" style="font-size: 15px; font-weight: 800;">Período</label>
                   <select id="pesquisa-imoveis-periodo" class="form-control" v-model="searchTime" @change="filtrar()">
-                    <option value="">Selecione</option>
+                    <option value="">Todo período</option>
                     <option value="Janeiro">Janeiro</option>
                     <option value="Fevereiro">Fevereiro</option>
                     <option value="Março">Março</option>
@@ -288,7 +288,7 @@
             imovelselecionadocodigo: "Indefinido",
             searchText: "",
             searchTime: "",
-            searchOrder: "",
+            searchOrder: "acesso",
             // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
             // urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
             urlmarca: "https://www.cafeimobiliaria.com.br/sistema/registrocampanhas/retornarapido",
@@ -444,6 +444,7 @@
           // );
           this.totalpage = Math.ceil(Number(this.todosimoveis.length)/this.por_pagina);
           this.filtrados = this.todosimoveis;
+          this.filtrados.sort((t1, t2) => t1.acessos < t2.acessos ? 1 : -1)
           this.imoveis = this.todosimoveis.slice(0, this.por_pagina);
           // console.log(this.corretor_id)
           // console.log(this.imoveis)
@@ -472,6 +473,7 @@
         });
         var list=[];
         // this.carregando = false;
+        this.filtrar();
       }
     }
   </script>

@@ -140,7 +140,7 @@ export default {
     return {
       corretor: [],
       dadoscorretor: [],
-      searchTime: 5,
+      searchTime: 'Atual',
       posicao: 0,
       macros: [{
         campo: "Leads Recebidos",
