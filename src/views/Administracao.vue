@@ -61,6 +61,7 @@
             <!-- <button @click="ordemCorretores(54)">VerOrdem</button> -->
           </span>
         </h4>
+        <h6 class="text-center mb-4 fw-bolder">Atualizado até Outubro-2023</h6>
         <div class="row align-items-start">
           <div class="col-12 col-md-8 col-lg-4 item-progresso" style="">
             <div
@@ -435,7 +436,7 @@ export default {
           campo: "Percentual de Conversão",
           valor:
             leadsrecebidos > 0
-              ? Math.round(custo_lead / (leadsrecebidos + quant_imoveis_agenciados) / 0.01)
+              ? Math.round((custo_lead / leadsrecebidos) / 0.01)
               : 0,
           param: "%",
           prefx: "",
