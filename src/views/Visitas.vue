@@ -35,7 +35,7 @@
             <sub>Em construção</sub>
             <hr> -->
             <br />
-            <h3>Registro de Visitas (Ref.: 2023)</h3>
+            <h3>Registro de Visitas (Ref.: 2024)</h3>
             <br />
             <br />
             <!-- <p>Message is: {{ form.cliente }}</p> -->
@@ -325,12 +325,14 @@
       actionsemcodigo() {
         if(this.form.semcodigo) {
           this.form.codigo = '00000';
+          this.isFieldDisabled = true;
         } else {
           this.form.codigo = '';
+          this.isFieldDisabled = false;
           // this.$refs.codigoimv.focus();
           // this.form.codigo.focus();
         }
-        this.toggleField();
+        // this.toggleField();
       },
       toggleField() {
         this.isFieldDisabled = !this.isFieldDisabled;
@@ -355,12 +357,12 @@
             {
               iconSize: 35,
               iconType: 'solid',
-              position: 'center right' 
+              position: 'center right'
             }
           )
           if (this.form.checked) {
             this.form.codigo = "";
-            this.$refs.codigoimv.focus();
+            // this.$refs.codigoimv.focus();
           } else {
             this.form.obs = "";
             this.form.codigo = "";
@@ -370,7 +372,8 @@
             // this.toggleField();
           }
           this.form.semcodigo = false;
-          this.toggleField();
+          this.isFieldDisabled = false;
+          // this.toggleField();
         }).catch(response => {
           // console.log(response.status);
           this.$refs.alert.showAlert(
@@ -428,9 +431,11 @@
             'success', // There are 4 types of alert: success, info, warning, error
             'Sua visita foi Excluida', // Message of the alert
             'Sucesso', // Header of the alert
-            { iconSize: 35, // Size of the icon (px)
+            { 
+              iconSize: 35, // Size of the icon (px)
               iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
-              position: 'center right' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+              position: 'center right' 
+            } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
           )
         })
         this.removerdalista(id);
@@ -477,7 +482,7 @@
             d => d.id_corretor == this.idcorretor &&
             d.id_corretor !== "" &&
             d.id_corretor !== null &&
-            d.data_visita.indexOf("2023") !== -1
+            d.data_visita.indexOf("2024") !== -1
           );
           /**
            for(let mc of this.corretor.macros) {

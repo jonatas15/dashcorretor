@@ -141,6 +141,7 @@ export default {
     propidsistema: Number,
     estagio: Number,
     tempo: String,
+    anovindo: String,
   },
   components: {
     Bar,
@@ -173,7 +174,7 @@ export default {
         );
       }
       // Filtra as visitas no gráfico
-      intervalotempo = this.visitas;
+      intervalotempo = this.visitas.filter((v) => v.ano == this.anovindo);
       if (this.estagio == 1 || this.estagio == 0) {
         intervalotempo = intervalotempo.filter((d) => d.convertido == this.estagio);
       }
@@ -251,7 +252,7 @@ export default {
       };
     },
     mudatabela: function () {
-      var tabeladevisitas = this.visitas;
+      var tabeladevisitas = this.visitas.filter((a) => a.ano == this.anovindo);
       if (this.propidsistema != 0) {
         tabeladevisitas = tabeladevisitas.filter(
           (d) => d.id_corretor == this.propidsistema
@@ -269,6 +270,9 @@ export default {
       return tabeladevisitas;
     },
   },
+  updated() {
+    console.log(this.anovindo)
+  },
   created() {
     //   this.renderChart(this.chartData, this.chartOptions);
     // this.visitas
@@ -280,7 +284,7 @@ export default {
           (d) =>
             d.id_corretor !== "" &&
             d.id_corretor !== null &&
-            d.data_visita.indexOf("2023") !== -1
+            (d.data_visita.indexOf('2023') !== -1 || d.data_visita.indexOf('2024') !== -1)
         );
       });
     axios

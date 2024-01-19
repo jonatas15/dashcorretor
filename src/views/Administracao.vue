@@ -35,12 +35,22 @@
           <span>
             <select
               id=""
+              class="form-de-topo mx-2"
+              v-model="anovindo"
+              @change="filtrar()"
+              style="width: 187px"
+            >
+              <option value="2024">Ano 2024</option>
+              <option value="2023">Ano 2023</option>
+            </select>
+            <select
+              id=""
               class="form-de-topo"
               v-model="searchTime"
               @change="filtrar()"
               style="width: 187px"
             >
-              <option value="Atual">Ano 2023</option>
+              <option value="Atual">Todos os registros</option>
               <option value="1">Janeiro</option>
               <option value="2">Fevereiro</option>
               <option value="3">Março</option>
@@ -61,7 +71,7 @@
             <!-- <button @click="ordemCorretores(54)">VerOrdem</button> -->
           </span>
         </h4>
-        <h6 class="text-center mb-4 fw-bolder">Atualizado até Outubro-2023</h6>
+        <h6 class="text-center mb-4 fw-bolder">Atualizado até Dezembro-2023</h6>
         <div class="row align-items-start">
           <div class="col-12 col-md-8 col-lg-4 item-progresso" style="">
             <div
@@ -173,6 +183,7 @@ export default {
       corretor: [],
       dadoscorretor: [],
       searchTime: "Atual",
+      anovindo: "2024",
       searchCorretor: 1,
       posicao: 0,
       apibase: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor",
@@ -301,7 +312,8 @@ export default {
       var trimestre3 = [7, 8, 9];
       var trimestre4 = [10, 11, 12];
 
-      for (let mc of this.corretor.macros) {
+      var macrosdocorretor = this.corretor.macros.filter((d) => d.data.indexOf(this.anovindo) !== -1)
+      for (let mc of macrosdocorretor) {
         // this.corretorlabels.push(moment(String(mc.data)).format('DD/MM/YYYY'));
         // for(let mc2 of this.corretor.macros) {
         // leadsrecebidos.push(mc2.leads_recebidos);

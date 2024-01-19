@@ -36,11 +36,21 @@
             <select
               id=""
               class="form-de-topo mx-2"
+              v-model="anovindo"
+              @change="filtrar()"
+              style="width: 187px"
+            >
+              <option value="2024">Ano 2024</option>
+              <option value="2023">Ano 2023</option>
+            </select>
+            <select
+              id=""
+              class="form-de-topo mx-2"
               v-model="searchTime"
               @change="filtrar()"
               style="width: 187px"
             >
-              <option value="Atual">Ano 2023</option>
+              <option value="Atual">Todo o Período</option>
               <option value="Jan">Janeiro</option>
               <option value="Fev">Fevereiro</option>
               <option value="Mar">Março</option>
@@ -83,6 +93,7 @@
           v-bind:corretores="corretores"
           v-bind:propidsistema="propcorretor"
           v-bind:tempo="searchTime"
+          v-bind:anovindo="anovindo"
           v-bind:estagio="filtrarconvertidos"
         >
         </ChartVisitas>
@@ -137,6 +148,7 @@ export default {
       corretor: [],
       dadoscorretor: [],
       searchTime: "Atual",
+      anovindo: '2024',
       searchCorretor: 0,
       propcorretor: 0,
       posicao: 0,
