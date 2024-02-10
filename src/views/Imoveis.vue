@@ -444,10 +444,10 @@
           // );
           this.totalpage = Math.ceil(Number(this.todosimoveis.length)/this.por_pagina);
           this.filtrados = this.todosimoveis;
-          this.filtrados.sort((t1, t2) => t1.acessos < t2.acessos ? 1 : -1)
+          this.filtrados.sort((t1, t2) => t1.acessos < t2.acessos ? 1 : -1);
           this.imoveis = this.todosimoveis.slice(0, this.por_pagina);
           // console.log(this.corretor_id)
-          // console.log(this.imoveis)
+          // console.log(this.imoveis);
           // var prografico = res.data.filter(d => d.corretor_id == this.corretor_id && Number(d.acessos) > 20);
           for (let index = 0; index < this.totalpage; index++) {
             list.push(Number(index + 1)); 

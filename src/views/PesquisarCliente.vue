@@ -31,7 +31,8 @@
                   <p class="caixa">
                     <strong>contato@cafeimobiliaria.com.br</strong><br>
                     <hr>
-                    <strong>Caf3imob88@</strong><br>
+                    <!-- <strong>Caf3imob88@</strong><br> -->
+                    <strong>Caf3Assertiv4@24</strong><br>
                   </p>
                 </div>
                 <div class="col-md-6">
