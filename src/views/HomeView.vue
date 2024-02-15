@@ -67,6 +67,12 @@
           </div>
         </div>
       </div>
+      <div class="col-md-12 dash-corretor my-4 bg-info" style="">
+        <label for="codigo-atualizar" class="w-100 fw-bolder fs-5 text-white mb-4 my-3">Para atualizar um Imóvel<br><br>digite o código</label>
+        <input id="codigo-atualizar" v-model="codigo" type="text" class="form-de-topo" style="height: 40px;">
+        <br>
+        <a v-show="codigo != ''" :href="'https://www.cafeimobiliaria.com.br/atualizar.php?codigo=' + codigo" class="btn btn-primary text-white" target="_blank">Atualizar Imóvel {{ codigo }}</a>
+      </div>
       <div class="col-md-12 elimina-margens-internas">
         <div class="row">
           <!-- <div class="col-md-2"></div> -->
@@ -139,6 +145,7 @@ export default {
   name: 'home',
   data() {
     return {
+      codigo: '',
       corretor: [],
       dadoscorretor: [],
       searchTime: 'Atual',

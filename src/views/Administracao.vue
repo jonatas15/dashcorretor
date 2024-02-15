@@ -144,7 +144,12 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 dash-corretor">
+      <div class="col-md-12 dash-corretor my-4" style="">
+        <a href="https://www.cafeimobiliaria.com.br/atualizar.php" class="fs-5 btn btn-primary text-white" target="_blank">
+          Atualizar todos os Imóveis no Site
+        </a>
+      </div>
+      <div class="col-md-12 dash-corretor my-2">
         <Chartall
           v-bind:nome="corretor.nome"
           v-bind:corretor="corretor"
