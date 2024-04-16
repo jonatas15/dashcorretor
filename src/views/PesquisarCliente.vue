@@ -29,10 +29,12 @@
                   </a>
                   <!-- <hr> -->
                   <p class="caixa">
-                    <strong>contato@cafeimobiliaria.com.br</strong><br>
-                    <hr>
+                    <strong>contato@cafeimobiliaria.com.br</strong>
+                    <br />
+                    <br />
+                    <!-- <hr> -->
                     <!-- <strong>Caf3imob88@</strong><br> -->
-                    <strong>Caf3Assertiv4@24</strong><br>
+                    <strong>Caf3Imob891732@%</strong><br>
                   </p>
                 </div>
                 <div class="col-md-6">
@@ -41,9 +43,10 @@
                   </a>
                   <!-- <hr> -->
                   <p class="caixa">
-                    <strong>Usuario: cafen00001 | Senha: 3bTGqXti</strong><br>
-                    <hr>
-                    <strong>Usuario: cafen00002 | Senha: pGT65E2V</strong><br>
+                    <strong>Usuario: cafen00001 | Senha: JD@6E3QT</strong>
+                    <br />
+                    <br />
+                    <strong>Usuario: cafen00002 | Senha: Ki6hcx!l</strong><br>
                   </p>
                 </div>
               </div>
@@ -67,6 +70,7 @@
     border: 1px solid ghostwhite;
     margin: 0% 5%;
     z-index: -1;
+    font-size: 15px;
   }
   .botao-logo {
     z-index: 100;

@@ -142,6 +142,7 @@ export default {
     estagio: Number,
     tempo: String,
     anovindo: String,
+    corretores: Object
   },
   components: {
     Bar,

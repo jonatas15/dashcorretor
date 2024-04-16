@@ -67,7 +67,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 dash-corretor my-4 bg-info" style="">
+      <div class="col-md-12 dash-corretor my-4" style="background-color: gray;">
         <label for="codigo-atualizar" class="w-100 fw-bolder fs-5 text-white mb-4 my-3">Para atualizar um Imóvel<br><br>digite o código</label>
         <input id="codigo-atualizar" v-model="codigo" type="text" class="form-de-topo" style="height: 40px;">
         <br>
