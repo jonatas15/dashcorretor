@@ -93,6 +93,14 @@
                 </div>
                 <div class="row my-1 campo-formulario">
                   <div class="col-sm-3">
+                    <label class="for-label" for="visitaclientetelefone">Telefone:</label>
+                  </div>
+                  <div class="col-sm-9">
+                    <input type="text" v-mask="'(##) #####-####'" id="visitaclientetelefone" class="form-control" v-model="form.clientetelefone" placeholder="Telefone do cliente/visitante"/>
+                  </div>
+                </div>
+                <div class="row my-1 campo-formulario">
+                  <div class="col-sm-3">
                     <label class="for-label" for="visitaimobparceira">imobiliaria Parceira:</label>
                   </div>
                   <div class="col-sm-9">
@@ -168,6 +176,7 @@
                       <th scope="col">Visitante</th>
                       <th scope="col" class="desktop">Observações</th>
                       <th scope="col" class="desktop">Imobiliária Parceira</th>
+                      <th scope="col" class="desktop">Telefone</th>
                       <th scope="col">Convertido</th>
                       <th scope="col">Excluir</th>
                     </tr>
@@ -180,6 +189,7 @@
                       <td>{{ visita.nome_cliente }}</td>
                       <td class="desktop">{{ visita.observacoes }}</td>
                       <td class="desktop">{{ visita.imobiliaria_parceria }}</td>
+                      <td class="desktop">{{ visita.campoextra }}</td>
                       <td>
                         <!-- {{ visita.convertido }} -->
                         <Toggle
@@ -295,6 +305,7 @@
           isFieldDisabled: false,
           form: {
             cliente: "",
+            clientetelefone: "",
             codigo: "",
             datavisita: "", // moment(Date()).format('DD/MM/YYYY'),
             marcado: true,
@@ -347,7 +358,8 @@
           codigo_imovel: this.form.codigo,
           nome_cliente: this.form.cliente,
           id_corretor: this.idcorretor,
-          imobiliaria_parceria: this.form.imobiliaria
+          imobiliaria_parceria: this.form.imobiliaria,
+          campoextra: this.form.clientetelefone.replace(/\D+/g, '')
         }).then(response => {
           // console.log(response.status);
           this.$refs.alert.showAlert(
