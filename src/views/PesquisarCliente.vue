@@ -43,10 +43,10 @@
                   </a>
                   <!-- <hr> -->
                   <p class="caixa">
-                    <strong>Usuario: cafen00001 | Senha: JD@6E3QT</strong>
+                    <strong>Usuario: cafen00001 | Senha: Caf3gratidao</strong>
                     <br />
                     <br />
-                    <strong>Usuario: cafen00002 | Senha: Ki6hcx!l</strong><br>
+                    <strong>Usuario: cafen00002 | Senha: Caf3gratidao</strong><br>
                   </p>
                 </div>
               </div>

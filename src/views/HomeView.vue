@@ -15,7 +15,7 @@
         <h4>Seu <br>Dashboard |
         <span>
           <select id="" class="form-de-topo" v-model="searchTime" @change="filtrar()" style="width: 187px;">
-            <option value="Atual">Média geral</option>
+            <option value="Atual">Acumulado do ano</option>
             <option value="1">Janeiro</option>
             <option value="2">Fevereiro</option>
             <option value="3">Março</option>
@@ -197,7 +197,9 @@ export default {
         valor: 0,
         param: "",
         prefx: "R$"
-      },]
+      }],
+      urlvisitas: "https://www.cafeimobiliaria.com.br/sistema/api/visita",
+      visitas: []
     }
   },
   components: {
@@ -206,6 +208,9 @@ export default {
   methods: {
     filtrar () {
       // console.log(this.searchTime)
+      var arr_visitas = this.visitas;
+      var quant_visitas = 0;
+      
       if (this.corretor.macros.length >= 1) {
         var varindice = this.searchTime;
         // temos que ajustar pra somar os valores inseridos NO MÊS
@@ -214,7 +219,7 @@ export default {
         var percentual_conversao = 0;
         var quant_vendas_vgc = 0;
         var quant_vendas_vgv = 0;
-        var quant_visitas = 0;
+        
         var quant_imoveis_agenciados = 0;
         var ticket_medio_venda = 0;
         var custo_lead = 0;
@@ -233,7 +238,6 @@ export default {
             // percentual_conversao.push(mc2.percentual_conversao);
             // quant_vendas_vgc.push(mc2.quant_vendas_vgc);
             // quant_vendas_vgv.push(mc2.quant_vendas_vgv);
-            // quant_visitas.push(mc2.quant_visitas);
             // quant_imoveis_agenciados.push(mc2.quant_imoveis_agenciados);
           // }
           if (varindice == "Atual") {
@@ -242,7 +246,6 @@ export default {
             percentual_conversao += Number(mc.percentual_conversao);
             quant_vendas_vgc += mc.quant_vendas_vgc;
             quant_vendas_vgv += mc.quant_vendas_vgv;
-            quant_visitas += mc.quant_visitas;
             quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
             ticket_medio_venda += Number(mc.ticket_medio_venda);
             custo_lead += Number(mc.custo_lead);
@@ -254,7 +257,6 @@ export default {
               percentual_conversao += Number(mc.percentual_conversao);
               quant_vendas_vgc += mc.quant_vendas_vgc;
               quant_vendas_vgv += mc.quant_vendas_vgv;
-              quant_visitas += mc.quant_visitas;
               quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
@@ -268,7 +270,6 @@ export default {
               console.log(mc.percentual_conversao);
               quant_vendas_vgc += mc.quant_vendas_vgc;
               quant_vendas_vgv += mc.quant_vendas_vgv;
-              quant_visitas += mc.quant_visitas;
               quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
@@ -281,7 +282,6 @@ export default {
               percentual_conversao += Number(mc.percentual_conversao);
               quant_vendas_vgc += mc.quant_vendas_vgc;
               quant_vendas_vgv += mc.quant_vendas_vgv;
-              quant_visitas += mc.quant_visitas;
               quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
@@ -294,7 +294,6 @@ export default {
               percentual_conversao += Number(mc.percentual_conversao);
               quant_vendas_vgc += mc.quant_vendas_vgc;
               quant_vendas_vgv += mc.quant_vendas_vgv;
-              quant_visitas += mc.quant_visitas;
               quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
@@ -309,13 +308,35 @@ export default {
               percentual_conversao += Number(mc.percentual_conversao);
               quant_vendas_vgc += mc.quant_vendas_vgc;
               quant_vendas_vgv += mc.quant_vendas_vgv;
-              quant_visitas += mc.quant_visitas;
               quant_imoveis_agenciados += mc.quant_imoveis_agenciados;
               ticket_medio_venda += Number(mc.ticket_medio_venda);
               custo_lead += Number(mc.custo_lead);
               i++;
             }
           }
+        }
+
+        // console.log("Mes pesquisado: " + varindice);
+        
+        if (varindice == 'Atual') {
+          arr_visitas = this.visitas.filter(
+            d => d.id_corretor == this.corretor.idsistema &&
+            d.id_corretor !== "" &&
+            d.id_corretor !== null &&
+            d.data_visita.indexOf("2024") !== -1
+          );
+          // console.log(this.visitas.length)
+        } else {
+          arr_visitas = this.visitas.filter(
+            d => d.id_corretor == this.corretor.idsistema &&
+            d.id_corretor !== "" &&
+            d.id_corretor !== null &&
+            d.data_visita.indexOf("2024") !== -1 &&
+            d.mes_ref == varindice
+          );
+        }
+        if (arr_visitas.length > 0) {
+          quant_visitas = arr_visitas.length;
         }
 
         // console.log("" + Math.round(leadsrecebidos/i))
@@ -379,75 +400,14 @@ export default {
     }
   },
   created() {
-    /*
-    axios.get("http://localhost:8080/api/corretor/view?id=1").then((res) => {
-          console.log(res.data)
-          this.corretor = res.data;
-          console.log("Macros:");
-          console.log(this.corretor.macros[0]);
-          this.posicao = this.corretor.macros[0].pos_ranking_geral_vendas;
-          this.macros = [
-            {
-              campo: "Leads Recebidos",
-              valor: this.corretor.macros[0].leads_recebidos,
-              param: "",
-              prefx: ""
-            },
-            {
-              campo: "Percentual de Conversão",
-              valor: Math.round(this.corretor.macros[0].percentual_conversao),
-              param: "%",
-              prefx: ""
-            },
-            {
-              campo: "Quant. Vendas VGC",
-              valor: this.corretor.macros[0].quant_vendas_vgc,
-              param: "",
-              prefx: ""
-            },
-            {
-              campo: "Quant. Vendas VGV",
-              valor: this.corretor.macros[0].quant_vendas_vgv,
-              param: "",
-              prefx: ""
-            },
-            {
-              campo: "Quant. de Visitas",
-              valor: this.corretor.macros[0].quant_visitas,
-              param: "",
-              prefx: ""
-            },
-            {
-              campo: "Quant. Imóveis Agenciados",
-              valor: this.corretor.macros[0].quant_imoveis_agenciados,
-              param: "",
-              prefx: ""
-            },
-            {
-              campo: "Ticket Médio de Venda",
-              valor: Math.round(this.corretor.macros[0].ticket_medio_venda).toLocaleString(),
-              param: "",
-              prefx: "R$"
-            },
-            {
-              campo: "Custo do Lead",
-              valor: Math.round(this.corretor.macros[0].custo_lead),
-              param: "",
-              prefx: "R$"
-            },
-          ]
-          console.log("pros circles");
-          console.log(this.macros)
-    })
-    .catch((error) => {
-            console.log(error);
+    axios.get(this.urlvisitas).then((res) => {
+      this.visitas = res.data
+      if (localStorage.getItem('authUser')) {
+        this.dadoscorretor = localStorage.getItem('authUser');
+        this.corretor = JSON.parse(this.dadoscorretor);
+        this.filtrar();
+      }
     });
-    */
-    if (localStorage.getItem('authUser')) {
-      this.dadoscorretor = localStorage.getItem('authUser');
-      this.corretor = JSON.parse(this.dadoscorretor);
-      this.filtrar();
-    }
   }
 }
 </script>

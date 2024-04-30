@@ -93,7 +93,7 @@
                 </div>
                 <div class="row my-1 campo-formulario">
                   <div class="col-sm-3">
-                    <label class="for-label" for="visitaclientetelefone">Telefone:</label>
+                    <label class="for-label" for="visitaclientetelefone">Contato do Visitante:</label>
                   </div>
                   <div class="col-sm-9">
                     <input type="text" v-mask="'(##) #####-####'" id="visitaclientetelefone" class="form-control" v-model="form.clientetelefone" placeholder="Telefone do cliente/visitante"/>
