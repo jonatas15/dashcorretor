@@ -75,7 +75,7 @@ export default {
       var getnome = JSON.parse(localStorage.getItem('authUser'));
       this.corretor = getnome.nome;
       this.corretorid = getnome.id;
-      if (this.corretorid == 1 || this.corretorid == 10 || this.corretorid == 73) {
+      if (this.corretorid == 1 || this.corretorid == 10 || this.corretorid == 73  || this.corretorid == 43) {
         this.corretoresadmin = true;
       }
       // console.log(this.$route.meta)
