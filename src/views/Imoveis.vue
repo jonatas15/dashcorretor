@@ -12,22 +12,19 @@
           </div>
         </div>
         <div class="col-md-12 dash-corretor">
-            <!-- <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 90%"></div>
-            </div>
-            <sub>Em construção</sub> -->
-            <!-- <hr> -->
+          <hr>
+          <h3>Listagem de Imóveis e Desempenho:</h3>
+          <br>
+          <label class="aviso-cafe">Em breve!</label>
+          <br>
+          <img src="@/assets/logo/coffee.png" alt="" width="200" />
+        </div>
+        <!-- Imóveis
+        <div class="col-md-12 dash-corretor">
             <div class="table-responsive-md row">
               <h3>Imóveis</h3>
               <br />
               <br />
-              <br />
-              <!-- 
-                Incluir campo de Filtros
-                Acessos por imóvel: mostrar evolução pra cada imóvel
-                  - Abrir detalhes do Imovel (Modal)
-                  - É isso
-              -->
               
               <br>
               <div class="col-md-4">
@@ -68,14 +65,6 @@
                 </div>
               </div>
               <div class="form-group" style="text-align: right;padding: 10px;">
-                <!-- <button
-                  type="button"
-                  class="btn btn-primary"
-                  @click="showModal"
-                >
-                  Imóveis mais acessados
-                </button> -->
-
                 <Modalimovel
                   v-show="isModalVisible"
                   @close="closeModal"
@@ -108,7 +97,6 @@
                       </div>
                       <div class="col-md-1"></div>
                       <div class="col-md-6">
-                        <!-- {{ tabelavisitas }} -->
                         <h4>Visitas ao Imóvel</h4>
                         <table class="table table-hover" id="my-table">
                           <thead>
@@ -140,7 +128,6 @@
                       <div class="col-md-1"></div>
                       <div class="col-md-4">
                         <h4><strong>Mais Informações</strong></h4>
-                        <!-- {{ tabelavisitas }} -->
                         <table class="table table-hover" id="my-table">
                           <tbody>
                             <tr>
@@ -177,9 +164,6 @@
                 </Modalimovel>
               </div>
               <br>
-              <!-- <ul>
-                <li v-repeat="users | filterBy searchText">{{ name }}</li>
-              </ul> -->
               <div v-show="carregando">
                 <img src="@/assets/actions/please-wait.gif" />
               </div>
@@ -191,8 +175,6 @@
                     <th scope="col">Acessos</th>
                     <th scope="col">Visitas feitas</th>
                     <th scope="col">Período</th>
-                    <!-- <th scope="col">convwht</th> -->
-                    <!-- <th scope="col">convpag</th> -->
                     <th scope="col">Detalhes</th>
                   </tr>
                 </thead>
@@ -207,8 +189,6 @@
                     <td>{{imv.acessos}}</td>
                     <td>{{imv.visitas}}</td>
                     <td>{{imv.periodo}}</td>
-                    <!-- <td>{{imv.convwht}}</td> -->
-                    <!-- <td>{{imv.convpag}}</td> -->
                     <td>
                       <button
                         type="button"
@@ -221,12 +201,6 @@
                   </tr>
                 </tbody>
               </table>
-              <!-- <b-pagination
-                v-model="pagina"
-                :total-rows="rows"
-                :per-page="20"
-                aria-controls="my-table"
-            ></b-pagination> -->
             <ul class="pagination" style="display: contents !important;">
               <li class="page-item">
                 <a v-if="pagina > 1" class="page-link" @click="paginarmenos()" aria-label="Previous">
@@ -235,9 +209,6 @@
                   {{ pagina - 1 }}
                 </a>
               </li>
-              <!-- <li v-for="page in paginas" class="page-item" :class="page == pagina ? ' active' : ''" :key="page">
-                <a class="page-link" @click="paginar(page)">{{page}}</a>
-              </li> -->
               <li class="page-item"><a class="page-link active">{{ pagina }}</a></li>
               <li class="page-item">
                 <a v-if="pagina < totalpage" class="page-link" @click="paginarmais()" aria-label="Next">
@@ -249,9 +220,9 @@
             </ul>
             </div>
         </div>
-      </div>
+      -->
     </div>
-    <!-- <Bar :data="data" :options="options" /> -->
+  </div>
   </template>
   
   <script lang="ts">

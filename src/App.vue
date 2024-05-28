@@ -147,21 +147,21 @@ export default {
               <font-awesome-icon icon="rectangle-list" class="fa-2xl" /> Solicitar Contrato
             </router-link>
           </li>
-        <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+        <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
           <router-link class="nav-link" aria-current="page" to="/meus-resultados">
               <font-awesome-icon icon="user" class="fa-2xl" /> Meus resultados
             </router-link>
-          </li>
+          </li> -->
           <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/analise-dados">
               <font-awesome-icon icon="gear" class="fa-2xl" /> Análise de dados
             </router-link>
           </li> -->
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/buscar-proprietario">
               <font-awesome-icon icon="search" class="fa-2xl" /> Buscar proprietário
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/pesquisar-cliente">
               <font-awesome-icon icon="briefcase" class="fa-2xl" /> Pesquisar cliente
@@ -254,14 +254,14 @@ export default {
                 <label class="label-icon">Solicitar Contrato</label>
               </router-link>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link to="/meus-resultados" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="user" class="fa-2xl" />
                 <br>
                 <label class="label-icon">Meus resultados</label>
               </router-link>
-            </li>
+            </li> -->
             <!-- <li class="nav-item">
               <router-link to="/analise-dados" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
@@ -270,14 +270,14 @@ export default {
                 <label class="label-icon">Análise de dados</label>
               </router-link>
             </li> -->
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link to="/buscar-proprietario" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="search" class="fa-2xl" />
                 <br>
                 <label class="label-icon">Buscar proprietário</label>
               </router-link>
-            </li>
+            </li> -->
             <li class="nav-item">
               <router-link to="/pesquisar-cliente" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">

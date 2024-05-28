@@ -86,13 +86,16 @@
                 </div>
                 <div class="col-12 col-lg-7 col-md-12 col-sm-12">
                   <br>
-                  <strong class="dash-corretor-topico-titulo" style="float: left">Incentivo Semanal</strong>
+                  <strong class="dash-corretor-topico-titulo" style="float: left">Bônus</strong>
                   <br>
                   <p align="left" class="dash-corretor-topico-conteudo">
                     <br>
-                    <br>
-                    <br>
-                    Em  breve!
+                    <ul class="lista-metas dash-corretor-topico-conteudo" style="text-align: left; font-size: 12px;line-height: 30px;">
+                      <li><br></li>
+                      <li>Meta do mês batida: <strong>1%</strong></li>
+                      <li>A partir da 2ª venda do mês: <strong>2%</strong></li>
+                      <li>Destaque de agen. no mês: <strong>R$ 200,00</strong></li>
+                    </ul>
                     <!-- Ganhe<br> -->
                     <!-- R$ <strong>150,00</strong> ao cadastrar<br><strong>5 imóveis</strong> acima de R$ 500 mil -->
                   </p>
@@ -107,24 +110,84 @@
                 <div class="col-md-6">
                   <h4 class="dash-corretor-topico-titulo" style="text-align: center">Metas<br>mensais</h4>
                   <br>
-                  <p class="dash-corretor-topico-conteudo">Meta Vendas: <strong>R$ 20.000 VGC</strong>
-                    <br>Super Meta: <strong>R$ 29.000 VGC</strong>
+                  <p class="dash-corretor-topico-conteudo">Meta VGV: <strong>R$ 350 mil</strong>
+                    <br>ou <strong>R$ 500 mil S.M.</strong>
                   </p>
                 </div>
                 <div class="col-md-5">
                   <ul class="lista-metas dash-corretor-topico-conteudo"
                     style="text-align: left; font-size: 12px;line-height: 30px;">
                     <li><br></li>
-                    <li>Agenciamentos: <strong>6 (2 vídeos)</strong></li>
+                    <li>Agenciamentos: <strong>6</strong></li>
                     <li>Placas: <strong>6</strong></li>
-                    <li>Gestão de Imóveis: <strong>20</strong></li>
-                    <li>Recuperação de Leads: <strong>5/dia</strong></li>
-                    <li>Prospecções: <strong>5/semana</strong></li>
+                    <li>Atualização de Imóveis: <strong>20</strong></li>
+                    <li>Recuperação de Leads: <strong>30</strong></li>
+                    <li>Prospecções de Clientes: <strong>10</strong></li>
+                    <li>Oportunidades de Permuta: <strong>5</strong></li>
                   </ul>
                 </div>
                 <div class="col-12 col-md-1 vertical-center-right" style="height: 180px;">
                   <div class="line-progress-div">
                     <span class="dot"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="dash-corretor-topico">
+              <img src="@/assets/banner/Tii.png" />
+              <!-- Bora, hora do show porra -->
+              <div class="row">
+                <div class="col-12 col-lg-3 col-md-12 col-sm-12">
+                  <div style="width: 100% !important; height: 200px !important;"></div>
+                </div>
+                <div class="col-12 col-lg-9 col-md-12 col-sm-12">
+                  <br>
+                  <div class="row">
+                    <div class="col">
+                      <strong class="dash-corretor-topico-titulo" style="float: left">Corretor destaque do mês</strong>
+                      <br>
+                      <p align="left" class="dash-corretor-topico-conteudo">
+                        <br>
+                        <ul class="lista-metas dash-corretor-topico-conteudo" style="text-align: left; font-size: 12px;line-height: 30px;">
+                          <li><br></li>
+                          <li><strong>R$ 700,00 </strong> Marketing</li>
+                          <li><strong>R$ 300,00 </strong> Cheque Bônus</li>
+                        </ul>
+                      </p>
+                    </div>
+                    <div class="col">
+                      <strong class="dash-corretor-topico-titulo" style="float: left">Bônus trimestral</strong>
+                      <br>
+                      <p align="left" class="dash-corretor-topico-conteudo">
+                        <br>
+                        <ul class="lista-metas dash-corretor-topico-conteudo" style="text-align: left; font-size: 12px;line-height: 30px;">
+                          <li><br></li>
+                          <li>1º Lugar: <strong>1%</strong></li>
+                          <li>2º Lugar: <strong>2%</strong></li>
+                          <li>3º Lugar: <strong>3%</strong></li>
+                        </ul>
+                      </p>
+                    </div>
+                    <div class="col">
+                      <strong class="dash-corretor-topico-titulo" style="float: left">Corretor destaque 2024</strong>
+                      <p align="left" class="dash-corretor-topico-conteudo">
+                        <br>
+                        <ul class="lista-metas dash-corretor-topico-conteudo" style="text-align: left; font-size: 12px;line-height: 30px;">
+                          <li><br></li>
+                          <li>Maior VGC: <strong>R$ 5.000,00 (Pix)</strong></li>
+                        </ul>
+                      </p>
+                      <strong class="dash-corretor-topico-titulo" style="float: left">Super meta batida</strong>
+                      <p align="left" class="dash-corretor-topico-conteudo">
+                        <br>
+                        <ul class="lista-metas dash-corretor-topico-conteudo" style="text-align: left; font-size: 12px;line-height: 30px;">
+                          <li><br></li>
+                          <li>Maior VGC: <strong>R$ 5.000,00 (Pix)</strong></li>
+                        </ul>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -519,7 +582,7 @@ export default {
   margin-top: 10%;
   box-shadow: var(--backshadown);
   padding: 2%;
-  height: 220px;
+  height: auto !important;
   position: relative;
   /* float: right; */
 }
@@ -654,7 +717,7 @@ export default {
     margin-top: 10%;
     box-shadow: var(--backshadown);
     padding: 2%;
-    height: 420px;
+    height: 400px;
     position: relative;
     width: 100%;
     padding: 15px;
@@ -671,7 +734,7 @@ export default {
   }
 
   .dash-corretor-topico .col-md-5 {
-    height: 200px;
+    height: auto !important;
   }
 
   .subcard-corretor {
