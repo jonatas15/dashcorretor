@@ -82,7 +82,7 @@
     display: flex;
     flex-direction: column;
     width: 50% !important;
-    height: auto;
+    height: 800px;
     margin: 0;
     position: absolute;
     top: 50%;

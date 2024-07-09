@@ -27,3 +27,22 @@ npm run dev
 ```sh
 npm run build
 ```
+
+### NOTAS DO DESENVOLVEDOR:
+# CÓDIGO SCRIPT PELO HELENA APP JÁ COM A CHAVE DE AUTORIZAÇÃO DEFINIDA
+<script>
+const options = {
+  method: 'POST',
+  headers: {
+    accept: 'application/json',
+    'content-type': 'application/*+json',
+    Authorization: 'pn_UYnqnIu6TQoUd84Onb8I2WILUxCWFhuRR2q9ZXYLc'
+  },
+  body: '{"body":{"text":"Api de funcionamento via javascript funcionando"},"to":"99991609507"}'
+};
+
+fetch('https://api.helena.run/chat/v1/message/send', options)
+  .then(response => response.json())
+  .then(response => console.log(response))
+  .catch(err => console.error(err));
+</script>

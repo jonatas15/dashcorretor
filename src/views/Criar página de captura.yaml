@@ -1,0 +1,9 @@
+JORNADA DE LOCAÇÃO:
+- Superlógica: 
+  - Cadastro do cliente quando fecha a locação;
+  - Idéia de pós-venda/locação:
+    - Ex.: 
+      - O cara não pagou o aluguel na data certa ...
+      - ... Então o sistema envia um disparo de whatsapp lembrando o cliente,
+      - ... e se possível com o boleto atualizado
+      Ex.: Avisos de prazos a vencer

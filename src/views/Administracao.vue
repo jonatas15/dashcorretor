@@ -33,7 +33,7 @@
             </select>
           </span>
           <span>
-            <select
+            <!-- <select
               id=""
               class="form-de-topo mx-2"
               v-model="anovindo"
@@ -42,7 +42,7 @@
             >
               <option value="2024">Ano 2024</option>
               <option value="2023">Ano 2023</option>
-            </select>
+            </select> -->
             <select
               id=""
               class="form-de-topo"
@@ -71,7 +71,7 @@
             <!-- <button @click="ordemCorretores(54)">VerOrdem</button> -->
           </span>
         </h4>
-        <h6 class="text-center mb-4 fw-bolder">Atualizado até Dezembro-2023</h6>
+        <h6 class="text-center mb-4 fw-bolder">Atualizado até Abril-2024</h6>
         <div class="row align-items-start">
           <div class="col-12 col-md-8 col-lg-4 item-progresso" style="">
             <div

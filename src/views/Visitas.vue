@@ -503,6 +503,7 @@
                     leadsrecebidos.push(mc2.leads_recebidos);
                     percentual_conversao.push(mc2.percentual_conversao);
                     quant_vendas_vgc.push(mc2.quant_vendas_vgc);
+                   
                     quant_vendas_vgv.push(mc2.quant_vendas_vgv);
                     quant_visitas.push(mc2.quant_visitas);
                     quant_imoveis_agenciados.push(mc2.quant_imoveis_agenciados);

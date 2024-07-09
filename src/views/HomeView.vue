@@ -35,7 +35,7 @@
           </select>
         </span>
         </h4>
-        <h6 class="text-center mb-4 fw-bolder">Atualizado até Dezembro-2023</h6>
+        <h6 class="text-center mb-4 fw-bolder">Atualizado até Abril-2024</h6>
         <div class="row align-items-start">
           <div class="col-12 col-md-8 col-lg-4 item-progresso" style="">
             <div class="row align-items-start subcard-corretor"
@@ -46,8 +46,7 @@
               <div class="col-6 col-md-7" style="height: 120px !important; position: relative;">
                 <label class="vertical-center" style="margin-left: 30px !important;">
                   <font-awesome-icon icon="bell" class="" style="font-size: 20px;" />
-                  <br>
-                  Ranking Geral<br>de vendas
+                  <br>Ranking Geral<br>de vendas
                 </label>
               </div>
             </div>
@@ -67,19 +66,47 @@
           </div>
         </div>
       </div>
-      <div class="col-md-12 dash-corretor my-4" style="background-color: gray;">
+      <div class="col-md-12 dash-corretor my-4" style="background-color: gray;" data-bs-dismiss="modal">
         <label for="codigo-atualizar" class="w-100 fw-bolder fs-5 text-white mb-4 my-3">Para atualizar um Imóvel<br><br>digite o código</label>
         <input id="codigo-atualizar" v-model="codigo" type="text" class="form-de-topo" style="height: 40px;">
         <br>
         <a v-show="codigo != ''" :href="'https://www.cafeimobiliaria.com.br/atualizar.php?codigo=' + codigo" class="btn btn-primary text-white" target="_blank">Atualizar Imóvel {{ codigo }}</a>
       </div>
       <div class="col-md-12 elimina-margens-internas">
-        <div class="row">
-          <!-- <div class="col-md-2"></div> -->
+        <!-- <img src="@/assets/banner/Tii.png" /> -->
+        <div>
+          <img src="@/assets/banner/promo.jpeg" width="" style="border-radius: 22px;width: 100%;" />
+          <!-- <img src="@/assets/banner/promo.jpeg" width="" @click="abrirModal" /> -->
+          <!-- <h4>Decole suas metas</h4> -->
+          <!-- <div v-if="modalAberta" class="modal">
+            <button @click="fecharModal" class="btn btn-danger m-5">X</button>
+            <img src="@/assets/banner/Tii.png" />
+          </div> -->
+          <!-- <button v-b-modal.myModal>Mostrar Modal</button>
+          <my-modal></my-modal> -->
+          <Modalimovel
+                  v-show="modalAberta"
+                  @close="fecharModal"
+                >
+                  <template v-slot:header>
+                    <h3>Decole Suas Metas</h3>
+                  </template>
+
+                  <template v-slot:body>
+                    <div class="row" style="text-align: center !important;">
+                      <img src="@/assets/banner/promo.jpeg" style="" />
+                    </div>
+                  </template>
+
+                  <template v-slot:footer>
+                    Confira na tabela para dados de cada imóvel
+                  </template>
+          </Modalimovel>
+        </div>
+        <!--
           <div class="col-md-6">
             <div class="dash-corretor-topico">
               <img src="@/assets/banner/Tii.png" />
-              <!-- Bora, hora do show porra -->
               <div class="row">
                 <div class="col-12 col-lg-5 col-md-12 col-sm-12">
                   <div style="width: 100% !important; height: 200px !important;"></div>
@@ -96,14 +123,12 @@
                       <li>A partir da 2ª venda do mês: <strong>2%</strong></li>
                       <li>Destaque de agen. no mês: <strong>R$ 200,00</strong></li>
                     </ul>
-                    <!-- Ganhe<br> -->
-                    <!-- R$ <strong>150,00</strong> ao cadastrar<br><strong>5 imóveis</strong> acima de R$ 500 mil -->
+                    
                   </p>
                 </div>
               </div>
             </div>
           </div>
-          <!-- <div class="col-md-1"></div> -->
           <div class="col-md-6">
             <div class="dash-corretor-topico alinhando-direita">
               <div class="row">
@@ -137,7 +162,6 @@
           <div class="col-md-12">
             <div class="dash-corretor-topico">
               <img src="@/assets/banner/Tii.png" />
-              <!-- Bora, hora do show porra -->
               <div class="row">
                 <div class="col-12 col-lg-3 col-md-12 col-sm-12">
                   <div style="width: 100% !important; height: 200px !important;"></div>
@@ -194,6 +218,7 @@
             </div>
           </div>
         </div>
+      -->
       </div>
     </div>
   </div>
@@ -204,10 +229,13 @@
 import Progress from './Progress.vue';
 import axios from "axios";
 import "@fontsource/exo-2";
+import Modalimovel from '../components/Modalimovel.vue';
+
 export default {
   name: 'home',
   data() {
     return {
+      modalAberta: false,
       codigo: '',
       corretor: [],
       dadoscorretor: [],
@@ -266,7 +294,8 @@ export default {
     }
   },
   components: {
-    Progress
+    Progress,
+    Modalimovel
   },
   methods: {
     filtrar () {
@@ -460,6 +489,12 @@ export default {
           },
         ]
       }
+    },
+    abrirModal() {
+      this.modalAberta = true;
+    },
+    fecharModal() {
+      this.modalAberta = false;
     }
   },
   created() {
@@ -747,4 +782,15 @@ export default {
     margin-left: 0%;
   }
 }
+/* .modal {
+  position: fixed !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.modal img {
+  max-width: 80%;
+  max-height: 80%;
+} */
 </style>
