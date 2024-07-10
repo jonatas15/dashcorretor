@@ -37,7 +37,7 @@ npm run build
     headers: {
       accept: 'application/json',
       'content-type': 'application/*+json',
-      Authorization: 'pn_UYnqnIu6TQoUd84Onb8I2WILUxCWFhuRR2q9ZXYLc'
+      Authorization: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
     },
     body: '{"body":{"text":"Api de funcionamento via javascript funcionando"},"to":"99991609507"}'
   };
