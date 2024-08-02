@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue';
 import Administracao from '../views/Administracao.vue';
 import AdmVisitas from '../views/AdmVisitas.vue';
 import Imoveis from '../views/Imoveis.vue';
+import Followup from '../views/Followup.vue';
 import Universidade from '../views/Universidade.vue';
 import SolicitarContrato from '../views/SolicitarContrato.vue';
 import MeusResultados from '../views/MeusResultados.vue';
@@ -67,6 +68,16 @@ const router = createRouter({
       path: '/imoveis',
       name: 'imoveis',
       component: Imoveis,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/followup',
+      name: 'followup',
+      component: Followup,
       meta: { 
         default: true,
         sidebar: false,
