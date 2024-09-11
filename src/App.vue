@@ -143,6 +143,11 @@ export default {
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+            <router-link class="nav-link" aria-current="page" to="/documentos">
+              <font-awesome-icon icon="download" class="fa-2xl" /> Documentos
+            </router-link>
+          </li>
+          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/universidade">
               <font-awesome-icon icon="star" class="fa-2xl" /> Universidade Café
             </router-link>
@@ -241,6 +246,14 @@ export default {
                 <font-awesome-icon icon="list" class="fa-2xl" />
                 <br>
                 <label class="label-icon"> Follow-up de METAS</label>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/documentos" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                <font-awesome-icon icon="download" class="fa-2xl" />
+                <br>
+                <label class="label-icon"> Documentos</label>
               </router-link>
             </li>
             <li class="nav-item">

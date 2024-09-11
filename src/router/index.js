@@ -11,6 +11,7 @@ import AnaliseDados from '../views/AnaliseDados.vue';
 import Visitas from '../views/Visitas.vue';
 import BuscarProprietario from '../views/BuscarProprietario.vue';
 import PesquisarCliente from '../views/PesquisarCliente.vue';
+import Documentos from '../views/Documentos.vue';
 import Login from '../views/Login.vue';
 
 const router = createRouter({
@@ -58,6 +59,16 @@ const router = createRouter({
       path: '/universidade',
       name: 'universidade',
       component: Universidade,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/documentos',
+      name: 'documentos',
+      component: Documentos,
       meta: { 
         default: true,
         sidebar: false,
