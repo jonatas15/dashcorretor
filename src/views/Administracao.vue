@@ -301,13 +301,14 @@ export default {
       // temos que ajustar pra somar os valores inseridos NO MÊS
       // Usar Foreach
       var leadsrecebidos = 0;
-      var percentual_conversao = 0;
+      var percentual_conversao = 0; //percentual_conversao = NÚMERO DE PLACAS
       var quant_vendas_vgc = 0;
       var quant_vendas_vgv = 0;
       var quant_visitas = 0;
       var quant_imoveis_agenciados = 0;
       var ticket_medio_venda = 0;
       var custo_lead = 0;
+      var placas = 0;
 
       var i = 0; // Contador
       var j = 0; // Contador de Mês-Entradas de registro
@@ -508,6 +509,12 @@ export default {
           param: "",
           prefx: "",
         },
+        // {
+        //   campo: "Placas",
+        //   valor: percentual_conversao,
+        //   param: "",
+        //   prefx: "",
+        // },
       ];
     },
   },

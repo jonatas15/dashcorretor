@@ -25,7 +25,8 @@
               Veja como estipular suas<br>
               metas de maneiras alcançáveis.
             </h5>
-            <a class="btn btn-transparente float-right" href="#">ver mais</a>
+            <!-- <a class="btn btn-transparente float-right" href="#">ver mais</a> -->
+            <button class="btn btn-transparente float-right">ver mais</button>
           </div>
         </div>
         <div class="col-md-12 dash-corretor">
@@ -347,6 +348,42 @@
       },
       toggleField() {
         this.isFieldDisabled = !this.isFieldDisabled;
+      },
+      avisaropovo (self) {
+        axios.post("https://www.cafeimobiliaria.com.br/sistema/api/registro/enviar", {
+          usuario_id: 1,
+          data_visita: this.formataStringData(this.form.datavisita), //moment(String(this.form.datavisita)).format('Y-MM-D'),
+          // data_visita: moment(String(this.form.datavisita)).format('YYYY-MM-DD'),
+          observacoes: this.form.obs,
+          codigo_imovel: this.form.codigo,
+          nome_cliente: this.form.cliente,
+          id_corretor: this.idcorretor,
+          imobiliaria_parceria: this.form.imobiliaria,
+          campoextra: this.form.clientetelefone.replace(/\D+/g, '')
+        }).then(response => {
+          // console.log(response.status);
+          this.$refs.alert.showAlert(
+            'success', 
+            'Sua visita foi cadastrada',
+            'Sucesso',
+            {
+              iconSize: 35,
+              iconType: 'solid',
+              position: 'center right'
+            }
+          )
+          // this.toggleField();
+        }).catch(response => {
+          // console.log(response.status);
+          this.$refs.alert.showAlert(
+            'error', // There are 4 types of alert: success, info, warning, error
+            'Sua visita não foi cadastrada; preencha o formulário corretamente', // Message of the alert
+            'Erro', // Header of the alert
+            { iconSize: 35, // Size of the icon (px)
+              iconType: 'solid', // Icon styles: now only 2 styles 'solid' and 'regular'
+              position: 'center center' } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+          )
+        });
       },
       cadastrar (self) {
         // console.log("bora chamar a API");
