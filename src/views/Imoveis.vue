@@ -1,12 +1,15 @@
 <template>
   <div class="container mt-5">
     <h2>Formulário de Pesquisa</h2>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleFilter">
       <div class="row">
         <!-- Imobiliária -->
         <div class="col-md-3 mb-3">
           <label for="imobiliaria" class="form-label">Imobiliária</label>
-          <input v-model="form.imobiliaria" type="text" id="imobiliaria" class="form-control" />
+          <select v-model="form.imobiliaria" type="text" id="imobiliaria" class="form-select">
+            <option value="">Todas</option>
+            <option v-for="imb in imobiliarias" :value="imb.imobiliaria" :key="imb.imobiliaria">{{imb.imobiliaria}}</option>
+          </select>
         </div>
         <!-- Estado -->
         <div class="col-md-3 mb-3">
@@ -103,133 +106,126 @@
           <th>Finalidade</th>
           <th>Valor</th>
           <th>Área</th>
-          <th>Banheiros</th>
+          <!-- <th>Banheiros</th>
           <th>Dormitórios</th>
-          <th>Garagens</th>
-          <th>Salas</th>
+          <th>Garagens</th> -->
+          <!-- <th>Salas</th> -->
           <th>Mobiliado</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in filteredData" :key="index">
+        <tr v-for="(item, index) in data" :key="index">
           <td>{{ item.imobiliaria }}</td>
           <td>{{ item.estado }}</td>
           <td>{{ item.cidade }}</td>
           <td>{{ item.bairro }}</td>
           <td>{{ item.negocio }}</td>
           <td>{{ item.finalidade }}</td>
-          <td>{{ item.valor }}</td>
+          <td>R$ {{ Math.round(item.valor).toLocaleString() }}</td>
           <td>{{ item.area }}</td>
-          <td>{{ item.banheiros }}</td>
+          <!-- <td>{{ item.banheiros }}</td>
           <td>{{ item.dormitorios }}</td>
-          <td>{{ item.garagens }}</td>
-          <td>{{ item.salas }}</td>
-          <td>{{ item.mobiliado }}</td>
+          <td>{{ item.garagens }}</td> -->
+          <!-- <td>{{ item.salas }}</td> -->
+          <td :class="item.mobiliado == '1' ? 'fw-bolder text-success' : 'text-danger'">{{ item.mobiliado == '1' ? "Sim" : "Não" }}</td>
         </tr>
       </tbody>
     </table>
+    <!-- <button v-if="data.length < pagination.total" @click="loadMore">
+      Carregar Mais
+    </button> -->
+    <!-- Paginação -->
+    <div class="pagination">
+      <button class="btn btn-info" :disabled="pagination.page === 1" @click="changePage(pagination.page - 1)">
+        Anterior
+      </button>
+      <span>Página {{ pagination.page }} de {{ totalPages }}</span>
+      <button class="btn btn-info" :disabled="pagination.page === totalPages" @click="changePage(pagination.page + 1)">
+        Próxima
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted } from 'vue';
 
-// Dados simulados
-const data = reactive([
-  {
-    imobiliaria: "Imob A",
-    estado: "SP",
-    cidade: "São Paulo",
-    bairro: "Centro",
-    negocio: "venda",
-    finalidade: "residencial",
-    valor: 500000,
-    area: 100,
-    banheiros: 2,
-    dormitorios: 3,
-    garagens: 2,
-    salas: 1,
-    mobiliado: "sim",
-  },
-  {
-    imobiliaria: "Imob B",
-    estado: "RJ",
-    cidade: "Rio de Janeiro",
-    bairro: "Copacabana",
-    negocio: "aluguel",
-    finalidade: "comercial",
-    valor: 3000,
-    area: 80,
-    banheiros: 1,
-    dormitorios: 2,
-    garagens: 1,
-    salas: 2,
-    mobiliado: "não",
-  },
-  {
-    imobiliaria: "Imob C",
-    estado: "RS",
-    cidade: "Santa Maria",
-    bairro: "Camobi",
-    negocio: "aluguel",
-    finalidade: "rural",
-    valor: 2500,
-    area: 180,
-    banheiros: 2,
-    dormitorios: 3,
-    garagens: 2,
-    salas: 3,
-    mobiliado: "sim",
-  },
-  // Adicione mais dados conforme necessário
-]);
-
-const initialForm = reactive({
-  imobiliaria: "",
-  estado: "",
-  cidade: "",
-  bairro: "",
-  negocio: "",
-  finalidade: "",
-  valor: null,
-  area: null,
-  banheiros: null,
-  dormitorios: null,
-  garagens: null,
-  salas: null,
-  mobiliado: "",
+const form = reactive({
+  imobiliaria: '',
+  estado: '',
+  cidade: '',
+  bairro: '',
+  negocio: '',
+  finalidade: '',
 });
 
-const form = reactive({ ...initialForm });
-
-const filteredData = computed(() => {
-  return data.filter((item) => {
-    return (
-      (!form.imobiliaria || item.imobiliaria.includes(form.imobiliaria)) &&
-      (!form.estado || item.estado.includes(form.estado)) &&
-      (!form.cidade || item.cidade.includes(form.cidade)) &&
-      (!form.bairro || item.bairro.includes(form.bairro)) &&
-      (!form.negocio || item.negocio === form.negocio) &&
-      (!form.finalidade || item.finalidade === form.finalidade) &&
-      (!form.valor || item.valor <= form.valor) &&
-      (!form.area || item.area >= form.area) &&
-      (!form.banheiros || item.banheiros >= form.banheiros) &&
-      (!form.dormitorios || item.dormitorios >= form.dormitorios) &&
-      (!form.garagens || item.garagens >= form.garagens) &&
-      (!form.salas || item.salas >= form.salas) &&
-      (!form.mobiliado || item.mobiliado === form.mobiliado)
-    );
-  });
+const data = ref([]);
+const imobiliarias = ref([]);
+const pagination = reactive({
+  page: 1,
+  pageSize: 20,
+  total: 0,
 });
-// Reseta o formulário para o estado inicial
-const resetForm = () => {
-  Object.assign(form, { ...initialForm });
+const urlraiz = 'http://localhost:8080';
+
+const fetchData = async () => {
+  const response = await fetch(`${urlraiz}/imoveisex/getimoveis?page=${pagination.page}&pageSize=${pagination.pageSize}&imobiliaria=${form.imobiliaria}&estado=${form.estado}&cidade=${form.cidade}&bairro=${form.bairro}&negocio=${form.negocio}&finalidade=${form.finalidade}`);
+  const result = await response.json();
+  // console.log(result)
+  // lista de imobiliárias --------------------------------
+  const imobs = await fetch(`${urlraiz}/imoveisex/getimobiliarias`);
+  const imobsresult = await imobs.json();
+  imobiliarias.value = imobsresult.data;
+
+  data.value = result.data;
+  pagination.total = result.pagination.total;
 };
-const handleSubmit = () => {
-  console.log("Filtro aplicado:", form);
+
+
+
+// Atualizar a tabela com filtros
+const handleFilter = () => {
+  pagination.page = 1; // Resetar para a primeira página
+  fetchData();
 };
+
+const changePage = (newPage) => {
+  pagination.page = newPage;
+  fetchData();
+};
+
+const totalPages = computed(() => Math.ceil(pagination.total / pagination.pageSize));
+
+
+// Carregar mais páginas
+// const loadMore = () => {
+//   if (data.value.length < pagination.total) {
+//     pagination.page += 1;
+//     fetchData();
+//   }
+// };
+
+onMounted(() => {
+  fetchData();
+});
 </script>
 
 <style>
-/* Adicione seus estilos personalizados aqui, se necessário */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
 </style>
