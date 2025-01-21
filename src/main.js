@@ -60,7 +60,9 @@ library.add(faFileExcel)
 
 // import './assets/main.css'
 
-import VueTheMask from 'vue-the-mask'
+import VueTheMask from 'vue-the-mask';
+import money from 'v-money';
+
 import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons'
 
 const app = createApp(App);
@@ -68,6 +70,13 @@ const app = createApp(App);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.use(router);
 app.use(VueTheMask);
+app.use(money, {
+    // decimal: ',',
+    thousands: '.',
+    prefix: 'R$ ',
+    precision: 0,
+    masked: false
+});
 
 
 

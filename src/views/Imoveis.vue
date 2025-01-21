@@ -6,48 +6,60 @@
         <!-- Imobiliária -->
         <div class="col-md-3 mb-3">
           <label for="imobiliaria" class="form-label">Imobiliária</label>
-          <select v-model="form.imobiliaria" type="text" id="imobiliaria" class="form-select">
+          <select v-model="form.imobiliaria" id="imobiliaria" class="form-select">
             <option value="">Todas</option>
             <option v-for="imb in imobiliarias" :value="imb.imobiliaria" :key="imb.imobiliaria">{{imb.imobiliaria}}</option>
           </select>
         </div>
         <!-- Estado -->
-        <div class="col-md-3 mb-3">
+        <!-- <div class="col-md-3 mb-3">
           <label for="estado" class="form-label">Estado</label>
           <input v-model="form.estado" type="text" id="estado" class="form-control" />
-        </div>
+        </div> -->
         <!-- Cidade -->
         <div class="col-md-3 mb-3">
           <label for="cidade" class="form-label">Cidade</label>
-          <input v-model="form.cidade" type="text" id="cidade" class="form-control" />
+          <select v-model="form.cidade" id="cidade" class="form-select">
+            <option value="">Todas</option>
+            <option v-for="imb in cidades" :value="imb.cidade" :key="imb.cidade">{{imb.cidade}}</option>
+          </select>
         </div>
         <!-- Bairro -->
         <div class="col-md-3 mb-3">
           <label for="bairro" class="form-label">Bairro</label>
-          <input v-model="form.bairro" type="text" id="bairro" class="form-control" />
+          <!-- <input v-model="form.bairro" type="text" id="bairro" class="form-control" /> -->
+          <select v-model="form.bairro" id="bairro" class="form-select">
+            <option value="">Todas</option>
+            <option v-for="imb in bairros" :value="imb.bairro" :key="imb.bairro">{{imb.bairro}}</option>
+          </select>
         </div>
         <!-- Negócio -->
         <div class="col-md-3 mb-3">
           <label for="negocio" class="form-label">Negócio</label>
           <select v-model="form.negocio" id="negocio" class="form-select">
-            <option value="" disabled>Selecione</option>
-            <option value="venda">Venda</option>
-            <option value="aluguel">Aluguel</option>
+            <option value="">Todos</option>
+            <option v-for="imb in negocios" :value="imb.negocio" :key="imb.negocio">{{imb.negocio}}</option>
           </select>
         </div>
         <!-- Finalidade/Tipo -->
         <div class="col-md-3 mb-3">
           <label for="finalidade" class="form-label">Finalidade/Tipo</label>
           <select v-model="form.finalidade" id="finalidade" class="form-select">
-            <option value="" disabled>Selecione</option>
-            <option value="residencial">Residencial</option>
-            <option value="comercial">Comercial</option>
+            <option value="">Todos</option>
+            <option v-for="imb in finalidades" :value="imb.finalidade" :key="imb.finalidade">{{ imb.finalidade == 'Locacao' ? 'Locação' : imb.finalidade }}</option>
           </select>
         </div>
         <!-- Valor -->
+        <!-- <input v-model="form.valormin" type="range" id="valormax" class="form-range" @change="alteraomax" /> -->
+        <!-- <input v-model="form.valormax" type="range" id="valormax2" class="form-range" /> -->
         <div class="col-md-3 mb-3">
-          <label for="valor" class="form-label">Valor (R$)</label>
-          <input v-model="form.valor" type="number" id="valor" class="form-control" />
+          <label for="valor" class="form-label">Valor Mínimo (R$)</label>
+          <!-- @change="alteraomax" -->
+          <input v-money="Money" v-model="form.valormin" type="text" id="valormin" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="valormax" class="form-label">Valor Máximo (R$)</label>
+          <input v-money="Money" v-model="form.valormax" type="text" id="valormax" class="form-control" />
         </div>
         <!-- Área -->
         <div class="col-md-3 mb-3">
@@ -70,10 +82,10 @@
           <input v-model="form.garagens" type="number" id="garagens" class="form-control" />
         </div>
         <!-- Salas -->
-        <div class="col-md-2 mb-3">
+        <!-- <div class="col-md-2 mb-3">
           <label for="salas" class="form-label">Salas</label>
           <input v-model="form.salas" type="number" id="salas" class="form-control" />
-        </div>
+        </div> -->
         <!-- Mobiliado -->
         <div class="col-md-2 mb-3">
           <label for="mobiliado" class="form-label">Mobiliado</label>
@@ -149,6 +161,12 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
+ import {Money} from 'v-money'
+// import RangeSlider from 'vue-range-slider'
+// you probably need to import built-in style
+// import 'vue-range-slider/dist/vue-range-slider.css'
+// import VueThousandSeparator from 'vue-thousand-separator';
+
 
 const form = reactive({
   imobiliaria: '',
@@ -157,10 +175,19 @@ const form = reactive({
   bairro: '',
   negocio: '',
   finalidade: '',
+  valormax: 0,
+  valormin: 0,
 });
 
 const data = ref([]);
 const imobiliarias = ref([]);
+const cidades = ref([]);
+const bairros = ref([]);
+const negocios = ref([]);
+const finalidades = ref([]);
+
+const range = ref([-5, 5]);
+
 const pagination = reactive({
   page: 1,
   pageSize: 20,
@@ -176,6 +203,22 @@ const fetchData = async () => {
   const imobs = await fetch(`${urlraiz}/imoveisex/getimobiliarias`);
   const imobsresult = await imobs.json();
   imobiliarias.value = imobsresult.data;
+  // lista de cidades --------------------------------
+  const cities = await fetch(`${urlraiz}/imoveisex/getcidades`);
+  const citiesresult = await cities.json();
+  cidades.value = citiesresult.data;
+  // lista de bairros --------------------------------
+  const bairrosx = await fetch(`${urlraiz}/imoveisex/getbairros`);
+  const bairrosxresult = await bairrosx.json();
+  bairros.value = bairrosxresult.data;
+  // lista de negocios --------------------------------
+  const negociosx = await fetch(`${urlraiz}/imoveisex/getnegocios`);
+  const negociosxresult = await negociosx.json();
+  negocios.value = negociosxresult.data;
+  // lista de finalidades --------------------------------
+  const finalidadesx = await fetch(`${urlraiz}/imoveisex/getfinalidades`);
+  const finalidadesxresult = await finalidadesx.json();
+  finalidades.value = finalidadesxresult.data;
 
   data.value = result.data;
   pagination.total = result.pagination.total;
@@ -191,6 +234,13 @@ const handleFilter = () => {
 
 const changePage = (newPage) => {
   pagination.page = newPage;
+  fetchData();
+};
+const alteraomax = () => {
+  // console.log('chamou a function');
+  if (form.valormax < form.valormin) {
+    form.valormax = form.valormin + 1;
+  }
   fetchData();
 };
 
