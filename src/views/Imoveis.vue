@@ -1,6 +1,7 @@
 <template>
-  <div class="container mt-5">
-    <h2>Formulário de Pesquisa</h2>
+  <div class="container mt-0 p-5 br-2 bg-white" style="border-top-right-radius: 90px">
+    <h2>Pesquisar Imóveis externos</h2>
+    <hr>
     <form @submit.prevent="handleFilter">
       <div class="row">
         <!-- Imobiliária -->
@@ -12,10 +13,12 @@
           </select>
         </div>
         <!-- Estado -->
-        <!-- <div class="col-md-3 mb-3">
+        <!--
+        <div class="col-md-3 mb-3">
           <label for="estado" class="form-label">Estado</label>
           <input v-model="form.estado" type="text" id="estado" class="form-control" />
-        </div> -->
+        </div>
+        -->
         <!-- Cidade -->
         <div class="col-md-3 mb-3">
           <label for="cidade" class="form-label">Cidade</label>
@@ -31,14 +34,6 @@
           <select v-model="form.bairro" id="bairro" class="form-select">
             <option value="">Todas</option>
             <option v-for="imb in bairros" :value="imb.bairro" :key="imb.bairro">{{imb.bairro}}</option>
-          </select>
-        </div>
-        <!-- Negócio -->
-        <div class="col-md-3 mb-3">
-          <label for="negocio" class="form-label">Negócio</label>
-          <select v-model="form.negocio" id="negocio" class="form-select">
-            <option value="">Todos</option>
-            <option v-for="imb in negocios" :value="imb.negocio" :key="imb.negocio">{{imb.negocio}}</option>
           </select>
         </div>
         <!-- Finalidade/Tipo -->
@@ -63,23 +58,56 @@
         </div>
         <!-- Área -->
         <div class="col-md-3 mb-3">
-          <label for="area" class="form-label">Área (m²)</label>
-          <input v-model="form.area" type="number" id="area" class="form-control" />
+          <label for="areamin" class="form-label">Área Mínima (m²)</label>
+          <input v-model="form.areamin" type="number" id="areamin" class="form-control" />
         </div>
-        <!-- Banheiros -->
-        <div class="col-md-2 mb-3">
-          <label for="banheiros" class="form-label">Banheiros</label>
-          <input v-model="form.banheiros" type="number" id="banheiros" class="form-control" />
+        <div class="col-md-3 mb-3">
+          <label for="areamax" class="form-label">Área Máxima (m²)</label>
+          <input v-model="form.areamin" type="number" id="areamax" class="form-control" />
+        </div>
+        <!-- Negócio -->
+        <div class="col-md-4 mb-3">
+          <label for="negocio" class="form-label">Negócio</label>
+          <select v-model="form.negocio" id="negocio" class="form-select">
+            <option value="">Todos</option>
+            <option v-for="imb in negocios" :value="imb.negocio" :key="imb.negocio">{{imb.negocio}}</option>
+          </select>
         </div>
         <!-- Dormitórios -->
         <div class="col-md-2 mb-3">
           <label for="dormitorios" class="form-label">Dormitórios</label>
-          <input v-model="form.dormitorios" type="number" id="dormitorios" class="form-control" />
+          <!-- <input v-model="form.dormitorios" type="number" id="dormitorios" class="form-control" /> -->
+          <select class="form-select" v-model="form.dormitorios" id="dormitorios">
+            <option value="0">Selecione</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+        <!-- Banheiros -->
+        <div class="col-md-2 mb-3">
+          <label for="banheiros" class="form-label">Banheiros</label>
+          <!-- <input v-model="form.banheiros" type="number" id="banheiros" class="form-control" /> -->
+          <select class="form-select" v-model="form.banheiros" id="banheiros">
+            <option value="0">Selecione</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
         </div>
         <!-- Garagens -->
         <div class="col-md-2 mb-3">
           <label for="garagens" class="form-label">Garagens</label>
-          <input v-model="form.garagens" type="number" id="garagens" class="form-control" />
+          <!-- <input v-model="form.garagens" type="number" id="garagens" class="form-control" /> -->
+          <select class="form-select" v-model="form.garagens" id="garagens">
+            <option value="0">Selecione</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
         </div>
         <!-- Salas -->
         <!-- <div class="col-md-2 mb-3">
@@ -90,9 +118,10 @@
         <div class="col-md-2 mb-3">
           <label for="mobiliado" class="form-label">Mobiliado</label>
           <select v-model="form.mobiliado" id="mobiliado" class="form-select">
-            <option value="" disabled>Selecione</option>
-            <option value="sim">Sim</option>
-            <option value="nao">Não</option>
+            <option value="3">Tanto faz</option>
+            <option value="2">Semi-mobiliado</option>
+            <option value="1">Mobiliado</option>
+            <option value="0">Não mobiliado</option>
           </select>
         </div>
         <!-- <div class="col-md-2 mb-3">
@@ -106,18 +135,21 @@
       </div>
     </form>
 
-    <h2 class="mt-5">Resultados</h2>
+    <h3 class="mt-5">Resultados</h3>
+    <label class="fs-12 fw-bolder">({{ pagination.total }} imóveis)</label>
+    <hr>
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Imobiliária</th>
-          <th>Estado</th>
+          <!-- <th>Estado</th> -->
           <th>Cidade</th>
           <th>Bairro</th>
           <th>Negócio</th>
           <th>Finalidade</th>
           <th>Valor</th>
-          <th>Área</th>
+          <th>Área (m²)</th>
+          <th>Detalhes:</th>
           <!-- <th>Banheiros</th>
           <th>Dormitórios</th>
           <th>Garagens</th> -->
@@ -127,18 +159,23 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
-          <td>{{ item.imobiliaria }}</td>
-          <td>{{ item.estado }}</td>
+          <td><a :href="item.url" target="_blank"><font-awesome-icon icon="link"/> {{ item.imobiliaria ? item.imobiliaria : 'ver imóvel' }}</a></td>
+          <!-- <td>{{ item.estado }}</td> -->
           <td>{{ item.cidade }}</td>
           <td>{{ item.bairro }}</td>
           <td>{{ item.negocio }}</td>
-          <td>{{ item.finalidade }}</td>
+          <td>{{ item.finalidade == 'Locacao' ? 'Locação' : item.finalidade }}</td>
           <td>R$ {{ Math.round(item.valor).toLocaleString() }}</td>
-          <td>{{ item.area }}</td>
+          <td>{{ Math.round(item.area).toLocaleString() }}</td>
           <!-- <td>{{ item.banheiros }}</td>
           <td>{{ item.dormitorios }}</td>
           <td>{{ item.garagens }}</td> -->
           <!-- <td>{{ item.salas }}</td> -->
+          <td>
+            <font-awesome-icon icon="bed"/> {{ item.dormitorios }} |
+            <font-awesome-icon icon="shower"/> {{ item.banheiros }} |
+            <font-awesome-icon icon="car"/> {{ item.garagens }}
+          </td>
           <td :class="item.mobiliado == '1' ? 'fw-bolder text-success' : 'text-danger'">{{ item.mobiliado == '1' ? "Sim" : "Não" }}</td>
         </tr>
       </tbody>
@@ -177,6 +214,12 @@ const form = reactive({
   finalidade: '',
   valormax: 0,
   valormin: 0,
+  areamax: 0,
+  areamin: 0,
+  dormitorios: 0,
+  garagens: 0,
+  banheiros: 0,
+  mobiliado: 3,
 });
 
 const data = ref([]);
@@ -190,13 +233,29 @@ const range = ref([-5, 5]);
 
 const pagination = reactive({
   page: 1,
-  pageSize: 20,
+  pageSize: 100,
   total: 0,
 });
 const urlraiz = 'http://localhost:8080';
 
 const fetchData = async () => {
-  const response = await fetch(`${urlraiz}/imoveisex/getimoveis?page=${pagination.page}&pageSize=${pagination.pageSize}&imobiliaria=${form.imobiliaria}&estado=${form.estado}&cidade=${form.cidade}&bairro=${form.bairro}&negocio=${form.negocio}&finalidade=${form.finalidade}`);
+  const response = await fetch(`${urlraiz}/imoveisex/getimoveis?page=${pagination.page}` +
+    `&pageSize=${pagination.pageSize}` +
+    `&imobiliaria=${form.imobiliaria}` +
+    `&estado=${form.estado}` +
+    `&cidade=${form.cidade}` +
+    `&bairro=${form.bairro}` +
+    `&negocio=${form.negocio}` +
+    `&finalidade=${form.finalidade}` +
+    `&valormin=${form.valormin}` +
+    `&valormax=${form.valormax}` +
+    `&areamin=${form.areamin}` +
+    `&areamax=${form.areamax}` +
+    `&dormitorios=${form.dormitorios}` +
+    `&banheiros=${form.banheiros}` +
+    `&garagens=${form.garagens}` +
+    `&mobiliado=${form.mobiliado}` +
+  ``);
   const result = await response.json();
   // console.log(result)
   // lista de imobiliárias --------------------------------
@@ -236,13 +295,13 @@ const changePage = (newPage) => {
   pagination.page = newPage;
   fetchData();
 };
-const alteraomax = () => {
-  // console.log('chamou a function');
-  if (form.valormax < form.valormin) {
-    form.valormax = form.valormin + 1;
-  }
-  fetchData();
-};
+// const alteraomax = () => {
+//   // console.log('chamou a function');
+//   if (form.valormax < form.valormin) {
+//     form.valormax = form.valormin + 1;
+//   }
+//   fetchData();
+// };
 
 const totalPages = computed(() => Math.ceil(pagination.total / pagination.pageSize));
 

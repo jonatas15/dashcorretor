@@ -5,6 +5,11 @@ import router from './router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from "@fortawesome/fontawesome-svg-core"
 import { faPhone } from "@fortawesome/free-solid-svg-icons"
+import { faBed } from "@fortawesome/free-solid-svg-icons"
+import { faToilet } from "@fortawesome/free-solid-svg-icons"
+import { faCar } from "@fortawesome/free-solid-svg-icons"
+import { faShower } from "@fortawesome/free-solid-svg-icons"
+import { faLink } from "@fortawesome/free-solid-svg-icons"
 import { faHome } from "@fortawesome/free-solid-svg-icons"
 import { faStar } from "@fortawesome/free-solid-svg-icons"
 import { faList } from "@fortawesome/free-solid-svg-icons"
@@ -28,6 +33,11 @@ import { faFilePdf } from "@fortawesome/free-solid-svg-icons"
 import { faFileExcel } from "@fortawesome/free-solid-svg-icons"
 // import { faWhatsapp } from "@fortawesome/free-regular-svg-icons"
 library.add(faPhone)
+library.add(faBed)
+library.add(faToilet)
+library.add(faCar)
+library.add(faShower)
+library.add(faLink)
 library.add(faHome)
 library.add(faStar)
 library.add(faList)
