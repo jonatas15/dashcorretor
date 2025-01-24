@@ -138,6 +138,27 @@
     <h3 class="mt-5">Resultados</h3>
     <label class="fs-12 fw-bolder">({{ pagination.total }} imóveis)</label>
     <hr>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">{{ Math.round(pagination.total).toLocaleString() }}</div>
+          <div class="card-footer">Total</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">{{ Math.round(totalvendas).toLocaleString() }}</div>
+          <div class="card-footer">Total em Vendas</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">{{ Math.round(totalalugas).toLocaleString() }}</div>
+          <div class="card-footer">Total em Locações</div>
+        </div>
+      </div>
+    </div>
+    <hr>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -172,11 +193,16 @@
           <td>{{ item.garagens }}</td> -->
           <!-- <td>{{ item.salas }}</td> -->
           <td>
-            <font-awesome-icon icon="bed"/> {{ item.dormitorios }} |
-            <font-awesome-icon icon="shower"/> {{ item.banheiros }} |
-            <font-awesome-icon icon="car"/> {{ item.garagens }}
+            <div class="row">
+
+              <span class="col m-0 p-0" v-if="item.dormitorios"><font-awesome-icon icon="bed"/> {{ item.dormitorios }}</span>
+              <span class="col m-0 p-0" v-if="item.banheiros"><font-awesome-icon icon="shower"/> {{ item.banheiros }}</span>
+              <span class="col m-0 p-0" v-if="item.garagens"><font-awesome-icon icon="car"/> {{ item.garagens }}</span>
+            </div>
           </td>
-          <td :class="item.mobiliado == '1' ? 'fw-bolder text-success' : 'text-danger'">{{ item.mobiliado == '1' ? "Sim" : "Não" }}</td>
+          <td v-if="item.mobiliado == 1" class="text-success">Mobiliado</td>
+          <td v-else-if="item.mobiliado == 2" class="text-primary">Semi-mobiliado</td>
+          <td v-else class="text-danger">Não mobiliado</td>
         </tr>
       </tbody>
     </table>
@@ -205,7 +231,7 @@ import { ref, reactive, computed, onMounted } from 'vue';
 // import VueThousandSeparator from 'vue-thousand-separator';
 
 
-const form = reactive({
+const initialForm = {
   imobiliaria: '',
   estado: '',
   cidade: '',
@@ -220,9 +246,13 @@ const form = reactive({
   garagens: 0,
   banheiros: 0,
   mobiliado: 3,
-});
+};
+
+const form = reactive({ ...initialForm });
 
 const data = ref([]);
+const totalvendas = ref();
+const totalalugas = ref();
 const imobiliarias = ref([]);
 const cidades = ref([]);
 const bairros = ref([]);
@@ -280,6 +310,9 @@ const fetchData = async () => {
   finalidades.value = finalidadesxresult.data;
 
   data.value = result.data;
+  totalvendas.value = result.totalvendas;
+  totalalugas.value = result.totalalugas;
+  // console.log(result);
   pagination.total = result.pagination.total;
 };
 
@@ -313,6 +346,11 @@ const totalPages = computed(() => Math.ceil(pagination.total / pagination.pageSi
 //     fetchData();
 //   }
 // };
+// Reseta o formulário para o estado inicial
+const resetForm = () => {
+  Object.assign(form, { ...initialForm });
+  fetchData();
+};
 
 onMounted(() => {
   fetchData();
