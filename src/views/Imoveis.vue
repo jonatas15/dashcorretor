@@ -63,7 +63,7 @@
         </div>
         <div class="col-md-3 mb-3">
           <label for="areamax" class="form-label">Área Máxima (m²)</label>
-          <input v-model="form.areamin" type="number" id="areamax" class="form-control" />
+          <input v-model="form.areamax" type="number" id="areamax" class="form-control" />
         </div>
         <!-- Negócio -->
         <div class="col-md-4 mb-3">
@@ -134,11 +134,13 @@
         <button type="button" class="btn btn-secondary" @click="resetForm">Limpar Campos</button>
       </div>
     </form>
-
-    <h3 class="mt-5">Resultados</h3>
-    <label class="fs-12 fw-bolder">({{ pagination.total }} imóveis)</label>
-    <hr>
-    <div class="row">
+    <div v-show="carregando">
+      <img src="@/assets/actions/please-wait.gif" />
+    </div>
+    <h3 class="mt-5" v-show="!carregando">Resultados</h3>
+    <label class="fs-12 fw-bolder" v-show="!carregando">({{ pagination.total }} imóveis)</label>
+    <hr v-show="!carregando">
+    <div class="row" v-show="!carregando">
       <div class="col-md-4">
         <div class="card">
           <div class="card-body">{{ Math.round(pagination.total).toLocaleString() }}</div>
@@ -158,8 +160,8 @@
         </div>
       </div>
     </div>
-    <hr>
-    <table class="table table-striped">
+    <hr v-show="!carregando">
+    <table class="table table-striped" v-show="!carregando">
       <thead>
         <tr>
           <th>Imobiliária</th>
@@ -170,7 +172,7 @@
           <th>Finalidade</th>
           <th>Valor</th>
           <th>Área (m²)</th>
-          <th>Detalhes:</th>
+          <th>Cômodos</th>
           <!-- <th>Banheiros</th>
           <th>Dormitórios</th>
           <th>Garagens</th> -->
@@ -210,7 +212,7 @@
       Carregar Mais
     </button> -->
     <!-- Paginação -->
-    <div class="pagination">
+    <div class="pagination" v-show="!carregando">
       <button class="btn btn-info" :disabled="pagination.page === 1" @click="changePage(pagination.page - 1)">
         Anterior
       </button>
@@ -224,7 +226,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
- import {Money} from 'v-money'
+import {Money} from 'v-money';
 // import RangeSlider from 'vue-range-slider'
 // you probably need to import built-in style
 // import 'vue-range-slider/dist/vue-range-slider.css'
@@ -250,6 +252,8 @@ const initialForm = {
 
 const form = reactive({ ...initialForm });
 
+const carregando = ref(false);
+
 const data = ref([]);
 const totalvendas = ref();
 const totalalugas = ref();
@@ -266,9 +270,10 @@ const pagination = reactive({
   pageSize: 100,
   total: 0,
 });
-const urlraiz = 'http://localhost:8080';
-
+// const urlraiz = 'http://localhost:8080';
+const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
 const fetchData = async () => {
+  carregando.value = true;
   const response = await fetch(`${urlraiz}/imoveisex/getimoveis?page=${pagination.page}` +
     `&pageSize=${pagination.pageSize}` +
     `&imobiliaria=${form.imobiliaria}` +
@@ -314,6 +319,7 @@ const fetchData = async () => {
   totalalugas.value = result.totalalugas;
   // console.log(result);
   pagination.total = result.pagination.total;
+  carregando.value = false;
 };
 
 

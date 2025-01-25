@@ -191,7 +191,8 @@ export default {
       anovindo: "2024",
       searchCorretor: 1,
       posicao: 0,
-      apibase: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor",
+      // apibase: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor",
+      apibase: "http://localhost:8080/api/corretor",
       macros: [
         {
           campo: "Leads Recebidos",
