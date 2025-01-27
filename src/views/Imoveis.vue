@@ -31,10 +31,24 @@
         <div class="col-md-3 mb-3">
           <label for="bairro" class="form-label">Bairro</label>
           <!-- <input v-model="form.bairro" type="text" id="bairro" class="form-control" /> -->
-          <select v-model="form.bairro" id="bairro" class="form-select">
+          <!-- <select v-model="form.bairro" id="bairro" class="form-select">
             <option value="">Todas</option>
             <option v-for="imb in bairros" :value="imb.bairro" :key="imb.bairro">{{imb.bairro}}</option>
-          </select>
+          </select> -->
+        </div>
+        <div class="col-md-12 mb-3">
+          <div class="card p-1 bairros_listados">
+          <label for="bairro" class="form-label py-2" @click="toggleDiv">
+            Bairros: {{ form.bairro.length > 0 ?  form.bairro + " | ⏷" : 'Selecione 1/mais bairros ⏷' }}
+          </label>
+          <div class="row mx-2" v-show="verBairros" @click.self="hideDiv">
+              <hr>
+              <div class="col-md-4" style="text-align: left;" v-for="(opcao, index) in bairros" :key="index">
+                <input type="checkbox" :value="opcao.bairro" v-model="form.bairro" :id="'bairro-' + index">
+                <label :for="'bairro-' + index"><span>&ensp;</span>{{ opcao.bairro }}</label>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- Finalidade/Tipo -->
         <div class="col-md-3 mb-3">
@@ -66,12 +80,19 @@
           <input v-model="form.areamax" type="number" id="areamax" class="form-control" />
         </div>
         <!-- Negócio -->
-        <div class="col-md-4 mb-3">
-          <label for="negocio" class="form-label">Negócio</label>
-          <select v-model="form.negocio" id="negocio" class="form-select">
-            <option value="">Todos</option>
-            <option v-for="imb in negocios" :value="imb.negocio" :key="imb.negocio">{{imb.negocio}}</option>
-          </select>
+        <div class="col-md-12 mb-3">
+          <div class="card p-1">
+          <label for="negocio" class="form-label py-2" @click="verNegocios = !verNegocios">
+            Negócios: {{ form.negocio.length > 0 ?  form.negocio + " | ⏷" : 'Selecione 1/mais negócios ⏷' }}
+          </label>
+          <div class="row mx-2" v-show="verNegocios">
+              <hr>
+              <div class="col-md-4" style="text-align: left;" v-for="(opcao, index) in negocios" :key="index">
+                <input type="checkbox" :value="opcao.negocio" v-model="form.negocio" :id="'negocio-' + index">
+                <label :for="'negocio-' + index"><span>&ensp;</span>{{ opcao.negocio }}</label>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- Dormitórios -->
         <div class="col-md-2 mb-3">
@@ -225,7 +246,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue';
 import {Money} from 'v-money';
 // import RangeSlider from 'vue-range-slider'
 // you probably need to import built-in style
@@ -237,8 +258,8 @@ const initialForm = {
   imobiliaria: '',
   estado: '',
   cidade: '',
-  bairro: '',
-  negocio: '',
+  bairro: ref([]),
+  negocio: ref([]),
   finalidade: '',
   valormax: 0,
   valormin: 0,
@@ -253,6 +274,8 @@ const initialForm = {
 const form = reactive({ ...initialForm });
 
 const carregando = ref(false);
+const verNegocios = ref(false);
+const verBairros = ref(false);
 
 const data = ref([]);
 const totalvendas = ref();
@@ -262,6 +285,8 @@ const cidades = ref([]);
 const bairros = ref([]);
 const negocios = ref([]);
 const finalidades = ref([]);
+const urlraiz = 'http://localhost:8080';
+// const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 
@@ -270,8 +295,7 @@ const pagination = reactive({
   pageSize: 100,
   total: 0,
 });
-// const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
+
 const fetchData = async () => {
   carregando.value = true;
   const response = await fetch(`${urlraiz}/imoveisex/getimoveis?page=${pagination.page}` +
@@ -358,8 +382,30 @@ const resetForm = () => {
   fetchData();
 };
 
+
+const handleClickOutside = (event) => {
+  if (verBairros.value && !event.target.closest('.bairros_listados')) {
+    hideDiv();
+    console.log('fecha a div');
+  }
+};
+const toggleDiv = () => {
+  verBairros.value = !verBairros.value;
+  console.log('troca div');
+  console.log(verBairros.value);
+};
+
+const hideDiv = () => {
+  verBairros.value = false;
+};
+
 onMounted(() => {
   fetchData();
+  document.addEventListener('click', handleClickOutside);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
 });
 </script>
 
