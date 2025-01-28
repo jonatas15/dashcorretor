@@ -127,21 +127,21 @@ export default {
               <font-awesome-icon icon="chart-column" class="fa-2xl" /> Relatórios de Visitas e Prospecção
             </router-link>
           </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/registro-visitas">
               <font-awesome-icon icon="thumbtack" class="fa-2xl" /> Registrar as visitas
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/imoveis">
               <font-awesome-icon icon="house" class="fa-2xl" /> Imóveis Externos
             </router-link>
           </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/followup">
               <font-awesome-icon icon="house" class="fa-2xl" /> Follow-up de METAS
             </router-link>
-          </li>
+          </li> -->
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/documentos">
               <font-awesome-icon icon="download" class="fa-2xl" /> Documentos
@@ -232,14 +232,14 @@ export default {
                 <label class="label-icon">Relatórios de Visitas e Prospecção</label>
               </router-link>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link to="/registro-visitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="thumbtack" class="fa-2xl" />
                 <br>
                 <label class="label-icon">Registrar as visitas</label>
               </router-link>
-            </li>
+            </li> -->
             <li class="nav-item">
               <router-link to="/imoveis" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
@@ -248,14 +248,14 @@ export default {
                 <label class="label-icon">Pesquisar Imóveis Externos</label>
               </router-link>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link to="/followup" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="list" class="fa-2xl" />
                 <br>
                 <label class="label-icon"> Follow-up de METAS</label>
               </router-link>
-            </li>
+            </li> -->
             <li class="nav-item">
               <router-link to="/documentos" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">

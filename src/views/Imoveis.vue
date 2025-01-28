@@ -5,7 +5,7 @@
     <form @submit.prevent="handleFilter">
       <div class="row">
         <!-- Imobiliária -->
-        <div class="col-md-3 mb-3">
+        <div class="col-md-4 mb-3">
           <label for="imobiliaria" class="form-label">Imobiliária</label>
           <select v-model="form.imobiliaria" id="imobiliaria" class="form-select">
             <option value="">Todas</option>
@@ -20,35 +20,12 @@
         </div>
         -->
         <!-- Cidade -->
-        <div class="col-md-3 mb-3">
+        <div class="col-md-5 mb-3">
           <label for="cidade" class="form-label">Cidade</label>
           <select v-model="form.cidade" id="cidade" class="form-select">
             <option value="">Todas</option>
             <option v-for="imb in cidades" :value="imb.cidade" :key="imb.cidade">{{imb.cidade}}</option>
           </select>
-        </div>
-        <!-- Bairro -->
-        <div class="col-md-3 mb-3">
-          <label for="bairro" class="form-label">Bairro</label>
-          <!-- <input v-model="form.bairro" type="text" id="bairro" class="form-control" /> -->
-          <!-- <select v-model="form.bairro" id="bairro" class="form-select">
-            <option value="">Todas</option>
-            <option v-for="imb in bairros" :value="imb.bairro" :key="imb.bairro">{{imb.bairro}}</option>
-          </select> -->
-        </div>
-        <div class="col-md-12 mb-3">
-          <div class="card p-1 bairros_listados">
-          <label for="bairro" class="form-label py-2" @click="toggleDiv">
-            Bairros: {{ form.bairro.length > 0 ?  form.bairro + " | ⏷" : 'Selecione 1/mais bairros ⏷' }}
-          </label>
-          <div class="row mx-2" v-show="verBairros" @click.self="hideDiv">
-              <hr>
-              <div class="col-md-4" style="text-align: left;" v-for="(opcao, index) in bairros" :key="index">
-                <input type="checkbox" :value="opcao.bairro" v-model="form.bairro" :id="'bairro-' + index">
-                <label :for="'bairro-' + index"><span>&ensp;</span>{{ opcao.bairro }}</label>
-              </div>
-            </div>
-          </div>
         </div>
         <!-- Finalidade/Tipo -->
         <div class="col-md-3 mb-3">
@@ -58,9 +35,22 @@
             <option v-for="imb in finalidades" :value="imb.finalidade" :key="imb.finalidade">{{ imb.finalidade == 'Locacao' ? 'Locação' : imb.finalidade }}</option>
           </select>
         </div>
+        <!-- Bairro -->
+        <div class="col-md-12 mb-3">
+          <div class="card p-1 bairros_listados">
+          <label for="bairro" class="form-label py-2" @click="toggleDiv">
+            Bairros: {{ form.bairro.length > 0 ?  form.bairro + " | ⏷" : 'Selecione 1/mais bairros ⏷' }}
+          </label>
+          <div class="row mx-2" v-show="verBairros" @click.self="hideDiv">
+              <hr>
+              <div class="col-md-4" style="text-align: left;" v-for="(opcao, index) in bairros" :key="index">
+                <input type="checkbox" :value="opcao.bairro" v-model="form.bairro" :id="'bairro-' + index">
+                <label :for="'bairro-' + index"><span>&ensp;</span>{{ reduz_ns(opcao.bairro) }}</label>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Valor -->
-        <!-- <input v-model="form.valormin" type="range" id="valormax" class="form-range" @change="alteraomax" /> -->
-        <!-- <input v-model="form.valormax" type="range" id="valormax2" class="form-range" /> -->
         <div class="col-md-3 mb-3">
           <label for="valor" class="form-label">Valor Mínimo (R$)</label>
           <!-- @change="alteraomax" -->
@@ -81,11 +71,11 @@
         </div>
         <!-- Negócio -->
         <div class="col-md-12 mb-3">
-          <div class="card p-1">
-          <label for="negocio" class="form-label py-2" @click="verNegocios = !verNegocios">
+          <div class="card p-1 negocios_listados">
+          <label for="negocio" class="form-label py-2" @click="toggleDiv2">
             Negócios: {{ form.negocio.length > 0 ?  form.negocio + " | ⏷" : 'Selecione 1/mais negócios ⏷' }}
           </label>
-          <div class="row mx-2" v-show="verNegocios">
+          <div class="row mx-2" v-show="verNegocios" @click.self="hideDiv2">
               <hr>
               <div class="col-md-4" style="text-align: left;" v-for="(opcao, index) in negocios" :key="index">
                 <input type="checkbox" :value="opcao.negocio" v-model="form.negocio" :id="'negocio-' + index">
@@ -95,40 +85,48 @@
           </div>
         </div>
         <!-- Dormitórios -->
-        <div class="col-md-2 mb-3">
+        <div class="col-md-3 mb-3">
           <label for="dormitorios" class="form-label">Dormitórios</label>
           <!-- <input v-model="form.dormitorios" type="number" id="dormitorios" class="form-control" /> -->
-          <select class="form-select" v-model="form.dormitorios" id="dormitorios">
+          <!-- <select class="form-select" v-model="form.dormitorios" id="dormitorios">
             <option value="0">Selecione</option>
             <option value="1">1+</option>
             <option value="2">2+</option>
             <option value="3">3+</option>
             <option value="4">4+</option>
-          </select>
+          </select> -->
+          <div class="card px-1 py-0">
+            <div class="row">
+              <div class="col mt-0 pt-2 pb-0 mb-0" style="text-align: left;" v-for="(opcao, index) in dormitorios" :key="index">
+                <input type="checkbox" :value="opcao" v-model="form.dormitorios" :id="'dormitorio-' + index">
+                <label :for="'dormitorio-' + index"><span>&ensp;</span>{{ opcao }}</label>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- Banheiros -->
-        <div class="col-md-2 mb-3">
+        <div class="col-md-3 mb-3">
           <label for="banheiros" class="form-label">Banheiros</label>
-          <!-- <input v-model="form.banheiros" type="number" id="banheiros" class="form-control" /> -->
-          <select class="form-select" v-model="form.banheiros" id="banheiros">
-            <option value="0">Selecione</option>
-            <option value="1">1+</option>
-            <option value="2">2+</option>
-            <option value="3">3+</option>
-            <option value="4">4+</option>
-          </select>
+          <div class="card px-1 py-0">
+            <div class="row">
+              <div class="col mt-0 m-0 mx-0 pt-2 pb-0 mb-0" style="text-align: left;" v-for="(opcao, index) in banheiros" :key="index">
+                <input type="checkbox" :value="opcao" v-model="form.banheiros" :id="'banheiro-' + index">
+                <label :for="'banheiro-' + index"><span>&ensp;</span>{{ opcao }}</label>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- Garagens -->
-        <div class="col-md-2 mb-3">
+        <div class="col-md-3 mb-3">
           <label for="garagens" class="form-label">Garagens</label>
-          <!-- <input v-model="form.garagens" type="number" id="garagens" class="form-control" /> -->
-          <select class="form-select" v-model="form.garagens" id="garagens">
-            <option value="0">Selecione</option>
-            <option value="1">1+</option>
-            <option value="2">2+</option>
-            <option value="3">3+</option>
-            <option value="4">4+</option>
-          </select>
+          <div class="card px-1 py-0">
+            <div class="row">
+              <div class="col mt-0 m-0 mx-0 pt-2 pb-0 mb-0" style="text-align: left;" v-for="(opcao, index) in garagens" :key="index">
+                <input type="checkbox" :value="opcao" v-model="form.garagens" :id="'garagem-' + index">
+                <label :for="'garagem-' + index"><span>&ensp;</span>{{ opcao }}</label>
+              </div>
+            </div>
+          </div>
         </div>
         <!-- Salas -->
         <!-- <div class="col-md-2 mb-3">
@@ -136,7 +134,7 @@
           <input v-model="form.salas" type="number" id="salas" class="form-control" />
         </div> -->
         <!-- Mobiliado -->
-        <div class="col-md-2 mb-3">
+        <div class="col-md-3 mb-3">
           <label for="mobiliado" class="form-label">Mobiliado</label>
           <select v-model="form.mobiliado" id="mobiliado" class="form-select">
             <option value="3">Tanto faz</option>
@@ -265,9 +263,9 @@ const initialForm = {
   valormin: 0,
   areamax: 0,
   areamin: 0,
-  dormitorios: 0,
-  garagens: 0,
-  banheiros: 0,
+  dormitorios: ref([]),
+  garagens: ref([]),
+  banheiros: ref([]),
   mobiliado: 3,
 };
 
@@ -284,9 +282,12 @@ const imobiliarias = ref([]);
 const cidades = ref([]);
 const bairros = ref([]);
 const negocios = ref([]);
+const dormitorios = ref(["1", "2", "3", "4+"]);
+const garagens = ref(["1", "2", "3", "4+"]);
+const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
-const urlraiz = 'http://localhost:8080';
-// const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
+// const urlraiz = 'http://localhost:8080';
+const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 
@@ -386,18 +387,21 @@ const resetForm = () => {
 const handleClickOutside = (event) => {
   if (verBairros.value && !event.target.closest('.bairros_listados')) {
     hideDiv();
-    console.log('fecha a div');
+  }
+  if (verNegocios.value && !event.target.closest('.negocios_listados')) {
+    hideDiv2();
   }
 };
-const toggleDiv = () => {
-  verBairros.value = !verBairros.value;
-  console.log('troca div');
-  console.log(verBairros.value);
-};
+const toggleDiv = () => { verBairros.value = !verBairros.value; };
+const hideDiv = () => { verBairros.value = false; };
+const toggleDiv2 = () => { verNegocios.value = !verNegocios.value; };
+const hideDiv2 = () => { verNegocios.value = false; };
 
-const hideDiv = () => {
-  verBairros.value = false;
-};
+const reduz_ns = (palavra) => {
+  var retorno = '';
+  retorno = palavra.replace(/Nossa Senhora/g, 'Nsaª').replace(/Santa Maria/g, 'SM');
+  return retorno;
+}
 
 onMounted(() => {
   fetchData();
