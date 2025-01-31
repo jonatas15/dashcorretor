@@ -62,8 +62,8 @@
     name: 'login',
     data() {
         return {
-            // apibase: 'http://localhost:8080/api/corretor',
-            apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
+            apibase: 'http://localhost:8080/api/corretor',
+            // apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
             errors: [],
             corretores: [],
             form: {
