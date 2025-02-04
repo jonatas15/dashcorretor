@@ -78,8 +78,8 @@ const meses = [
   // "novembro", "dezembro"
 ];
 
-const urlraiz = 'http://localhost:8080';
-// const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
+// const urlraiz = 'http://localhost:8080';
+const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
 
 function strMes(mes) {
   return meses[mes];

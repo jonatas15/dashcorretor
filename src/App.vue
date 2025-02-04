@@ -133,6 +133,11 @@ export default {
             </router-link>
           </li> -->
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+            <router-link class="nav-link" aria-current="page" to="/equacoes">
+              <font-awesome-icon icon="house" class="fa-2xl" /> Projeção de resultados
+            </router-link>
+          </li>
+          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/numacros">
               <font-awesome-icon icon="house" class="fa-2xl" /> Placas
             </router-link>
@@ -259,6 +264,14 @@ export default {
                 <font-awesome-icon icon="ticket" class="fa-2xl" />
                 <br>
                 <label class="label-icon">Placas</label>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/equacoes" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                <font-awesome-icon icon="chart-column" class="fa-2xl" />
+                <br>
+                <label class="label-icon">Projeção de Resultados 2025</label>
               </router-link>
             </li>
             <!-- <li class="nav-item">

@@ -9,6 +9,7 @@ import Universidade from '../views/Universidade.vue';
 import SolicitarContrato from '../views/SolicitarContrato.vue';
 import MeusResultados from '../views/MeusResultados.vue';
 import AnaliseDados from '../views/AnaliseDados.vue';
+import Equacoes from '../views/Equacoes.vue';
 import Visitas from '../views/Visitas.vue';
 import BuscarProprietario from '../views/BuscarProprietario.vue';
 import PesquisarCliente from '../views/PesquisarCliente.vue';
@@ -70,6 +71,16 @@ const router = createRouter({
       path: '/universidade',
       name: 'universidade',
       component: Universidade,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/equacoes',
+      name: 'equacoes',
+      component: Equacoes,
       meta: { 
         default: true,
         sidebar: false,
