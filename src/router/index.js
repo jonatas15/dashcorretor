@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import Administracao from '../views/Administracao.vue';
 import Numacros from '../views/Numacros.vue';
+import Marketplace from '../views/Marketplace.vue';
 import AdmVisitas from '../views/AdmVisitas.vue';
 import Imoveis from '../views/Imoveis.vue';
 import Followup from '../views/Followup.vue';
@@ -43,6 +44,16 @@ const router = createRouter({
       path: '/numacros',
       name: 'numacros',
       component: Numacros,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/marketplace',
+      name: 'marketplace',
+      component: Marketplace,
       meta: { 
         default: true,
         sidebar: false,

@@ -3,11 +3,11 @@
     <br>
     
     <div class="btn-group" role="group" aria-label="Basic example">
-      <router-link to="/numacros" class="btn btn-primary text-white fw-bolder">Placas</router-link>
-      <router-link to="/marketplace" class="btn btn-secondary text-white fw-bolder">Marketplace</router-link>
+      <router-link to="/numacros" class="btn btn-secondary text-white fw-bolder">Placas</router-link>
+      <router-link to="/marketplace" class="btn btn-primary text-white fw-bolder">Marketplace</router-link>
     </div>
     <hr>
-    <h4><strong>Placas</strong></h4>
+    <h4><strong>Marketplace</strong></h4>
     <!-- <h5 class="text-danger fw-bolder">Informe os códigos dos imóveis, separando-os por vírgula ","</h5>
     <sub class="text-info">É fácil, você consegue</sub> -->
     <!-- <br> -->
@@ -24,19 +24,19 @@
           <td class="border px-4 py-2">{{ corretor.nome }}</td>
           <td
             class="border px-2 py-2"
-            v-for="(valor, mes) in corretor.placas"
+            v-for="(valor, mes) in corretor.marketplace"
             :key="mes"
           >
               
             <div v-if="desabilitado[`${corretor.id}-${strMes(mes)}`]">
-              <p v-if="formatarImoveis(corretor.placas[mes])" v-html="formatarImoveis(corretor.placas[mes])" align="left"></p>
+              <p v-if="formatarImoveis(corretor.marketplace[mes])" v-html="formatarImoveis(corretor.marketplace[mes])" align="left"></p>
               <p v-else v-html="placasInputs[`${corretor.id}-${strMes(mes)}`].join('<br>')">
               </p>
             </div>
             <div v-else>
               <!-- <textarea
-                :class="'w-full text-center form-control ' + (corretor.placas[mes] >= 1 ? 'input-destaque' : '')"
-                v-model="corretor.placas[mes]"
+                :class="'w-full text-center form-control ' + (corretor.marketplace[mes] >= 1 ? 'input-destaque' : '')"
+                v-model="corretor.marketplace[mes]"
                 rows="6"
                 :disabled="desabilitado[`${corretor.id}-${strMes(mes)}`] || false"
                 >
@@ -48,16 +48,16 @@
                 v-model="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
                 class="form-control text-center my-1 ph-danger"
                 :disabled="desabilitado[`${corretor.id}-${strMes(mes)}`] || false"
-                :placeholder="'código #' + (index +1) +'º'"
+                :placeholder="'Link #' + (index +1) +'º'"
               />
-                <!-- @change="atualizarPlacas(corretor.id, strMes(mes), corretor.placas[mes])" -->
+                <!-- @change="atualizarPlacas(corretor.id, strMes(mes), corretor.marketplace[mes])" -->
                 <br>
                 <button 
                   class="btn btn-success"
-                  @click="atualizarPlacas(corretor.id, strMes(mes), corretor.placas[mes])"
+                  @click="atualizarPlacas(corretor.id, strMes(mes), corretor.marketplace[mes])"
                   :disabled="desabilitado[`${corretor.id}-${strMes(mes)}`]"
                 >🗹</button>
-              <!-- <label v-else>{{ corretor.placas[mes] }}</label> -->
+              <!-- <label v-else>{{ corretor.marketplace[mes] }}</label> -->
               <!-- {{ strMes(mes) }} -->
                 </div>
           </td>
@@ -103,11 +103,11 @@ const bloqueiacampo = ref(null);
 const placasInputs = reactive({}); // Armazena os valores de cada campo dividido
 
 
-const atualizarPlacas = async (corretorId, mes, quantidade) => {
-  console.log(`Atualizando placa do corretor ${corretorId} no mês ${mes} com valor ${quantidade}`);
+const atualizarPlacas = async (corretorId, mes, marketplace) => {
+  console.log(`Atualizando placa do corretor ${corretorId} no mês ${mes} com valor ${marketplace}`);
   // Exemplo de chamada para a API do backend
   const placasString = getPlacasFormatadas(corretorId, mes).value;
-  await fetch(`${urlraiz}/placas/atualiza?corretorId=${corretorId}&mes=${mes}&quantidade=${placasString}`);
+  await fetch(`${urlraiz}/placas/atualizamp?corretorId=${corretorId}&mes=${mes}&marketplace=${placasString}`);
   desabilitado[`${corretorId}-${mes}`] = true;
 };
 const carregarDados = async () => {
@@ -136,8 +136,8 @@ const carregarDados = async () => {
   const response = await fetch(urlraiz + "/placas" + filtracorretor);
   corretores.value = await response.json();
   corretores.value.forEach(corretor => {
-    Object.entries(corretor.placas).forEach(([mes, valor]) => {
-      placasInputs[`${corretor.id}-${strMes(mes)}`] = valor ? valor.split(',') : Array(10).fill("");
+    Object.entries(corretor.marketplace).forEach(([mes, valor]) => {
+      placasInputs[`${corretor.id}-${strMes(mes)}`] = valor ? valor.split(',') : Array(30).fill("");
       if (valor && valor != "") {
         desabilitado[`${corretor.id}-${strMes(mes)}`] = true;
         // console.log(`${valor} = ${strMes(mes)}`)

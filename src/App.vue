@@ -263,7 +263,7 @@ export default {
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="ticket" class="fa-2xl" />
                 <br>
-                <label class="label-icon">Placas</label>
+                <label class="label-icon">Placas e Marketplace</label>
               </router-link>
             </li>
             <li class="nav-item">
