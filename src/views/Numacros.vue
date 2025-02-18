@@ -8,11 +8,41 @@
     </div>
     <hr>
     <h4><strong>Placas</strong></h4>
-    <!-- <h5 class="text-danger fw-bolder">Informe os códigos dos imóveis, separando-os por vírgula ","</h5>
-    <sub class="text-info">É fácil, você consegue</sub> -->
-    <!-- <br> -->
-    <!-- <sub class="text-info">Acredite</sub> -->
-    <table class="table table-striped mt-5 w-full border-collapse border border-gray-300 bg-white md-table">
+    <table v-if="useradmin" class="table table-striped mt-5 w-full border-collapse border border-gray-300 bg-white md-table">
+      <thead>
+        <tr>
+          <th class="border px-4 py-2 pb-3"><b>Corretor</b></th>
+          <th class="border px-4 py-2 pb-3" v-for="mes in meses" :key="mes"><b>{{ abrevia(mes, 3) }}</b></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="corretor in corretores" :key="corretor.id" class="super-tr">
+          <td class="border px-4 py-2">{{ corretor.nome }}</td>
+          <td
+            class="border px-2 py-2"
+            v-for="(valor, mes) in corretor.marketplace"
+            :key="mes"
+          >
+            <div
+              v-for="(input, index) in placasInputs[`${corretor.id}-${strMes(mes)}`]"
+              :key="index" 
+            >
+              <a 
+                v-if="placasInputs[`${corretor.id}-${strMes(mes)}`][index] != ''" 
+                :href="'https://cafeimobiliaria.com.br/imovel/' + placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
+                :title="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
+                :alt="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
+                target="_blank" rel="noopener noreferrer"
+                class="btn btn-link fs-6"
+              >
+                Código #{{ placasInputs[`${corretor.id}-${strMes(mes)}`][index] }}
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <table v-else class="table table-striped mt-5 w-full border-collapse border border-gray-300 bg-white md-table">
       <thead>
         <tr>
           <th class="border px-4 py-2 pb-3"><b>Corretor</b></th>
@@ -28,26 +58,13 @@
             :key="mes"
           >
               
-            <div v-if="desabilitado[`${corretor.id}-${strMes(mes)}`]">
-              <p v-if="formatarImoveis(corretor.placas[mes])" v-html="formatarImoveis(corretor.placas[mes])" align="left"></p>
-              <p v-else v-html="placasInputs[`${corretor.id}-${strMes(mes)}`].join('<br>')">
-              </p>
-            </div>
-            <div v-else>
-              <!-- <textarea
-                :class="'w-full text-center form-control ' + (corretor.placas[mes] >= 1 ? 'input-destaque' : '')"
-                v-model="corretor.placas[mes]"
-                rows="6"
-                :disabled="desabilitado[`${corretor.id}-${strMes(mes)}`] || false"
-                >
-              </textarea> -->
-              <!-- {{ placasInputs }} -->
+            <div>
               <input
                 v-for="(input, index) in placasInputs[`${corretor.id}-${strMes(mes)}`]"
                 :key="index"
                 v-model="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
                 class="form-control text-center my-1 ph-danger"
-                :disabled="desabilitado[`${corretor.id}-${strMes(mes)}`] || false"
+                :disabled="desabilitado[`${corretor.id}-${strMes(mes)}-${index}`] || false"
                 :placeholder="'código #' + (index +1) +'º'"
               />
                 <!-- @change="atualizarPlacas(corretor.id, strMes(mes), corretor.placas[mes])" -->
@@ -71,6 +88,7 @@
 import { onMounted, computed, ref, reactive } from "vue";
 
 const desabilitado = reactive({});
+const useradmin = ref(false);
 
 const formatarImoveis = (lista) => {
   // console.log(lista)
@@ -108,7 +126,9 @@ const atualizarPlacas = async (corretorId, mes, quantidade) => {
   // Exemplo de chamada para a API do backend
   const placasString = getPlacasFormatadas(corretorId, mes).value;
   await fetch(`${urlraiz}/placas/atualiza?corretorId=${corretorId}&mes=${mes}&quantidade=${placasString}`);
-  desabilitado[`${corretorId}-${mes}`] = true;
+  // desabilitado[`${corretorId}-${mes}`] = true;
+  alert("Link Adicionado com sucesso");
+  window.location.reload();
 };
 const carregarDados = async () => {
   // Inicializa os registros no backend
@@ -137,10 +157,11 @@ const carregarDados = async () => {
   corretores.value = await response.json();
   corretores.value.forEach(corretor => {
     Object.entries(corretor.placas).forEach(([mes, valor]) => {
-      placasInputs[`${corretor.id}-${strMes(mes)}`] = valor ? valor.split(',') : Array(10).fill("");
+      placasInputs[`${corretor.id}-${strMes(mes)}`] = valor ? valor.split(',').concat(Array(10 - valor.split(',').length).fill("")) : Array(10).fill("");
       if (valor && valor != "") {
-        desabilitado[`${corretor.id}-${strMes(mes)}`] = true;
-        // console.log(`${valor} = ${strMes(mes)}`)
+        for (let index = 0; index < valor.split(',').length; index++) {
+          desabilitado[`${corretor.id}-${strMes(mes)}-${index}`] = true;
+        }
       }
     });
   });
@@ -152,7 +173,17 @@ const getPlacasFormatadas = (corretorId, mes) => {
   return computed(() => placasInputs[`${corretorId}-${mes}`]?.filter(v => v.trim() !== "").join(',') || "");
 };
 // fecha
-onMounted(carregarDados);
+onMounted(() => {
+  if (localStorage.getItem("authUser")) {
+    var dadoscorretor = localStorage.getItem("authUser");
+    var corretor = JSON.parse(dadoscorretor);
+    var searchCorretor = corretor.id;
+  }
+  if (searchCorretor == 1 || searchCorretor == 10 || searchCorretor == 73  || searchCorretor == 43  || searchCorretor == 91) {
+    useradmin.value = true;
+  }
+  carregarDados();
+});
 
 </script>
 <style scoped>
