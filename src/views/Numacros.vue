@@ -23,9 +23,11 @@
             v-for="(valor, mes) in corretor.marketplace"
             :key="mes"
           >
+            {{ placasInputs[`${corretor.id}-${strMes(mes)}`].filter(item => item).length }}
+            <!-- 
             <div
               v-for="(input, index) in placasInputs[`${corretor.id}-${strMes(mes)}`]"
-              :key="index" 
+              :key="index"
             >
               <a 
                 v-if="placasInputs[`${corretor.id}-${strMes(mes)}`][index] != ''" 
@@ -38,6 +40,7 @@
                 Código #{{ placasInputs[`${corretor.id}-${strMes(mes)}`][index] }}
               </a>
             </div>
+            -->
           </td>
         </tr>
       </tbody>

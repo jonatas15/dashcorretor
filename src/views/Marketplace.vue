@@ -23,6 +23,8 @@
             v-for="(valor, mes) in corretor.marketplace"
             :key="mes"
           >
+            {{ placasInputs[`${corretor.id}-${strMes(mes)}`].filter(item => item).length }}
+            <!--
             <div
               v-for="(input, index) in placasInputs[`${corretor.id}-${strMes(mes)}`]"
               :key="index" 
@@ -38,6 +40,7 @@
                 Link #{{ index + 1 <= 9 ? "0" : "" }}{{ index + 1 }}
               </a>
             </div>
+            -->
           </td>
         </tr>
       </tbody>
