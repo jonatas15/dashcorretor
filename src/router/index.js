@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import Administracao from '../views/Administracao.vue';
+import Atendimento from '../views/Atendimento.vue';
+import Download from '../views/Download.vue';
 import Numacros from '../views/Numacros.vue';
 import Marketplace from '../views/Marketplace.vue';
 import AdmVisitas from '../views/AdmVisitas.vue';
@@ -24,6 +26,26 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/atendimento',
+      name: 'atendimento',
+      component: Atendimento,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/download',
+      name: 'download',
+      component: Download,
       meta: { 
         default: true,
         sidebar: false,

@@ -70,9 +70,9 @@
                 :key="index"
                 v-model="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
                 class="form-control text-center my-1 ph-danger"
-                :disabled="desabilitado[`${corretor.id}-${strMes(mes)}-${index}`] || false"
                 :placeholder="'Link #' + (index +1) +'º'"
-              />
+                />
+                <!-- :disabled="desabilitado[`${corretor.id}-${strMes(mes)}-${index}`] || false" -->
                 <br>
                 <button 
                   class="btn btn-success"

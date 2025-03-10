@@ -67,10 +67,9 @@
                 :key="index"
                 v-model="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
                 class="form-control text-center my-1 ph-danger"
-                :disabled="desabilitado[`${corretor.id}-${strMes(mes)}-${index}`] || false"
                 :placeholder="'código #' + (index +1) +'º'"
-              />
-                <!-- @change="atualizarPlacas(corretor.id, strMes(mes), corretor.placas[mes])" -->
+                />
+                <!-- :disabled="desabilitado[`${corretor.id}-${strMes(mes)}-${index}`] || false" -->
                 <br>
                 <button 
                   class="btn btn-success"

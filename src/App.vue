@@ -122,6 +122,11 @@ export default {
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Administração
             </router-link>
           </li>
+          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+            <router-link class="nav-link" aria-current="page" to="/atendimento">
+              <font-awesome-icon icon="gauge" class="fa-2xl" /> Script de Atendimento
+            </router-link>
+          </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretoresadmin">
             <router-link class="nav-link" aria-current="page" to="/admvisitas">
               <font-awesome-icon icon="chart-column" class="fa-2xl" /> Relatórios de Visitas e Prospecção
@@ -234,6 +239,14 @@ export default {
                 <label class="label-icon">Administração</label>
               </router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/atendimento" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Script de Atendimento">
+                <font-awesome-icon icon="gauge" class="fa-2xl" />
+                <br>
+                <label class="label-icon">Script de Atendimento</label>
+              </router-link>
+            </li>
             <li class="nav-item" v-if="corretoresadmin">
               <router-link to="/admvisitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Administração">
@@ -272,6 +285,14 @@ export default {
                 <font-awesome-icon icon="chart-column" class="fa-2xl" />
                 <br>
                 <label class="label-icon">Projeção de Resultados 2025</label>
+              </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/download" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Script de Atendimento">
+                <font-awesome-icon icon="download" class="fa-2xl" />
+                <br>
+                <label class="label-icon">Baixar Imagens</label>
               </router-link>
             </li>
             <!-- <li class="nav-item">
