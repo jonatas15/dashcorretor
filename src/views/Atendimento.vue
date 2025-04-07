@@ -21,12 +21,7 @@
             <h3>Solicitar Contrato</h3>
             <br />
             <p>
-              <iframe src="https://plume-almond-729.notion.site/Scripts-de-Atendimento-5d4deb5b5f3c47b8b5e4155125e897b6" frameborder="0"
-                style="
-                  width: 100%;
-                  height: 820px;
-                "
-              ></iframe>
+              <iframe src="https://plume-almond-729.notion.site/ebd/5d4deb5b5f3c47b8b5e4155125e897b6" width="100%" height="1190" frameborder="0" allowfullscreen />
             </p>
         </div>
       </div>
