@@ -34,7 +34,7 @@
                     <br />
                     <!-- <hr> -->
                     <!-- <strong>Caf3imob88@</strong><br> -->
-                    <strong>Caf3Imob891732@%</strong><br>
+                    <strong>Caf3Imob891732@%7867</strong><br>
                   </p>
                 </div>
                 <!-- <div class="col-md-6">
@@ -53,10 +53,10 @@
                     <img src="@/assets/logo/brokers.png" alt="">
                   </a>
                   <p class="caixa">
-                    <strong>Usuario: leads@cafeimobiliaria.com.br | Senha: Caf3imob</strong>
+                    <strong>Usuario: leads@cafeimobiliaria.com.br | Senha: V4AGLR</strong>
                     <br />
                     <br />
-                    <strong>Usuario: fabio@cafeimobiliaria.com.br | Senha: Caf3imob</strong>
+                    <strong>Usuario: fabio@cafeimobiliaria.com.br | Senha: JESY8I</strong>
                   </p>
                 </div>
               </div>

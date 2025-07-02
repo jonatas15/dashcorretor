@@ -100,8 +100,8 @@ const formatarImoveis = (lista) => {
 
 const meses = [
   "janeiro", "fevereiro", "março", "abril", "maio", "junho",
-  // "julho", "agosto", "setembro", "outubro",
-  // "novembro", "dezembro"
+  "julho", "agosto", "setembro", "outubro",
+  "novembro", "dezembro"
 ];
 
 // const urlraiz = 'http://localhost:8080';

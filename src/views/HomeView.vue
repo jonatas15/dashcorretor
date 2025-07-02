@@ -75,7 +75,7 @@
       <div class="col-md-12 elimina-margens-internas">
         <!-- <img src="@/assets/banner/Tii.png" /> -->
         <div>
-          <img src="@/assets/banner/promo.jpeg" width="" style="border-radius: 22px;width: 100%;" />
+          <!-- <img src="@/assets/banner/promo.jpeg" width="" style="border-radius: 22px;width: 100%;" /> -->
           <!-- <img src="@/assets/banner/promo.jpeg" width="" @click="abrirModal" /> -->
           <!-- <h4>Decole suas metas</h4> -->
           <!-- <div v-if="modalAberta" class="modal">
