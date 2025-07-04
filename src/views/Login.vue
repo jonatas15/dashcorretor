@@ -63,7 +63,7 @@
     data() {
         return {
             // apibase: 'http://localhost:8080/api/corretor',
-            apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
+            apibase: 'https://www.avantorimoveis.com.br/dadoscorretor/api/corretor',
             errors: [],
             corretores: [],
             form: {
@@ -96,7 +96,7 @@
                 // console.log("agora vai")
                 axios.get(this.apibase)
                     .then(response => {
-                    this.corretores = response.data
+                    this.corretores = response.data // modifica o this.corretores para corretores com 'ativo' true
                     // console.log(this.corretores)
                     for(let u of this.corretores) {
                         // Testte de Login

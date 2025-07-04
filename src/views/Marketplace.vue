@@ -105,7 +105,7 @@ const meses = [
 ];
 
 // const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
+const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 function strMes(mes) {
   return meses[mes];

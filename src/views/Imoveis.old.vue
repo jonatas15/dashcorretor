@@ -150,7 +150,7 @@
                         </table>
                         <a 
                           class="btn btn-primary"
-                          :href="'https://www.cafeimobiliaria.com.br/imovel/' + imovelselecionadocodigo"
+                          :href="'https://www.avantorimoveis.com.br/imovel/' + imovelselecionadocodigo"
                           target="_blank"
                           style="color: white !important; font-weight: bolder;"
                         >Ir pro site</a>
@@ -181,7 +181,7 @@
                 <tbody>
                   <tr v-for="imv in imoveis" :key="imv">
                     <th scope="row">
-                      <a :href="'https://cafeimobiliaria.com.br/imovel/' + imv.codigo" target="_blank">
+                      <a :href="'https://avantorimoveis.com.br/imovel/' + imv.codigo" target="_blank">
                         {{ imv.codigo }}
                       </a>
                     </th>
@@ -260,9 +260,9 @@
             searchText: "",
             searchTime: "",
             searchOrder: "acesso",
-            // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
-            // urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
-            urlmarca: "https://www.cafeimobiliaria.com.br/sistema/registrocampanhas/retornarapido",
+            // urlmarca: "https://avantorimoveis.com.br/dadoscorretor",
+            // urlmarca: "https://www.avantorimoveis.com.br/dadoscorretor/api/imovel",
+            urlmarca: "https://www.avantorimoveis.com.br/sistema/registrocampanhas/retornarapido",
             // urlmarca: "",
             imoveis: [],
             todosimoveis: [],

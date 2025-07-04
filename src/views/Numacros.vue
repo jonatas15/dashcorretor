@@ -31,7 +31,7 @@
             >
               <a 
                 v-if="placasInputs[`${corretor.id}-${strMes(mes)}`][index] != ''" 
-                :href="'https://cafeimobiliaria.com.br/imovel/' + placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
+                :href="'https://avantorimoveis.com.br/imovel/' + placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
                 :title="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
                 :alt="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
                 target="_blank" rel="noopener noreferrer"
@@ -106,7 +106,7 @@ const meses = [
 ];
 
 // const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
+const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 function strMes(mes) {
   return meses[mes];

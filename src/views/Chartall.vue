@@ -26,7 +26,7 @@ export default {
     },
     data() {
         return {
-            apibase: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor',
+            apibase: 'https://www.avantorimoveis.com.br/dadoscorretor/api/corretor',
             varcorretor: [],
             corretorlocal: [],
             // corretorlabels: [],

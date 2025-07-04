@@ -1,9 +1,9 @@
-Ana Luiza	    aluguel3@cafeimobiliaria.com.br	        aluguel3@cafe24
-Ingrid	            aluguel1@cafeimobiliaria.com.br	        aluguel1@cafe24
-Auriane	            posvenda@cafeimobiliaria.com.br	        posvenda@cafe24
-Gabriele	    administrativo@cafeimobiliaria.com.br	administrativo@cafe24
-Caroline	    aluguel-gerente@cafeimobiliaria.com.br	aluguelgerente@cafe24
-Rafael	            aluguel-adm@cafeimobiliaria.com.br	        alugueladm@cafe24
-Ruan	            ruan@cafeimobiliaria.com.br	                ruan@cafe24
-Maiko	            maiko@cafeimobiliaria.com.br	        maiko@cafe24
-Caroline Costa	    svlocacoes@cafeimobiliaria.com.br	        Caf3@svlocacoes
+Ana Luiza	    aluguel3@avantorimoveis.com.br	        aluguel3@cafe24
+Ingrid	            aluguel1@avantorimoveis.com.br	        aluguel1@cafe24
+Auriane	            posvenda@avantorimoveis.com.br	        posvenda@cafe24
+Gabriele	    administrativo@avantorimoveis.com.br	administrativo@cafe24
+Caroline	    aluguel-gerente@avantorimoveis.com.br	aluguelgerente@cafe24
+Rafael	            aluguel-adm@avantorimoveis.com.br	        alugueladm@cafe24
+Ruan	            ruan@avantorimoveis.com.br	                ruan@cafe24
+Maiko	            maiko@avantorimoveis.com.br	        maiko@cafe24
+Caroline Costa	    svlocacoes@avantorimoveis.com.br	        Caf3@svlocacoes

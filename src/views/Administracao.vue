@@ -145,7 +145,7 @@
         </div>
       </div>
       <div class="col-md-12 dash-corretor my-4" style="">
-        <a href="https://www.cafeimobiliaria.com.br/atualizar.php" class="fs-5 btn btn-primary text-white" target="_blank">
+        <a href="https://www.avantorimoveis.com.br/atualizar.php" class="fs-5 btn btn-primary text-white" target="_blank">
           Atualizar todos os Imóveis no Site
         </a>
       </div>
@@ -191,7 +191,7 @@ export default {
       anovindo: "2024",
       searchCorretor: 1,
       posicao: 0,
-      // apibase: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor",
+      // apibase: "https://www.avantorimoveis.com.br/dadoscorretor/api/corretor",
       apibase: "http://localhost:8080/api/corretor",
       macros: [
         {

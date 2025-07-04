@@ -287,7 +287,7 @@ const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
 // const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.cafeimobiliaria.com.br/dadoscorretor';
+const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 

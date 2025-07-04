@@ -278,7 +278,7 @@ export default {
     //   this.renderChart(this.chartData, this.chartOptions);
     // this.visitas
     axios
-      .get("https://www.cafeimobiliaria.com.br/sistema/api/visita")
+      .get("https://www.avantorimoveis.com.br/sistema/api/visita")
       .then((res) => {
         // console.log(res.data)
         this.visitas = res.data.filter(
@@ -289,7 +289,7 @@ export default {
         );
       });
     axios
-      .get("https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor")
+      .get("https://www.avantorimoveis.com.br/dadoscorretor/api/corretor")
       .then((response) => {
         this.corretores = response.data;
         // console.log(this.corretores)

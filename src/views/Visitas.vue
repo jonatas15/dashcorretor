@@ -245,10 +245,10 @@
           botaodehoje: "Hoje",
           stylebtnhoje: "info",
           posicao: 0,
-          // urlmarca: "https://cafeimobiliaria.com.br/dadoscorretor",
-          // urlmarca: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/imovel",
+          // urlmarca: "https://avantorimoveis.com.br/dadoscorretor",
+          // urlmarca: "https://www.avantorimoveis.com.br/dadoscorretor/api/imovel",
           urlmarca: "http://localhost:8080/api/imovel",
-          urlvisitas: "https://www.cafeimobiliaria.com.br/sistema/api/visita",
+          urlvisitas: "https://www.avantorimoveis.com.br/sistema/api/visita",
           // urlmarca: "",
           imoveis: [],
           todosimoveis: [],
@@ -350,7 +350,7 @@
         this.isFieldDisabled = !this.isFieldDisabled;
       },
       avisaropovo (self) {
-        axios.post("https://www.cafeimobiliaria.com.br/sistema/api/registro/enviar", {
+        axios.post("https://www.avantorimoveis.com.br/sistema/api/registro/enviar", {
           usuario_id: 1,
           data_visita: this.formataStringData(this.form.datavisita), //moment(String(this.form.datavisita)).format('Y-MM-D'),
           // data_visita: moment(String(this.form.datavisita)).format('YYYY-MM-DD'),
@@ -387,7 +387,7 @@
       },
       cadastrar (self) {
         // console.log("bora chamar a API");
-        axios.post("https://www.cafeimobiliaria.com.br/sistema/api/visita/create", {
+        axios.post("https://www.avantorimoveis.com.br/sistema/api/visita/create", {
           usuario_id: 1,
           data_visita: this.formataStringData(this.form.datavisita), //moment(String(this.form.datavisita)).format('Y-MM-D'),
           // data_visita: moment(String(this.form.datavisita)).format('YYYY-MM-DD'),
@@ -458,7 +458,7 @@
         this.$refs.codigoimv.focus();
       },
       converter (id, recebeinvertido) {
-        axios.put("https://www.cafeimobiliaria.com.br/sistema/api/visita/update?id=" + id, {
+        axios.put("https://www.avantorimoveis.com.br/sistema/api/visita/update?id=" + id, {
           convertido: recebeinvertido
         }).then(response => {
           console.log(response);
@@ -474,7 +474,7 @@
         this.$forceUpdate();
       },
       excluir (id) {
-        axios.delete("https://www.cafeimobiliaria.com.br/sistema/api/visita/delete?id=" + id).then(response => {
+        axios.delete("https://www.avantorimoveis.com.br/sistema/api/visita/delete?id=" + id).then(response => {
           console.log(response);
           this.$refs.alert.showAlert(
             'success', // There are 4 types of alert: success, info, warning, error

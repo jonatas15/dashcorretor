@@ -111,7 +111,7 @@
           idcorretor: '',
           proprietarios: [],
           // urlproprietario: 'http://localhost:8080/api/proprietario',
-          urlproprietario: 'https://www.cafeimobiliaria.com.br/dadoscorretor/api/proprietario',
+          urlproprietario: 'https://www.avantorimoveis.com.br/dadoscorretor/api/proprietario',
           form: {
             nome: "",
             endereco: "",
@@ -131,7 +131,7 @@
           // formData.append('endereco', this.form.endereco);
           // formData.append('linkmaps', this.form.linkmaps);
           // formData.append('telefone', this.form.whatsapp);
-          axios.post("https://www.cafeimobiliaria.com.br/dadoscorretor/api/proprietario/create", {
+          axios.post("https://www.avantorimoveis.com.br/dadoscorretor/api/proprietario/create", {
             corretor_id: this.idcorretor,
             nome: this.form.nome,
             endereco: this.form.endereco,

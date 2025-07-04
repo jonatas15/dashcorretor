@@ -42,7 +42,7 @@
         this.progress = 10; // Inicia a barra de progresso
         
         try {
-          const response = await axios.get(`https://www.cafeimobiliaria.com.br/gerar_zip.php?codigo=${this.codigoImovel}`, {
+          const response = await axios.get(`https://www.avantorimoveis.com.br/gerar_zip.php?codigo=${this.codigoImovel}`, {
             responseType: "blob",
             onDownloadProgress: (progressEvent) => {
               if (progressEvent.total) {

@@ -152,8 +152,8 @@ export default {
       searchCorretor: 0,
       propcorretor: 0,
       posicao: 0,
-      apibase: "https://www.cafeimobiliaria.com.br/dadoscorretor/api/corretor",
-      urlvisitas: "https://www.cafeimobiliaria.com.br/sistema/api/visita",
+      apibase: "https://www.avantorimoveis.com.br/dadoscorretor/api/corretor",
+      urlvisitas: "https://www.avantorimoveis.com.br/sistema/api/visita",
       macros: [
         {
           campo: "Leads Recebidos",
