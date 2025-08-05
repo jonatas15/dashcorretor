@@ -29,7 +29,7 @@
                   </a>
                   <!-- <hr> -->
                   <p class="caixa">
-                    <strong>contato@avantorimoveis.com.br</strong>
+                    <strong>contato@cafeimobiliaria.com.br</strong>
                     <br />
                     <br />
                     <!-- <hr> -->
@@ -53,10 +53,10 @@
                     <img src="@/assets/logo/brokers.png" alt="">
                   </a>
                   <p class="caixa">
-                    <strong>Usuario: leads@avantorimoveis.com.br | Senha: V4AGLR</strong>
+                    <strong>Usuario: leads@cafeimobiliaria.com.br | Senha: V4AGLR</strong>
                     <br />
                     <br />
-                    <strong>Usuario: fabio@avantorimoveis.com.br | Senha: JESY8I</strong>
+                    <strong>Usuario: fabio@cafeimobiliaria.com.br | Senha: JESY8I</strong>
                   </p>
                 </div>
               </div>

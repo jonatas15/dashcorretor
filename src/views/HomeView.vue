@@ -15,7 +15,7 @@
         <h4>Seu <br>Dashboard |
         <span>
           <select id="" class="form-de-topo" v-model="searchTime" @change="filtrar()" style="width: 187px;">
-            <option value="Atual">2024</option>
+            <option value="Atual">2025</option>
             <option value="1">Janeiro</option>
             <option value="2">Fevereiro</option>
             <option value="3">Março</option>

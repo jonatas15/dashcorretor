@@ -71,7 +71,7 @@
             <!-- <button @click="ordemCorretores(54)">VerOrdem</button> -->
           </span>
         </h4>
-        <h6 class="text-center mb-4 fw-bolder">Atualizado até Abril-2024</h6>
+        <h6 class="text-center mb-4 fw-bolder">Atualizado até Abril-2025</h6>
         <div class="row align-items-start">
           <div class="col-12 col-md-8 col-lg-4 item-progresso" style="">
             <div
@@ -188,7 +188,7 @@ export default {
       corretor: [],
       dadoscorretor: [],
       searchTime: "Atual",
-      anovindo: "2024",
+      anovindo: "2025",
       searchCorretor: 1,
       posicao: 0,
       // apibase: "https://www.avantorimoveis.com.br/dadoscorretor/api/corretor",
