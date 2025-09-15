@@ -127,11 +127,11 @@ export default {
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Script de Atendimento
             </router-link>
           </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretoresadmin">
+          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretoresadmin">
             <router-link class="nav-link" aria-current="page" to="/admvisitas">
               <font-awesome-icon icon="chart-column" class="fa-2xl" /> Relatórios de Visitas e Prospecção
             </router-link>
-          </li>
+          </li> -->
           <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/registro-visitas">
               <font-awesome-icon icon="thumbtack" class="fa-2xl" /> Registrar as visitas
@@ -247,14 +247,14 @@ export default {
                 <label class="label-icon">Script de Atendimento</label>
               </router-link>
             </li>
-            <li class="nav-item" v-if="corretoresadmin">
+            <!-- <li class="nav-item" v-if="corretoresadmin">
               <router-link to="/admvisitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Administração">
                 <font-awesome-icon icon="chart-column" class="fa-2xl" />
                 <br>
                 <label class="label-icon">Relatórios de Visitas e Prospecção</label>
               </router-link>
-            </li>
+            </li> -->
             <!-- <li class="nav-item">
               <router-link to="/registro-visitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">

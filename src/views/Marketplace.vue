@@ -8,22 +8,58 @@
     </div>
     <hr>
     <h4><strong>Marketplace</strong></h4>
+    <!-- FILTROS -->
+    <div class="border px-4 py-2 pb-3 d-flex align-items-center">
+      <label class="me-2">Corretor:</label>
+      <select v-model="selectedCorretor" class="form-select me-3" style="width: 250px;">
+        <option value="">Todos</option>
+        <option v-for="c in corretores" :key="c.id" :value="c.id">{{ c.nome }}</option>
+      </select>
+
+      <label class="me-2">Mês:</label>
+      <select v-model="selectedMes" class="form-select me-3" style="width: 200px;">
+        <option value="">Todos</option>
+        <option value="1_trimestre">1º Trimestre</option>
+        <option value="2_trimestre">2º Trimestre</option>
+        <option value="3_trimestre">3º Trimestre</option>
+        <option value="4_trimestre">4º Trimestre</option>
+        <option v-for="(m, idx) in meses" :key="m" :value="idx">{{ abrevia(m, 3) }} ({{ m }})</option>
+      </select>
+
+      <button class="btn btn-outline-secondary" @click="resetFiltros">Limpar filtros</button>
+    </div>
+    <!-- TABELA (admin) -->
     <table v-if="useradmin" class="table table-striped mt-5 w-full border-collapse border border-gray-300 bg-white md-table">
       <thead>
         <tr>
           <th class="border px-4 py-2 pb-3"><b>Corretor</b></th>
-          <th class="border px-4 py-2 pb-3" v-for="mes in meses" :key="mes"><b>{{ abrevia(mes, 3) }}</b></th>
+          <th
+            v-for="i in monthIndices"
+            :key="i"
+            class="border px-4 py-2 pb-3"
+          >
+            <b>{{ abrevia(meses[i], 3) }}</b>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="corretor in corretores" :key="corretor.id" class="super-tr">
+        <tr v-for="corretor in filteredCorretores" :key="corretor.id" class="super-tr">
           <td class="border px-4 py-2">{{ corretor.nome }}</td>
           <td
             class="border px-2 py-2"
-            v-for="(valor, mes) in corretor.marketplace"
-            :key="mes"
+            v-for="i in monthIndices"
+            :key="i"
           >
-            {{ placasInputs[`${corretor.id}-${strMes(mes)}`].filter(item => item).length }}
+            <div v-if="placasInputs[`${corretor.id}-${meses[i]}`]">
+              <strong style="color: red;" v-if="placasInputs[`${corretor.id}-${meses[i]}`].filter(item => item && item.trim() !== '').length">
+                {{ placasInputs[`${corretor.id}-${meses[i]}`].filter(item => item && item.trim() !== '').length }}
+              </strong>
+              <span v-else>
+                {{ placasInputs[`${corretor.id}-${meses[i]}`].filter(item => item && item.trim() !== '').length }}
+              </span>
+            </div>
+            <span v-else>0</span>
+            <!-- {{ placasInputs[`${corretor.id}-${strMes(mes)}`].filter(item => item).length }} -->
             <!--
             <div
               v-for="(input, index) in placasInputs[`${corretor.id}-${strMes(mes)}`]"
@@ -49,36 +85,44 @@
     <sub class="text-info">É fácil, você consegue</sub> -->
     <!-- <br> -->
     <!-- <sub class="text-info">Acredite</sub> -->
+    <!-- TABELA (não-admin) -->
     <table v-else class="table table-striped mt-5 w-full border-collapse border border-gray-300 bg-white md-table">
       <thead>
         <tr>
           <th class="border px-4 py-2 pb-3"><b>Corretor</b></th>
-          <th class="border px-4 py-2 pb-3" v-for="mes in meses" :key="mes"><b>{{ abrevia(mes, 3) }}</b></th>
+          <th
+            v-for="i in monthIndices"
+            :key="i"
+            class="border px-4 py-2 pb-3"
+          >
+            <b>{{ abrevia(meses[i], 3) }}</b>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="corretor in corretores" :key="corretor.id" class="super-tr">
+        <tr v-for="corretor in filteredCorretores" :key="corretor.id" class="super-tr">
           <td class="border px-4 py-2">{{ corretor.nome }}</td>
+
           <td
             class="border px-2 py-2"
-            v-for="(valor, mes) in corretor.marketplace"
-            :key="mes"
+            v-for="i in monthIndices"
+            :key="i"
           >
             <div>
               <input
-                v-for="(input, index) in placasInputs[`${corretor.id}-${strMes(mes)}`]"
+                v-for="(input, index) in placasInputs[`${corretor.id}-${meses[i]}`] || Array(10).fill('')"
                 :key="index"
-                v-model="placasInputs[`${corretor.id}-${strMes(mes)}`][index]"
+                v-model="placasInputs[`${corretor.id}-${meses[i]}`][index]"
                 class="form-control text-center my-1 ph-danger"
-                :placeholder="'Link #' + (index +1) +'º'"
-                />
-                <!-- :disabled="desabilitado[`${corretor.id}-${strMes(mes)}-${index}`] || false" -->
-                <br>
-                <button 
-                  class="btn btn-success"
-                  @click="atualizarPlacas(corretor.id, strMes(mes), corretor.marketplace[mes])"
-                >🗹</button>
-              </div>
+                :placeholder="'código #' + (index +1) +'º'"
+              />
+              <br>
+              <button
+                class="btn btn-success"
+                @click="atualizarPlacas(corretor.id, meses[i], corretor.placas?.[String(i)])"
+                :disabled="desabilitado[`${corretor.id}-${meses[i]}`]"
+              >🗹</button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -90,13 +134,7 @@
 import { onMounted, computed, ref, reactive } from "vue";
 
 const desabilitado = reactive({});
-
-const formatarImoveis = (lista) => {
-  // console.log(lista)
-  if (lista != "") {
-    return lista.split(',').join('<br>'); // Quebra na vírgula e adiciona `<br>`
-  }
-};
+const useradmin = ref(false);
 
 const meses = [
   "janeiro", "fevereiro", "março", "abril", "maio", "junho",
@@ -108,6 +146,8 @@ const meses = [
 const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 function strMes(mes) {
+  // se já for string com nome do mês, retorna diretamente
+  if (typeof mes === 'string' && isNaN(Number(mes))) return mes;
   return meses[mes];
 }
 function abrevia(value, length) {
@@ -120,7 +160,29 @@ function abrevia(value, length) {
 const corretores = ref([]);
 const bloqueiacampo = ref(null);
 const placasInputs = reactive({}); // Armazena os valores de cada campo dividido
+// FILTROS reativos
+const selectedCorretor = ref("");
+const selectedMes = ref(""); // armazenará índice do mês como number ou "" para todos
 
+// Computed: array de índices de mês a renderizar (0..11)
+const monthIndices = computed(() => {
+  if (selectedMes.value !== "" && selectedMes.value !== null) {
+    const idx = Number(selectedMes.value);
+    if (!isNaN(idx)) return [idx];
+  }
+  if(selectedMes.value === "1_trimestre") { return [0,1,2]; }
+  if(selectedMes.value === "2_trimestre") { return [3,4,5]; }
+  if(selectedMes.value === "3_trimestre") { return [6,7,8]; }
+  if(selectedMes.value === "4_trimestre") { return [9,10,11]; }
+  // todos os meses por padrão (0..11)
+  return meses.map((m, i) => i);
+});
+
+// Computed: lista de corretores filtrada por selectedCorretor
+const filteredCorretores = computed(() => {
+  if (!selectedCorretor.value) return corretores.value;
+  return corretores.value.filter(c => String(c.id) === String(selectedCorretor.value));
+});
 
 const atualizarPlacas = async (corretorId, mes, marketplace) => {
   console.log(`Atualizando placa do corretor ${corretorId} no mês ${mes} com valor ${marketplace}`);
@@ -131,15 +193,16 @@ const atualizarPlacas = async (corretorId, mes, marketplace) => {
   alert("Link Adicionado com sucesso");
   window.location.reload();
 };
-const useradmin = ref(false);
+
 const carregarDados = async () => {
   // Inicializa os registros no backend
   await fetch(urlraiz + "/placas/initialize/");
 
+  let searchCorretor;
   if (localStorage.getItem("authUser")) {
-    var dadoscorretor = localStorage.getItem("authUser");
-    var corretor = JSON.parse(dadoscorretor);
-    var searchCorretor = corretor.id;
+    const dadoscorretor = localStorage.getItem("authUser");
+    const corretor = JSON.parse(dadoscorretor);
+    searchCorretor = corretor.id;
   }
 
   var corretoresadmin = false;
@@ -174,14 +237,19 @@ const carregarDados = async () => {
 const getPlacasFormatadas = (corretorId, mes) => {
   return computed(() => placasInputs[`${corretorId}-${mes}`]?.filter(v => v.trim() !== "").join(',') || "");
 };
+function resetFiltros() {
+  selectedCorretor.value = "";
+  selectedMes.value = "";
+}
 // fecha
 // onMounted();
 
 onMounted(() => {
+  let searchCorretor;
   if (localStorage.getItem("authUser")) {
     var dadoscorretor = localStorage.getItem("authUser");
     var corretor = JSON.parse(dadoscorretor);
-    var searchCorretor = corretor.id;
+    searchCorretor = corretor.id;
   }
   if (searchCorretor == 1 || searchCorretor == 10 || searchCorretor == 73  || searchCorretor == 43  || searchCorretor == 91) {
     useradmin.value = true;

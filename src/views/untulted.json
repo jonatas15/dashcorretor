@@ -1,0 +1,722 @@
+[
+    {
+        "corretor_id": 1,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 1,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 1,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 1,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 1,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 1,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 10,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 10,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 10,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 10,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 10,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 10,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 41,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 41,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 41,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 41,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 41,
+        "mes": "Novembro",
+        "placas": 4
+    },
+    {
+        "corretor_id": 41,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 42,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 42,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 42,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 42,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 42,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 42,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 43,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 43,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 43,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 43,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 43,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 43,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 54,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 54,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 54,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 54,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 54,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 54,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 57,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 57,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 57,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 57,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 57,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 57,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 66,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 66,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 66,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 66,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 66,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 66,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 69,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 69,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 69,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 69,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 69,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 69,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 71,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 71,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 71,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 71,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 71,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 71,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 76,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 76,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 76,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 76,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 76,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 76,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 78,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 78,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 78,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 78,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 78,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 78,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 80,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 80,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 80,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 80,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 80,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 80,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 81,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 81,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 81,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 81,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 81,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 81,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 84,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 84,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 84,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 84,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 84,
+        "mes": "Novembro",
+        "placas": 3
+    },
+    {
+        "corretor_id": 84,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 85,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 85,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 85,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 85,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 85,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 85,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 86,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 86,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 86,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 86,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 86,
+        "mes": "Novembro",
+        "placas": 6
+    },
+    {
+        "corretor_id": 86,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 87,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 87,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 87,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 87,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 87,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 87,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 88,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 88,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 88,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 88,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 88,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 88,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 89,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 89,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 89,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 89,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 89,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 89,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 90,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 90,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 90,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 90,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 90,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 90,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 91,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 91,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 91,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 91,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 91,
+        "mes": "Novembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 91,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 92,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 92,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 92,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 92,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 92,
+        "mes": "Novembro",
+        "placas": 6
+    },
+    {
+        "corretor_id": 92,
+        "mes": "Dezembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 93,
+        "mes": "Julho",
+        "placas": 0
+    },
+    {
+        "corretor_id": 93,
+        "mes": "Agosto",
+        "placas": 0
+    },
+    {
+        "corretor_id": 93,
+        "mes": "Setembro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 93,
+        "mes": "Outubro",
+        "placas": 0
+    },
+    {
+        "corretor_id": 93,
+        "mes": "Novembro",
+        "placas": 1
+    },
+    {
+        "corretor_id": 93,
+        "mes": "Dezembro",
+        "placas": 0
+    }
+]

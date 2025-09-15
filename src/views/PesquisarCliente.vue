@@ -37,18 +37,22 @@
                     <strong>Caf3Imob891732@%7867</strong><br>
                   </p>
                 </div>
-                <!-- <div class="col-md-6">
+                <div class="col-md-6">
                   <a href="https://consulta5.confirmeonline.com.br/validarLogin/confirmeOnline.xhtml" target="_blank" class="btn btn-default botao-logo">
                     <img src="@/assets/logo/img_logo_login.jpg" alt="">
                   </a>
-                  <p class="caixa">
-                    <strong>Usuario: cafen00001 | Senha: Caf3gratidao</strong>
+                  <div class="caixa">
+                    <strong>Usuario: CANEI00005 | Senha: KQ0#frm#</strong>
                     <br />
                     <br />
-                    <strong>Usuario: cafen00002 | Senha: Caf3gratidao</strong><br>
-                  </p>
-                </div> -->
-                <div class="col-md-6">
+                    <strong>Usuario: CANEI00004 | Senha: XoTt$TgJ</strong><br>
+                    <hr>
+                    <div class="col-md-12 my-3">
+                      <span class="text-danger">** Será solicitado um código de confirmação, verificar com a Patrícia.</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="col-md-6">
                   <a href=" https://brokers.eemovel.com.br/login" target="_blank" class="btn btn-default botao-logo">
                     <img src="@/assets/logo/brokers.png" alt="">
                   </a>
@@ -58,7 +62,7 @@
                     <br />
                     <strong>Usuario: fabio@cafeimobiliaria.com.br | Senha: JESY8I</strong>
                   </p>
-                </div>
+                </div> -->
               </div>
             </p>
         </div>
