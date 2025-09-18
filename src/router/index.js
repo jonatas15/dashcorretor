@@ -18,6 +18,7 @@ import BuscarProprietario from '../views/BuscarProprietario.vue';
 import PesquisarCliente from '../views/PesquisarCliente.vue';
 import Documentos from '../views/Documentos.vue';
 import Login from '../views/Login.vue';
+import Modular from '../views/Modular.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -204,6 +205,16 @@ const router = createRouter({
       path: '/pesquisar-cliente',
       name: 'pesquisar-cliente',
       component: PesquisarCliente,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/modular',
+      name: 'modular',
+      component: Modular,
       meta: { 
         default: true,
         sidebar: false,
