@@ -1,3 +1,4 @@
+```vue
 <template>
     <div class="map-container">
         <div v-if="!mapReady" class="loading-overlay">
@@ -35,11 +36,39 @@
                 </l-popup>
             </l-marker>
         </l-map>
-        <button class="clear-button" @click="clearSelection">
-            Limpar Seleção
-        </button>
+        <div class="button-container">
+            <button class="clear-button" @click="clearSelection">
+                Limpar Seleção
+            </button>
+            <button class="show-table-button" @click="toggleTable">
+                {{ showTable ? 'Ocultar Tabela' : 'Exibir Imóveis Selecionados' }}
+            </button>
+        </div>
         <div class="imoveis-counter">
             Imóveis visíveis: {{ filteredImoveis.length }} / {{ imoveis.length }}
+        </div>
+        <div v-if="showTable" class="table-container">
+            <table class="imoveis-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Latitude</th>
+                        <th>Longitude</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="imovel in filteredImoveis" :key="imovel.id">
+                        <td>{{ imovel.id }}</td>
+                        <td>{{ imovel.nome }}</td>
+                        <td>{{ imovel.lat }}</td>
+                        <td>{{ imovel.lng }}</td>
+                    </tr>
+                    <tr v-if="!filteredImoveis.length">
+                        <td colspan="4">Nenhum imóvel selecionado</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
@@ -64,33 +93,31 @@ const imoveis = ref([
     { id: 3, nome: 'Imóvel 3', lat: -23.56, lng: -46.64 },
 ])
 const selectedAreas = ref([])
-
+const showTable = ref(false)  // Controla a visibilidade da tabela
 
 const filteredImoveis = computed(() => {
-    console.log('Calculando filteredImoveis, áreas:', selectedAreas.value.length);
-    if (!selectedAreas.value.length) return imoveis.value;
+    console.log('Calculando filteredImoveis, áreas:', selectedAreas.value.length)
+    if (!selectedAreas.value.length) return imoveis.value
     return imoveis.value.filter(imovel => {
-        const pt = point([imovel.lng, imovel.lat]);
+        const pt = point([imovel.lng, imovel.lat])
         return selectedAreas.value.some(area => {
             try {
                 if (area.type === 'Circle') {
-                    // Verificar se o ponto está dentro do círculo
-                    const center = L.latLng(area.center[0], area.center[1]);
-                    const distance = center.distanceTo(L.latLng(imovel.lat, imovel.lng));
-                    return distance <= area.radius;
+                    const center = L.latLng(area.center[0], area.center[1])
+                    const distance = center.distanceTo(L.latLng(imovel.lat, imovel.lng))
+                    return distance <= area.radius
                 } else if (area.geometry && area.geometry.coordinates) {
-                    // Para polígonos, usar Turf.js
-                    const poly = polygon(area.geometry.coordinates);
-                    return booleanPointInPolygon(pt, poly);
+                    const poly = polygon(area.geometry.coordinates)
+                    return booleanPointInPolygon(pt, poly)
                 }
-                return false; // Ignorar áreas malformadas
+                return false
             } catch (error) {
-                console.error('Erro ao verificar ponto em área:', error);
-                return false;
+                console.error('Erro ao verificar ponto em área:', error)
+                return false
             }
-        });
-    });
-});
+        })
+    })
+})
 
 function markerOptions(imovel) {
     try {
@@ -115,7 +142,7 @@ function onMapReady(map) {
     console.log('Mapa inicializado:', map)
     mapReady.value = true
     try {
-        const rawMap = toRaw(map)  // Desproxiar o mapa
+        const rawMap = toRaw(map)
         const drawnItems = new L.FeatureGroup()
         rawMap.addLayer(drawnItems)
 
@@ -124,19 +151,17 @@ function onMapReady(map) {
             draw: {
                 polygon: {
                     shapeOptions: { color: 'blue', weight: 2, fillOpacity: 0.2 },
-                    allowIntersection: true,
+                    allowIntersection: false,
                     showArea: true
                 },
                 marker: false,
                 polyline: false,
                 rectangle: false,
-                circle: {
-                    shapeOptions: { color: 'red', weight: 2, fillOpacity: 0.2 }
-                },
+                circle: true,
                 circlemarker: false,
             },
             edit: {
-                featureGroup: drawnItems,  // Mantenha raw
+                featureGroup: drawnItems,
                 edit: {
                     selectedPathOptions: {
                         color: '#ff0000',
@@ -147,9 +172,8 @@ function onMapReady(map) {
                 remove: true
             }
         })
-        rawMap.addControl(drawControl)  // Adicionar controle desproxiado
+        rawMap.addControl(drawControl)
 
-        // Eventos no mapa desproxiado
         rawMap.on(L.Draw.Event.CREATED, function (event) {
             const layer = event.layer
             drawnItems.addLayer(layer)
@@ -217,9 +241,15 @@ function onMapReady(map) {
 function clearSelection() {
     selectedAreas.value.length = 0
     if (mapReady.value && $refs.featureGroup?.mapObject) {
-        toRaw($refs.featureGroup.mapObject).clearLayers()  // Desproxiar aqui também
+        toRaw($refs.featureGroup.mapObject).clearLayers()
     }
+    showTable.value = false  // Ocultar tabela ao limpar seleção
     console.log('Seleção manualmente limpa')
+}
+
+function toggleTable() {
+    showTable.value = !showTable.value
+    console.log('Tabela visível:', showTable.value)
 }
 
 // Fallback para mapReady
@@ -232,7 +262,6 @@ setTimeout(() => {
 </script>
 
 <style scoped>
-/* Estilos conforme sugerido acima */
 .map-container {
     height: 100vh;
     width: 100%;
@@ -249,11 +278,16 @@ setTimeout(() => {
     border-radius: 4px;
 }
 
-.clear-button {
+.button-container {
     position: absolute;
     top: 10px;
     right: 10px;
     z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.clear-button, .show-table-button {
     padding: 8px 16px;
     background: #ff4d4f;
     color: white;
@@ -264,6 +298,10 @@ setTimeout(() => {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.show-table-button {
+    background: #1890ff;
+}
+
 .imoveis-counter {
     position: absolute;
     bottom: 10px;
@@ -272,5 +310,39 @@ setTimeout(() => {
     background: rgba(255, 255, 255, 0.8);
     padding: 8px;
     border-radius: 4px;
+}
+
+.table-container {
+    position: absolute;
+    bottom: 50px;
+    left: 10px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 16px;
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.imoveis-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.imoveis-table th, .imoveis-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.imoveis-table th {
+    background: #f0f0f0;
+    font-weight: bold;
+}
+
+.imoveis-table tr:hover {
+    background: #f5f5f5;
 }
 </style>
