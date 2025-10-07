@@ -280,7 +280,7 @@ const filterArea = ref(null);
 
 // Paginação
 const currentPage = ref(1);
-const itemsPerPage = ref(2); // Ajuste conforme necessário para volumes grandes
+const itemsPerPage = ref(20); // Ajuste conforme necessário para volumes grandes
 
 // Seleção de imóveis
 const selectedIds = ref(new Set());

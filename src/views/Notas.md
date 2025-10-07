@@ -1,6 +1,5 @@
 # Reunião 02-08-2025
  - funcionalidade atrelada ao BI (avaliação)
-
 =============================================================================================================   TELA 1
 # Abre no mapa, primeira área do Mapa
  - começa setando a cidade (começarei só com Santa Maria)
@@ -29,6 +28,7 @@
  - Atualiza-se de acordo com a fitragem da tabela 
  - Atualiza-se de acordo com os imóveis selecionados pelo usuário
  - APÓS avaliação: botão "Prosseguir", que leva o valor avaliado (reavaliado) p/ a próxima tela
+------------------------------------------------------------------------------------------------------------- implementado em parte
 
 =============================================================================================================   TELA 3
 # Formulário p/ o Relatório
