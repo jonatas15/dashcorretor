@@ -180,10 +180,17 @@
       </div>
     </div>
     <hr v-show="!carregando">
-    {{ data[1] }}
+    <!-- {{ data[1] }} -->
+    <div class="d-flex justify-content-end mb-3" v-show="!carregando && data.length > 0">
+      <button class="btn btn-success" @click="calculateMedian">Calcular Mediana</button>
+    </div>
+    <div v-if="mediana !== null" class="alert alert-info" v-show="!carregando">
+      Mediana dos valores: R$ {{ Math.round(mediana).toLocaleString() }}
+    </div>
     <table class="table table-striped" v-show="!carregando">
       <thead>
         <tr>
+          <th>Selecionar</th>
           <th>Imobiliária</th>
           <!-- <th>Estado</th> -->
           <th>Cidade</th>
@@ -202,6 +209,9 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
+          <td>
+            <input type="checkbox" v-model="selecionados" :value="item" :id="'select-' + index">
+          </td>
           <td><a :href="item.url" target="_blank"><font-awesome-icon icon="link"/> {{ item.imobiliaria ? item.imobiliaria : 'ver imóvel' }}</a></td>
           <!-- <td>{{ item.estado }}</td> -->
           <td>{{ item.cidade }}</td>
@@ -298,6 +308,16 @@ const pagination = reactive({
   total: 0,
 });
 
+const selecionados = ref([]);
+const mediana = ref(null);
+
+const parseValor = (val) => {
+  if (typeof val === 'number') return val;
+  if (typeof val !== 'string') return NaN;
+  const cleaned = val.replace(/\./g, '').replace(/,/g, '.');
+  return parseFloat(cleaned);
+};
+
 const fetchData = async () => {
   carregando.value = true;
   const response = await fetch(`${urlraiz}/imoveisex/getimoveis?page=${pagination.page}` +
@@ -353,11 +373,15 @@ const fetchData = async () => {
 // Atualizar a tabela com filtros
 const handleFilter = () => {
   pagination.page = 1; // Resetar para a primeira página
+  selecionados.value = []; // Limpar selecionados ao filtrar
+  mediana.value = null; // Resetar mediana
   fetchData();
 };
 
 const changePage = (newPage) => {
   pagination.page = newPage;
+  selecionados.value = []; // Limpar selecionados ao mudar página
+  mediana.value = null; // Resetar mediana
   fetchData();
 };
 // const alteraomax = () => {
@@ -381,9 +405,34 @@ const totalPages = computed(() => Math.ceil(pagination.total / pagination.pageSi
 // Reseta o formulário para o estado inicial
 const resetForm = () => {
   Object.assign(form, { ...initialForm });
+  selecionados.value = []; // Limpar selecionados ao resetar
+  mediana.value = null; // Resetar mediana
   fetchData();
 };
 
+const calculateMedian = () => {
+  let rawValores = selecionados.value.length > 0 
+    ? selecionados.value.map(item => item.valor) 
+    : data.value.map(item => item.valor);
+
+  let valores = rawValores
+    .map(parseValor)
+    .filter(v => !isNaN(v));
+
+  if (valores.length === 0) {
+    mediana.value = 0;
+    return;
+  }
+
+  valores = valores.sort((a, b) => a - b);
+  const meio = Math.floor(valores.length / 2);
+
+  if (valores.length % 2 === 0) {
+    mediana.value = ((valores[meio - 1] + valores[meio]) / 2) / 100;
+  } else {
+    mediana.value = (valores[meio])/100;
+  }
+};
 
 const handleClickOutside = (event) => {
   if (verBairros.value && !event.target.closest('.bairros_listados')) {

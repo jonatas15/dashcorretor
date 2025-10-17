@@ -129,8 +129,6 @@ const props = {
     lat: ref(-23.55052),
     lng: ref(-46.633308)
 }
-const lat = ref(-23.55052)
-const lng = ref(-46.633308)
 const latitudelongitude = [-23.55052, -46.633308]
 
 // Ref para o mapa
