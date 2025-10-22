@@ -181,13 +181,25 @@
     </div>
     <hr v-show="!carregando">
     <!-- {{ data[1] }} -->
-    <div class="d-flex justify-content-end mb-3" v-show="!carregando && data.length > 0">
-      <button class="btn btn-success" @click="calculateMedian">Calcular Mediana</button>
+    <div class="row my-3">
+      <hr>
     </div>
-    <div v-if="mediana !== null" class="alert alert-info" v-show="!carregando">
-      Mediana dos valores: R$ {{ Math.round(mediana).toLocaleString() }}
+    <div class="row" v-show="form.bairro.length >= 1">
+      <h4 class="my-3">Sistema de Estimativa de Valores por Região</h4>
+      <h5 v-if="form.bairro.length >= 0">{{ form.bairro.join(',') }}</h5>
+      <div class="d-flex justify-content-end mb-3" v-show="!carregando && data.length > 0">
+        <button class="btn btn-success" @click="calculateMedian">Calcular Mediana</button>
+      </div>
+      <div v-if="mediana !== null" class="alert alert-info" v-show="!carregando">
+        Mediana dos valores: R$ {{ Math.round(mediana).toLocaleString() }}
+      </div>
+      <!-- Gerar o Relatório: -->
+       
     </div>
-    <table class="table table-striped" v-show="!carregando">
+    <div class="row my-3">
+      <hr>
+    </div>
+    <table class="table table-striped" v-show="!carregando && data.length > 0 && visualiza_relatorio == false">
       <thead>
         <tr>
           <th>Selecionar</th>
@@ -252,15 +264,32 @@
       </button>
     </div>
   </div>
+  Gerar o Relatório:
+  <button class="btn btn-success my-3" @click="visualiza_relatorio = true" v-show="!carregando && data.length > 0">
+    Gerar Relatório
+  </button>
+  <relatorio 
+    :mediana="mediana !== null ? mediana : 0" 
+    :imoveis="selecionados.length > 0 ? selecionados : data" 
+    :bairros="form.bairro"
+    :cidade="form.cidade"
+    v-if="visualiza_relatorio"
+    ></relatorio>
 </template>
 
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue';
 import {Money} from 'v-money';
+// Vamos criar uma modal para exportrar o relatório
+// import Modal from '@/components/Modal.vue';
+import Relatorio from './Relatorio.vue';
+
 // import RangeSlider from 'vue-range-slider'
 // you probably need to import built-in style
 // import 'vue-range-slider/dist/vue-range-slider.css'
 // import VueThousandSeparator from 'vue-thousand-separator';
+
+const visualiza_relatorio = ref(false);
 
 
 const initialForm = {
@@ -411,6 +440,9 @@ const resetForm = () => {
 };
 
 const calculateMedian = () => {
+  // Ativa o componente Relatório com os imóveis selecionados ou todos os imóveis
+  // visualiza_relatorio.value = true;
+
   let rawValores = selecionados.value.length > 0 
     ? selecionados.value.map(item => item.valor) 
     : data.value.map(item => item.valor);
