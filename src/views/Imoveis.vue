@@ -28,12 +28,26 @@
           </select>
         </div>
         <!-- Finalidade/Tipo -->
-        <div class="col-md-3 mb-3">
+        <!-- <div class="col-md-3 mb-3">
           <label for="finalidade" class="form-label">Finalidade/Tipo</label>
           <select v-model="form.finalidade" id="finalidade" class="form-select">
             <option value="">Todos</option>
             <option v-for="imb in finalidades" :value="imb.finalidade" :key="imb.finalidade">{{ imb.finalidade == 'Locacao' ? 'Locação' : imb.finalidade }}</option>
           </select>
+        </div> -->
+        <!-- Subistituir a finalidade por um componente de radiobox -->
+        <div class="col-md-3 mb-3">
+          <label class="form-label">Finalidade/Tipo</label>
+          <div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="finalidade1" value="Venda" v-model="form.finalidade">
+              <label class="form-check-label" for="finalidade1">Venda</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" id="finalidade2" value="Locacao" v-model="form.finalidade">
+              <label class="form-check-label" for="finalidade2">Locação</label>
+            </div>
+          </div>
         </div>
         <!-- Bairro -->
         <div class="col-md-12 mb-3">
@@ -157,7 +171,14 @@
       <img src="@/assets/actions/please-wait.gif" />
     </div>
     <h3 class="mt-5" v-show="!carregando">Resultados</h3>
+    
     <label class="fs-12 fw-bolder" v-show="!carregando">({{ pagination.total }} imóveis)</label>
+    <div class="row">
+      <!-- Botão para recarregar a página: -->
+      <button class="btn btn-warning mb-3 w-25" @click="recarregarPagina" v-show="!carregando">
+        Recomeçar tudo
+      </button>
+    </div>
     <hr v-show="!carregando">
     <div class="row" v-show="!carregando">
       <div class="col-md-4">
@@ -184,8 +205,11 @@
     <div class="row my-3">
       <hr>
     </div>
-    <div class="row" v-show="form.bairro.length >= 1">
+    <div class="row" v-show="form.bairro.length >= 1 && form.finalidade == 'Venda'">
       <h4 class="my-3">Sistema de Estimativa de Valores por Região</h4>
+      <p style="color: red">
+        Para filtrar a média dos preços, selecione os imóveis na tabela abaixo e clique em "Calcular Mediana". Se nenhum imóvel for selecionado, a mediana será calculada com base em todos os imóveis exibidos na tabela.
+      </p>
       <h5 v-if="form.bairro.length >= 0">{{ form.bairro.join(',') }}</h5>
       <div class="d-flex justify-content-end mb-3" v-show="!carregando && data.length > 0">
         <button class="btn btn-success" @click="calculateMedian">Calcular Mediana</button>
@@ -194,7 +218,11 @@
         Mediana dos valores: R$ {{ Math.round(mediana).toLocaleString() }}
       </div>
       <!-- Gerar o Relatório: -->
-       
+       <div v-if="mediana !== null">
+       <button class="btn btn-success my-3" @click="visualiza_relatorio = true" v-show="!carregando && data.length > 0">
+         Gerar Relatório
+       </button>
+       </div>
     </div>
     <div class="row my-3">
       <hr>
@@ -202,7 +230,7 @@
     <table class="table table-striped" v-show="!carregando && data.length > 0 && visualiza_relatorio == false">
       <thead>
         <tr>
-          <th>Selecionar</th>
+          <th v-if="mediana !== null">Selecionar</th>
           <th>Imobiliária</th>
           <!-- <th>Estado</th> -->
           <th>Cidade</th>
@@ -221,7 +249,7 @@
       </thead>
       <tbody>
         <tr v-for="(item, index) in data" :key="index">
-          <td>
+          <td v-if="mediana !== null">
             <input type="checkbox" v-model="selecionados" :value="item" :id="'select-' + index">
           </td>
           <td><a :href="item.url" target="_blank"><font-awesome-icon icon="link"/> {{ item.imobiliaria ? item.imobiliaria : 'ver imóvel' }}</a></td>
@@ -254,7 +282,7 @@
       Carregar Mais
     </button> -->
     <!-- Paginação -->
-    <div class="pagination" v-show="!carregando">
+    <div class="pagination" v-show="!carregando && visualiza_relatorio == false">
       <button class="btn btn-info" :disabled="pagination.page === 1" @click="changePage(pagination.page - 1)">
         Anterior
       </button>
@@ -264,10 +292,7 @@
       </button>
     </div>
   </div>
-  Gerar o Relatório:
-  <button class="btn btn-success my-3" @click="visualiza_relatorio = true" v-show="!carregando && data.length > 0">
-    Gerar Relatório
-  </button>
+  
   <relatorio 
     :mediana="mediana !== null ? mediana : 0" 
     :imoveis="selecionados.length > 0 ? selecionados : data" 
@@ -433,9 +458,15 @@ const totalPages = computed(() => Math.ceil(pagination.total / pagination.pageSi
 // };
 // Reseta o formulário para o estado inicial
 const resetForm = () => {
-  Object.assign(form, { ...initialForm });
-  selecionados.value = []; // Limpar selecionados ao resetar
+  Object.keys(initialForm).forEach(key => {
+    form[key] = Array.isArray(initialForm[key]) ? [] : initialForm[key];
+    // limpa os campos marcados com check
+    if (Array.isArray(form[key])) { form[key] = []; }
+  });
+  // limpa também os campos checked
+  selecionados.value = []; // Limpar selecionados ao resetar o formulário
   mediana.value = null; // Resetar mediana
+  pagination.page = 1; // Resetar para a primeira página
   fetchData();
 };
 
@@ -484,6 +515,11 @@ const reduz_ns = (palavra) => {
   retorno = palavra.replace(/Nossa Senhora/g, 'Nsaª').replace(/Santa Maria/g, 'SM');
   return retorno;
 }
+
+// Função para reiniciar ou recarregar a página toda
+const recarregarPagina = () => {
+  window.location.reload();
+};
 
 onMounted(() => {
   fetchData();

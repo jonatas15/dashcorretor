@@ -164,6 +164,7 @@ import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import html2canvas from 'html2canvas'
 import bairrosCoords from '@/assets/jsons/bairrosltlg.json'
+import logoSrc from '@/assets/logo/1.png'
 
 const props = defineProps({
     mediana: { type: Number, required: true },
@@ -351,9 +352,9 @@ function onMapReady(map) {
 
 // Função auxiliar para adicionar texto com quebra de página
 function addTextWithPageBreak(doc, text, x, y, options = {}) {
-    if (y > 250) {
+    if (y > 260) {
         doc.addPage()
-        y = 10
+        y = 30 // Ajustado para deixar espaço para o cabeçalho
     }
     doc.text(text, x, y, options)
     return y + (options.lineHeight || 10)
@@ -363,9 +364,9 @@ function addTextWithPageBreak(doc, text, x, y, options = {}) {
 function addSplitTextWithPageBreak(doc, lines, x, y, fontSize = 10, lineHeight = 7) {
     doc.setFontSize(fontSize)
     lines.forEach(line => {
-        if (y > 250) {
+        if (y > 260) {
             doc.addPage()
-            y = 10
+            y = 30 // Ajustado para deixar espaço para o cabeçalho
         }
         doc.text(line, x, y)
         y += lineHeight
@@ -375,32 +376,99 @@ function addSplitTextWithPageBreak(doc, lines, x, y, fontSize = 10, lineHeight =
 
 // Função auxiliar para adicionar imagem com quebra de página
 async function addImageWithPageBreak(doc, base64, format, x, y, width, height) {
-    if (y + height > 250) {
+    if (y + height > 260) {
         doc.addPage()
-        y = 10
+        y = 30 // Ajustado para deixar espaço para o cabeçalho
     }
     doc.addImage(base64, format, x, y, width, height)
     return y + height + 10 // Espaço extra
 }
 
+// Função auxiliar para desenhar um card estilizado horizontal
+function drawStyledCard(doc, title, value, x, y, width = 190, height = 20) {
+    if (y + height > 200) {
+        doc.addPage()
+        y = 30 // Ajustado para deixar espaço para o cabeçalho
+    }
+
+    // Fundo do card (#02244a)
+    doc.setFillColor(2, 36, 74) // RGB para #02244a
+    doc.rect(x, y, width, height, 'F')
+
+    // Borda com destaque (#e2ae23)
+    doc.setDrawColor(226, 174, 35) // RGB para #e2ae23
+    doc.setLineWidth(1)
+    doc.rect(x, y, width, height)
+
+    // Texto do título (branco, negrito)
+    doc.setFontSize(14)
+    doc.setTextColor(255, 255, 255) // Branco
+    doc.setFont('helvetica', 'bold')
+    doc.text(title, x + 10, y + (height / 2) + 2, { align: 'left' }) // Centralizado verticalmente
+
+    // Texto do valor (branco, negrito, alinhado à direita)
+    doc.text(value, x + width - 10, y + (height / 2) + 2, { align: 'right' })
+
+    // Resetar cores
+    doc.setTextColor(0, 0, 0) // Preto padrão
+    doc.setDrawColor(0)
+    doc.setLineWidth(0.2)
+    doc.setFont('helvetica', 'normal')
+
+    return y + height + 10 // Espaço extra após o card
+}
+
+// Função auxiliar para calcular dimensões da imagem
+async function getImageDimensions(base64) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.src = base64;
+        img.onload = () => resolve({ width: img.width, height: img.height });
+        img.onerror = reject;
+    });
+}
+
 // Exportar para PDF
 async function exportToPDF() {
-    const doc = new jsPDF()
-    let y = 10
+    const doc = new jsPDF({ unit: 'mm' })
+    let y = 30 // Iniciar conteúdo após o espaço para cabeçalho
+
+    // const logoBase64 = await getBase64(logoSrc)
+    const logoBase64 = logoSrc
+    const footerText = "Avantor Negócios Imobiliários Ltda. * Creci 24.707J * Rua Silva Jardim, 1417, Centro, Santa Maria/RS | R. 3300, nº 341, Sala 12, Balneário Camboriú/SC CNPJ: 18.268.552/0001-40"
 
     // Título
     doc.setFontSize(18)
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Relatório de Avaliação de Imóvel', 10, y, { lineHeight: 15 })
+    doc.setFont('helvetica', 'normal')
 
     // Data
     doc.setFontSize(12)
     y = addTextWithPageBreak(doc, `Data: ${new Date().toLocaleDateString('pt-BR')}`, 10, y)
 
     // Bairros Pesquisados
-    y = addTextWithPageBreak(doc, `Bairros Pesquisados: ${props.bairros.join(', ')}`, 10, y)
+    doc.setFont('helvetica', 'bold')
+    // y = addTextWithPageBreak(doc, `Bairros Pesquisados: ${props.bairros.join(', ')}`, 10, y)
+    doc.setFont('helvetica', 'normal')
+    const bairroslistadosaqui = doc.splitTextToSize(props.bairros.join(', '), 200)
+    y = addSplitTextWithPageBreak(doc, bairroslistadosaqui, 10, y)
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'normal')
+    /**
+     * // Campo 5: Solicitante
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Solicitante:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const solicitanteLines = doc.splitTextToSize(solicitante.value, 180)
+    y = addSplitTextWithPageBreak(doc, solicitanteLines, 10, y)
+    doc.setFontSize(12)
+     */
 
     // Mapa
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Mapa da Região:', 10, y)
+    doc.setFont('helvetica', 'normal')
     if (mapRef.value) {
         try {
             const map = mapRef.value.leafletObject;
@@ -425,7 +493,9 @@ async function exportToPDF() {
     }
 
     // Imóveis Comparáveis
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Imóveis Comparáveis:', 10, y)
+    doc.setFont('helvetica', 'normal')
     const columns = ['Imobiliária', 'Cidade', 'Bairro', 'Negócio', 'Finalidade', 'Valor', 'Área (m²)', 'Dormitórios', 'Banheiros', 'Garagens', 'Mobiliado']
     const rows = imoveis.value.map(item => [
         item.imobiliaria || 'N/A',
@@ -445,16 +515,23 @@ async function exportToPDF() {
         body: rows,
         startY: y,
         theme: 'grid',
-        styles: { fontSize: 8 }
+        styles: { fontSize: 8 },
+        margin: { top: 30, bottom: 30, left: 10, right: 10 },
+        pageBreak: 'auto'
     })
     y = doc.lastAutoTable.finalY + 10
 
     // Campo 1: Fachada
-    y = addTextWithPageBreak(doc, 'Campo 1 - Fachada do Imóvel:', 10, y)
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Fachada do Imóvel:', 10, y)
+    doc.setFont('helvetica', 'normal')
     if (fachadaImage.value) {
         try {
             const base64 = await getBase64(fachadaFile.value || fachadaImage.value)
-            y = await addImageWithPageBreak(doc, base64, 'JPEG', 10, y, 190, 120)
+            const { width: naturalWidth, height: naturalHeight } = await getImageDimensions(base64)
+            const pdfWidth = 190
+            const pdfHeight = (naturalHeight / naturalWidth) * pdfWidth
+            y = await addImageWithPageBreak(doc, base64, 'JPEG', 10, y, pdfWidth, pdfHeight)
         } catch (error) {
             console.error('Erro ao adicionar imagem da fachada:', error)
             y = addTextWithPageBreak(doc, '(Imagem não pôde ser carregada)', 10, y)
@@ -462,72 +539,95 @@ async function exportToPDF() {
     } else {
         y = addTextWithPageBreak(doc, 'Nenhuma imagem fornecida', 10, y)
     }
-    // Aqui criar uma caixa estilizada com sombra sobre o título ajuste do valor final
-    doc.setDrawColor(0)
-    doc.setFillColor(220, 220, 220)
-    doc.rect(10, y - 8, 190, 10, 'F')
-    // Campo 2: Valor Final
-    doc.setFontSize(16)
-    y = addTextWithPageBreak(doc, `Ajuste do Valor Final: R$ ${adjustedValue.value.toLocaleString('pt-BR')}`, 100, y, { align: 'center', fontWeight: 'bold' })
-    //fechando a caixa estilizada
-    doc.setDrawColor(0)
-    doc.rect(10, y - 18, 190, 10)
-    
-    // Campos 3 e 4: Max e Min
-    doc.setDrawColor(0)
-    doc.setFillColor(220, 220, 220)
-    doc.rect(10, y - 8, 190, 10, 'F')
-    doc.setFontSize(14)
-    y = addTextWithPageBreak(doc, `Valor Máximo: R$ ${maxValue.value.toLocaleString('pt-BR')} | Valor Mínimo: R$ ${minValue.value.toLocaleString('pt-BR')}`, 100, y, { align: 'center', fontWeight: 'bold' })
-    // y = addTextWithPageBreak(doc, `Valor Mínimo: R$ ${minValue.value.toLocaleString('pt-BR')}`, 100, y, { align: 'center', fontWeight: 'bold' })
-    doc.setDrawColor(0)
-    doc.rect(10, y - 18, 190, 10)
+
+    // Card estilizado para Ajuste do Valor Final
+    y = drawStyledCard(doc, 'Ajuste do Valor Final:', `R$ ${adjustedValue.value.toLocaleString('pt-BR')}`, 10, y, 190, 25)
+
+    // Card estilizado para Intervalos Máximo e Mínimo (combinado em um card horizontal)
+    y = drawStyledCard(doc, 'Intervalo de Valores:', `Máximo: R$ ${maxValue.value.toLocaleString('pt-BR')} | Mínimo: R$ ${minValue.value.toLocaleString('pt-BR')}`, 10, y, 190, 25)
+
     // Campo 5: Solicitante
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Solicitante:', 10, y)
+    doc.setFont('helvetica', 'normal')
     const solicitanteLines = doc.splitTextToSize(solicitante.value, 180)
     y = addSplitTextWithPageBreak(doc, solicitanteLines, 10, y)
     doc.setFontSize(12)
 
     // Campo 6: Finalidade
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Finalidade da Avaliação:', 10, y)
+    doc.setFont('helvetica', 'normal')
     const finalidadeLines = doc.splitTextToSize(finalidade.value, 180)
     y = addSplitTextWithPageBreak(doc, finalidadeLines, 10, y)
     doc.setFontSize(12)
 
     // Campo 7: Descrição Imóvel
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Descrição do Imóvel:', 10, y)
+    doc.setFont('helvetica', 'normal')
     const descImovelLines = doc.splitTextToSize(descricaoImovel.value, 180)
     y = addSplitTextWithPageBreak(doc, descImovelLines, 10, y)
     doc.setFontSize(12)
 
     // Campo 8: Descrição Região
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Descrição da Região:', 10, y)
+    doc.setFont('helvetica', 'normal')
     const descRegiaoLines = doc.splitTextToSize(descricaoRegiao.value, 180)
     y = addSplitTextWithPageBreak(doc, descRegiaoLines, 10, y)
     doc.setFontSize(12)
 
     // Campo 9: Metodologia
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Metodologia da Avaliação:', 10, y)
+    doc.setFont('helvetica', 'normal')
     const metodoLines = doc.splitTextToSize(metodologia.value, 180)
     y = addSplitTextWithPageBreak(doc, metodoLines, 10, y)
     doc.setFontSize(12)
 
     // Campo 10: Conclusão
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Conclusão:', 10, y)
+    doc.setFont('helvetica', 'normal')
     const conclusaoLines = doc.splitTextToSize(conclusao.value, 180)
     y = addSplitTextWithPageBreak(doc, conclusaoLines, 10, y)
     doc.setFontSize(12)
 
     // Campo 11: Fotos
+    doc.setFont('helvetica', 'bold')
     y = addTextWithPageBreak(doc, 'Fotos Anexadas:', 10, y)
+    doc.setFont('helvetica', 'normal')
     for (let i = 0; i < fotosFiles.value.length; i++) {
         try {
             const base64 = await getBase64(fotosFiles.value[i])
-            y = await addImageWithPageBreak(doc, base64, 'JPEG', 10, y, 90, 60)
+            const { width: naturalWidth, height: naturalHeight } = await getImageDimensions(base64)
+            const pdfWidth = 190
+            const pdfHeight = (naturalHeight / naturalWidth) * pdfWidth
+            y = await addImageWithPageBreak(doc, base64, 'JPEG', 10, y, pdfWidth, pdfHeight)
         } catch (error) {
             console.error(`Erro ao adicionar foto ${i + 1}:`, error)
             y = addTextWithPageBreak(doc, `(Foto ${i + 1} não pôde ser carregada)`, 10, y)
         }
+    }
+
+    // Adicionar cabeçalho e rodapé em todas as páginas
+    const totalPages = doc.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+
+        // Cabeçalho: Logo sem fundo adicional (removido o retângulo branco para testar)
+        doc.addImage(logoBase64, 'PNG', 10, 5, 50, 20); // Ajuste as dimensões conforme o tamanho real do logo
+
+        // Rodapé
+        doc.setFontSize(8);
+        doc.setTextColor(100);
+        const footerLines = doc.splitTextToSize(footerText, 190);
+        let footerY = doc.internal.pageSize.height - (footerLines.length * 5) - 10; // Ajustado para melhor posicionamento (mais espaço na parte inferior)
+        footerLines.forEach((line, index) => {
+            doc.text(line, 10, footerY + index * 5);
+        });
+        doc.setTextColor(0);
     }
 
     // Salvar PDF
