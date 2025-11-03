@@ -70,7 +70,7 @@
         <label for="codigo-atualizar" class="w-100 fw-bolder fs-5 text-white mb-4 my-3">Para atualizar um Imóvel<br><br>digite o código</label>
         <input id="codigo-atualizar" v-model="codigo" type="text" class="form-de-topo" style="height: 40px;">
         <br>
-        <a v-show="codigo != ''" :href="'https://www.avantorimoveis.com.br/atualizar.php?codigo=' + codigo" class="btn btn-primary text-white" target="_blank">Atualizar Imóvel {{ codigo }}</a>
+        <a v-show="codigo != ''" :href="'https://www.avantorimoveis.com.br/atualizar2.php?codigo=' + codigo" class="btn btn-primary text-white" target="_blank">Atualizar Imóvel {{ codigo }}</a>
       </div>
       <div class="col-md-12 elimina-margens-internas">
         <!-- <img src="@/assets/banner/Tii.png" /> -->

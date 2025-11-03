@@ -4,50 +4,38 @@
     <hr>
     <form @submit.prevent="handleFilter">
       <div class="row">
+        <div class="col-md-12">  
+          <div class="p-0 mb-3 card">
+            <div class="card-header">Finalidade/Tipo</div>
+            <div class="card-body align-center align-middle d-flex justify-content-center">
+              <div class="toggle-wrapper-3">
+                <input type="radio" id="opt-todos" :value="''" v-model="form.finalidade">
+                <label for="opt-todos" class="text-bolder fs-6 fw-bolder">Todos</label>
+
+                <input type="radio" id="opt-venda" value="Venda" v-model="form.finalidade">
+                <label for="opt-venda" class="text-bolder fs-6 fw-bolder">Venda</label>
+
+                <input type="radio" id="opt-locacao" value="Locacao" v-model="form.finalidade">
+                <label for="opt-locacao" class="text-bolder fs-6 fw-bolder">Locação</label>
+                <span class="switch-bg-3"></span>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Imobiliária -->
-        <div class="col-md-4 mb-3">
+        <div class="col-md-6 mb-3">
           <label for="imobiliaria" class="form-label">Imobiliária</label>
           <select v-model="form.imobiliaria" id="imobiliaria" class="form-select">
             <option value="">Todas</option>
             <option v-for="imb in imobiliarias" :value="imb.imobiliaria" :key="imb.imobiliaria">{{imb.imobiliaria}}</option>
           </select>
         </div>
-        <!-- Estado -->
-        <!--
-        <div class="col-md-3 mb-3">
-          <label for="estado" class="form-label">Estado</label>
-          <input v-model="form.estado" type="text" id="estado" class="form-control" />
-        </div>
-        -->
-        <!-- Cidade -->
-        <div class="col-md-5 mb-3">
+        <div class="col-md-6 mb-3">
           <label for="cidade" class="form-label">Cidade</label>
           <select v-model="form.cidade" id="cidade" class="form-select">
             <option value="">Todas</option>
             <option v-for="imb in cidades" :value="imb.cidade" :key="imb.cidade">{{imb.cidade}}</option>
           </select>
-        </div>
-        <!-- Finalidade/Tipo -->
-        <!-- <div class="col-md-3 mb-3">
-          <label for="finalidade" class="form-label">Finalidade/Tipo</label>
-          <select v-model="form.finalidade" id="finalidade" class="form-select">
-            <option value="">Todos</option>
-            <option v-for="imb in finalidades" :value="imb.finalidade" :key="imb.finalidade">{{ imb.finalidade == 'Locacao' ? 'Locação' : imb.finalidade }}</option>
-          </select>
-        </div> -->
-        <!-- Subistituir a finalidade por um componente de radiobox -->
-        <div class="col-md-3 mb-3">
-          <label class="form-label">Finalidade/Tipo</label>
-          <div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" id="finalidade1" value="Venda" v-model="form.finalidade">
-              <label class="form-check-label" for="finalidade1">Venda</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" id="finalidade2" value="Locacao" v-model="form.finalidade">
-              <label class="form-check-label" for="finalidade2">Locação</label>
-            </div>
-          </div>
         </div>
         <!-- Bairro -->
         <div class="col-md-12 mb-3">
@@ -351,8 +339,8 @@ const dormitorios = ref(["1", "2", "3", "4+"]);
 const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
-const urlraiz = 'http://localhost:8080';
-// const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+// const urlraiz = 'http://localhost:8080';
+const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 
@@ -548,5 +536,60 @@ onBeforeUnmount(() => {
 .pagination button:disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+.toggle-wrapper-3 {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  width: 300px;
+  background: #e9ecef;
+  border-radius: 30px;
+  padding: 5px;
+  text-align: center;
+  user-select: none;
+}
+
+.toggle-wrapper-3 input {
+  display: none;
+}
+
+.toggle-wrapper-3 label {
+  z-index: 2;
+  padding: 6px 0;
+  font-weight: 500;
+  cursor: pointer;
+  color: #000;
+}
+
+.switch-bg-3 {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: calc(33.33% - 5px);
+  height: calc(100% - 10px);
+  background: #0d6efd;
+  border-radius: 30px;
+  transition: 0.3s;
+  z-index: 1;
+}
+
+/* --- POSIÇÃO DO SWITCH --- */
+#opt-todos:checked ~ .switch-bg-3 {
+  transform: translateX(0);
+}
+
+#opt-venda:checked ~ .switch-bg-3 {
+  transform: translateX(100%);
+}
+
+#opt-locacao:checked ~ .switch-bg-3 {
+  transform: translateX(200%);
+}
+
+/* --- COR DO TEXTO SELECIONADO --- */
+#opt-todos:checked + label,
+#opt-venda:checked + label,
+#opt-locacao:checked + label {
+  color: #fff !important;
 }
 </style>
