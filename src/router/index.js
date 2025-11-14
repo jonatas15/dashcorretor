@@ -20,6 +20,8 @@ import Documentos from '../views/Documentos.vue';
 import Login from '../views/Login.vue';
 import Modular from '../views/Modular.vue';
 import Relatorio from '../views/Relatorio.vue';
+import Precificacao from '../views/Precificacao.vue';
+import PrintablePage from '../views/PrintablePage.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -143,9 +145,19 @@ const router = createRouter({
       }
     },
     {
-      path: '/followup',
-      name: 'followup',
-      component: Followup,
+      path: '/precificacao',
+      name: 'precificacao',
+      component: Precificacao,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/printable-page',
+      name: 'printable-page',
+      component: PrintablePage,
       meta: { 
         default: true,
         sidebar: false,

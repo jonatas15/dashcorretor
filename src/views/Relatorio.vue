@@ -150,8 +150,23 @@
             </div>
 
             <!-- Botão de Exportar para PDF -->
-            <button class="export-button" @click.prevent="exportToPDF">Exportar para PDF</button>
+            <!-- <button class="export-button" @click.prevent="exportToPDF">Exportar para PDF</button> -->
         </form>
+        
+        <button @click="openModal">Abrir Pré-visualização A4</button>
+        <Modal :isOpen="showModal" title="Pré-visualização da Página A4" @close="closeModal">
+            <template #body>
+            <!-- <PrintablePage
+                :studyData="studyData"
+            /> -->
+            </template>
+            <template #footer>
+            <!-- <button @click="printPage">Imprimir</button> -->
+            <!-- <button @click="closeModal">Fechar</button> -->
+            <PrintablePage ref="pdfComponent" :studyData="studyData" />
+            <button @click="gerarPDF">Gerar PDF</button>
+            </template>
+        </Modal>
     </div>
 </template>
 
@@ -165,6 +180,149 @@ import autoTable from 'jspdf-autotable'
 import html2canvas from 'html2canvas'
 import bairrosCoords from '@/assets/jsons/bairrosltlg.json'
 import logoSrc from '@/assets/logo/1.png'
+
+/** ALTERNATIVA COM MODAL E PAGINA A4 */
+import Modal from './Modal.vue'
+import PrintablePage from './PrintablePage.vue'
+const showModal = ref(false);
+
+const openModal = () => {
+  showModal.value = true;
+};
+
+const closeModal = () => {
+  showModal.value = false;
+};
+
+const printPage = () => {
+  // Foca na pré-visualização e imprime
+  const printContent = document.querySelector('.sheet-outer'); // Seletor do PrintablePage
+  if (printContent) {
+    // Opção 1: Imprimir diretamente o conteúdo do modal
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write('<html><head><title>Impressão A4</title>');
+    // Copie os estilos necessários (inclua o CSS do PrintablePage aqui)
+    printWindow.document.write('<style>');
+    // Cole os estilos CSS do PrintablePage aqui manualmente, ou importe via link se possível
+    printWindow.document.write('/* Estilos do A4 aqui */');
+    printWindow.document.write('</style></head><body>');
+    printWindow.document.write(printContent.innerHTML);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+    printWindow.close();
+  } else {
+    console.error('Conteúdo não encontrado');
+  }
+  // Opcionalmente, feche o modal após imprimir
+  closeModal();
+};
+const pdfComponent = ref(null);
+
+// ... seu código ...
+
+const gerarPDF = () => {
+  if (pdfComponent.value) {
+    pdfComponent.value.exportToPDF();
+  }
+};
+/** Fechando as tentativas com impressão modal A4 */
+
+const studyData = {
+  "proprietario": "Enzo Rodrigues e Laura",
+  "endereco": "Rua Coronel Anibal Garcia Barão",
+  "codigo": "135854",
+  "atualizado": "25/06/2024",
+  "agent": {
+    "name": "Raissa Gracioli da Silva",
+    "creci": "00000",
+    "phone": "(55) 99995-0484",
+    "email": "raissagracioli@remax.com.br",
+    "photo": "https://www.shutterstock.com/image-photo/african-american-woman-braids-telemarketer-600nw-2196587531.jpg"
+  },
+  "footer": {
+    "address": "Rua Silva Jardim, 1417, Centro, Santa Maria/RS | CNPJ: 18.268.552/0001-40",
+    "phone": "(55) 9912-8466"
+  },
+  "property": {
+    "endereco": "Rua Coronel Anibal Garcia Barão",
+    "bairro": "Menino Jesus",
+    "anoConstrucao": "1997",
+    "areaUtil": "74m²",
+    "dormitorios": 3,
+    "suites": 0,
+    "banheiros": 1,
+    "vagas": 1,
+    "infraestrutura": "Não tem",
+    "portaria": "Não",
+    "posicaoSolar": "Leste",
+    "estado": "Bom",
+    "semiMobiliado": "Não",
+    "vistaPanoramica": "Não",
+    "demandaRegiao": "Pouca demanda"
+  },
+  "samples": [
+    {
+      "location": "Centro - Rua Tuiuti",
+      "endereco": "Rua Tuiuti",
+      "area": "83m²",
+      "dormitorios": 3,
+      "preco": "320.000,00",
+      "precoM2": "3.855,42"
+    },
+    {
+      "location": "Centro - Rua Tuiuti",
+      "endereco": "Rua Tuiuti",
+      "area": "78m²",
+      "dormitorios": 3,
+      "preco": "245.000,00",
+      "precoM2": "3.141,03"
+    },
+    {
+      "location": "Cerrito - Rua Santinis",
+      "endereco": "Rua Santinis",
+      "area": "83m²",
+      "dormitorios": 3,
+      "preco": "270.000,00",
+      "precoM2": "3.253,01"
+    },
+    {
+      "location": "Centro - Rua Felipe De Oliveira",
+      "endereco": "Rua Felipe De Oliveira",
+      "area": "78m²",
+      "dormitorios": 3,
+      "preco": "275.000,00",
+      "precoM2": "3.525,64"
+    },
+    {
+      "location": "rosário - Rua Visconde De Pelotas",
+      "endereco": "Rua Visconde De Pelotas",
+      "area": "68m²",
+      "dormitorios": 3,
+      "preco": "289.000,00",
+      "precoM2": "4.250,00"
+    },
+    {
+      "location": "centro - Venâncio Aires",
+      "endereco": "Venâncio Aires",
+      "area": "80m²",
+      "dormitorios": 3,
+      "preco": "350.000,00",
+      "precoM2": "4.375,00"
+    }
+  ],
+  "average": {
+    "area": "78",
+    "preco": "291.500,00",
+    "precoM2": "3.733,35"
+  },
+  "results": {
+    "improvavel": "234.768,92",
+    "mercado": "218.335,09",
+    "competitivo": "199.553,58"
+  }
+}
+
 
 const props = defineProps({
     mediana: { type: Number, required: true },

@@ -1,11 +1,11 @@
 <template>
   <div class="container mt-0 p-5 br-2 bg-white" style="border-top-right-radius: 90px">
-    <h2>Pesquisar Imóveis externos</h2>
+    <h2>Sistema de Precificação de Imóveis</h2>
     <hr>
     <form @submit.prevent="handleFilter">
       <div class="row">
         <div class="col-md-12">  
-          <div class="p-0 mb-3 card">
+          <!-- <div class="p-0 mb-3 card">
             <div class="card-header">Finalidade/Tipo</div>
             <div class="card-body align-center align-middle d-flex justify-content-center">
               <div class="toggle-wrapper-3">
@@ -20,7 +20,7 @@
                 <span class="switch-bg-3"></span>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- Imobiliária -->
         <div class="col-md-6 mb-3">
@@ -161,106 +161,101 @@
     <h3 class="mt-5" v-show="!carregando">Resultados</h3>
     
     <label class="fs-12 fw-bolder" v-show="!carregando">({{ pagination.total }} imóveis)</label>
-    <div class="row">
-      <!-- Botão para recarregar a página: -->
-      <button class="btn btn-warning mb-3 w-25" @click="recarregarPagina" v-show="!carregando">
-        Recomeçar tudo
-      </button>
-    </div>
-    <hr v-show="!carregando">
-    <div class="row" v-show="!carregando">
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">{{ Math.round(pagination.total).toLocaleString() }}</div>
-          <div class="card-footer">Total</div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">{{ Math.round(totalvendas).toLocaleString() }}</div>
-          <div class="card-footer">Total em Vendas</div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card">
-          <div class="card-body">{{ Math.round(totalalugas).toLocaleString() }}</div>
-          <div class="card-footer">Total em Locações</div>
-        </div>
-      </div>
-    </div>
     <hr v-show="!carregando">
     <!-- {{ data[1] }} -->
-    <div class="row my-3">
-      <hr>
-    </div>
-    <div class="row my-3">
-      <hr>
-    </div>
-    <table class="table table-striped" v-show="!carregando && data.length > 0 && visualiza_relatorio == false">
-      <thead>
-        <tr>
-          <th v-if="mediana !== null">Selecionar</th>
-          <th>Imobiliária</th>
-          <!-- <th>Estado</th> -->
-          <th>Cidade</th>
-          <th>Bairro</th>
-          <th>Negócio</th>
-          <th>Finalidade</th>
-          <th>Valor</th>
-          <th>Área (m²)</th>
-          <th>Cômodos</th>
-          <!-- <th>Banheiros</th>
-          <th>Dormitórios</th>
-          <th>Garagens</th> -->
-          <!-- <th>Salas</th> -->
-          <th>Mobiliado</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in data" :key="index">
-          <td v-if="mediana !== null">
-            <input type="checkbox" v-model="selecionados" :value="item" :id="'select-' + index">
-          </td>
-          <td><a :href="item.url" target="_blank"><font-awesome-icon icon="link"/> {{ item.imobiliaria ? item.imobiliaria : 'ver imóvel' }}</a></td>
-          <!-- <td>{{ item.estado }}</td> -->
-          <td>{{ item.cidade }}</td>
-          <td>{{ item.bairro }}</td>
-          <td>{{ item.negocio }}</td>
-          <td>{{ item.finalidade == 'Locacao' ? 'Locação' : item.finalidade }}</td>
-          <td>R$ {{ Math.round(item.valor).toLocaleString() }}</td>
-          <td>{{ Math.round(item.area).toLocaleString() }}</td>
-          <!-- <td>{{ item.banheiros }}</td>
-          <td>{{ item.dormitorios }}</td>
-          <td>{{ item.garagens }}</td> -->
-          <!-- <td>{{ item.salas }}</td> -->
-          <td>
-            <div class="row">
+    
+    <div class="row">
+      <div :class="visualiza_relatorio ? 'col-md-12' : 'col-md-3'">
+        <h4 class="my-3">Sistema de Estimativa de Valores por Região</h4>
+        <p style="color: red">
+          Para filtrar a média dos preços, selecione os imóveis na tabela abaixo e clique em "Calcular Mediana". Se nenhum imóvel for selecionado, a mediana será calculada com base em todos os imóveis exibidos na tabela.
+        </p>
+        <h5 v-if="form.bairro.length >= 0">{{ form.bairro.join(',') }}</h5>
+        <div class="d-flex justify-content-center mb-3" v-show="!carregando && data.length > 0">
+          <button class="btn btn-info text-white" @click="calculateMedian">Calcular Mediana</button>
+        </div>
+        <div v-if="mediana !== null" class="alert alert-info" v-show="!carregando">
+          Mediana dos valores: <hr><strong class="fs-3">R$ {{ Math.round(mediana).toLocaleString() }}</strong>
+        </div>
+        <!-- Gerar o Relatório: -->
+        <div v-if="mediana !== null">
+        <button class="btn btn-success my-3" @click="visualiza_relatorio = true" v-show="!carregando && data.length > 0">
+          Gerar Relatório
+        </button>
+        </div>
+      </div>
+      <div class="col-md-9">
+        <table class="table table-striped" v-show="!carregando && data.length > 0 && visualiza_relatorio == false">
+          <thead>
+            <tr>
+              <th>✅</th>
+              <th>Imobiliária</th>
+              <!-- <th>Estado</th> -->
+              <!-- <th>Cidade</th> -->
+              <th>Bairro</th>
+              <th>Negócio</th>
+              <!-- <th>Finalidade</th> -->
+              <th>Valor</th>
+              <th>Área (m²)</th>
+              <th>Cômodos</th>
+              <!-- <th>Banheiros</th>
+              <th>Dormitórios</th>
+              <th>Garagens</th> -->
+              <!-- <th>Salas</th> -->
+              <!-- <th>Mobiliado</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item, index) in data" :key="index">
+              <td>
+                <input type="checkbox" v-model="selecionados" :value="item" :id="'select-' + index">
+              </td>
+              <td><a :href="item.url" target="_blank"><font-awesome-icon icon="link"/> {{ item.imobiliaria ? item.imobiliaria : 'ver imóvel' }}</a></td>
+              <!-- <td>{{ item.estado }}</td> -->
+              <!-- <td>{{ item.cidade }}</td> -->
+              <td>{{ item.bairro }}</td>
+              <td>{{ item.negocio }}</td>
+              <!-- <td>{{ item.finalidade == 'Locacao' ? 'Locação' : item.finalidade }}</td> -->
+              <td>R$ {{ Math.round(item.valor).toLocaleString() }}</td>
+              <td>{{ Math.round(item.area).toLocaleString() }}</td>
+              <!-- <td>{{ item.banheiros }}</td>
+              <td>{{ item.dormitorios }}</td>
+              <td>{{ item.garagens }}</td> -->
+              <!-- <td>{{ item.salas }}</td> -->
+              <td>
+                <div class="row">
 
-              <span class="col m-0 p-0" v-if="item.dormitorios"><font-awesome-icon icon="bed"/> {{ item.dormitorios }}</span>
-              <span class="col m-0 p-0" v-if="item.banheiros"><font-awesome-icon icon="shower"/> {{ item.banheiros }}</span>
-              <span class="col m-0 p-0" v-if="item.garagens"><font-awesome-icon icon="car"/> {{ item.garagens }}</span>
-            </div>
-          </td>
-          <td v-if="item.mobiliado == 1" class="text-success">Mobiliado</td>
-          <td v-else-if="item.mobiliado == 2" class="text-primary">Semi-mobiliado</td>
-          <td v-else class="text-danger">Não mobiliado</td>
-        </tr>
-      </tbody>
-    </table>
-    <!-- <button v-if="data.length < pagination.total" @click="loadMore">
-      Carregar Mais
-    </button> -->
-    <!-- Paginação -->
-    <div class="pagination" v-show="!carregando && visualiza_relatorio == false">
-      <button class="btn btn-info" :disabled="pagination.page === 1" @click="changePage(pagination.page - 1)">
-        Anterior
-      </button>
-      <span>Página {{ pagination.page }} de {{ totalPages }}</span>
-      <button class="btn btn-info" :disabled="pagination.page === totalPages" @click="changePage(pagination.page + 1)">
-        Próxima
-      </button>
+                  <span class="col m-0 p-0" v-if="item.dormitorios"><font-awesome-icon icon="bed"/> {{ item.dormitorios }}</span>
+                  <span class="col m-0 p-0" v-if="item.banheiros"><font-awesome-icon icon="shower"/> {{ item.banheiros }}</span>
+                  <span class="col m-0 p-0" v-if="item.garagens"><font-awesome-icon icon="car"/> {{ item.garagens }}</span>
+                </div>
+              </td>
+              <!-- <td v-if="item.mobiliado == 1" class="text-success">Mobiliado</td>
+              <td v-else-if="item.mobiliado == 2" class="text-primary">Semi-mobiliado</td>
+              <td v-else class="text-danger">Não mobiliado</td> -->
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination" v-show="!carregando && visualiza_relatorio == false">
+          <button class="btn btn-info" :disabled="pagination.page === 1" @click="changePage(pagination.page - 1)">
+            Anterior
+          </button>
+          <span>Página {{ pagination.page }} de {{ totalPages }}</span>
+          <button class="btn btn-info" :disabled="pagination.page === totalPages" @click="changePage(pagination.page + 1)">
+            Próxima
+          </button>
+        </div>
+      </div>
     </div>
   </div>
+  
+  <relatorio 
+    :mediana="mediana !== null ? mediana : 0" 
+    :imoveis="selecionados.length > 0 ? selecionados : data" 
+    :bairros="form.bairro"
+    :cidade="form.cidade"
+    v-if="visualiza_relatorio"
+    ></relatorio>
 </template>
 
 <script setup>
@@ -268,6 +263,7 @@ import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue';
 import {Money} from 'v-money';
 // Vamos criar uma modal para exportrar o relatório
 // import Modal from '@/components/Modal.vue';
+import Relatorio from './Relatorio.vue';
 
 // import RangeSlider from 'vue-range-slider'
 // you probably need to import built-in style
@@ -283,7 +279,7 @@ const initialForm = {
   cidade: '',
   bairro: ref([]),
   negocio: ref([]),
-  finalidade: '',
+  finalidade: 'Venda',
   valormax: 0,
   valormin: 0,
   areamax: 0,
