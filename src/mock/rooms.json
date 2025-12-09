@@ -1,0 +1,5 @@
+[
+  { "id": 1, "name": "Geral", "type": "chat" },
+  { "id": 2, "name": "Financeiro", "type": "chat" },
+  { "id": 3, "name": "ChatGPT Interno", "type": "ai" }
+]

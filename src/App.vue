@@ -15,6 +15,7 @@ function formatDate(date) {
 let hoje = formatDate(new Date())
 </script>
 <script>
+import ChatWindow from "./components/ChatWindow.vue";
 import "@fontsource/open-sans"; // Defaults to weight 400.
 export default {
   data() {
@@ -27,6 +28,9 @@ export default {
       menuativo: localStorage.getItem('authUser') ? true : false,
       corretoresadmin: false
     }
+  },
+  components: {
+    ChatWindow,
   },
   props: {
     title: String,
@@ -50,7 +54,16 @@ export default {
       } else {
         this.ativamenumobile = "";
       }
-    }
+    },
+    // modal do chat
+    openChatModal() { 
+      const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
+      chatModal.show();
+    },
+    closeChatModal() {
+      const chatModal = bootstrap.Modal.getInstance(document.getElementById('chatModal'));
+      chatModal.hide();
+    },
   },
   mounted() {
   },
@@ -150,6 +163,11 @@ export default {
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/imoveis">
               <font-awesome-icon icon="house" class="fa-2xl" /> Imóveis Externos
+            </router-link>
+          </li>
+          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+            <router-link class="nav-link" aria-current="page" to="/precificacao">
+              <font-awesome-icon icon="house" class="fa-2xl" /> Precificação
             </router-link>
           </li>
           <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
@@ -272,6 +290,22 @@ export default {
               </router-link>
             </li>
             <li class="nav-item">
+              <router-link to="/precificacao" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                <font-awesome-icon icon="money-bill-wave" class="fa-2xl" />
+                <br>
+                <label class="label-icon">Precificação</label>
+              </router-link>
+            </li>
+            <!-- <li class="nav-item">
+              <router-link to="/chat" class="nav-link py-3 border-bottom-inativar" aria-current="page"
+                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+                <font-awesome-icon icon="comment" class="fa-2xl" />
+                <br>
+                <label class="label-icon">Chat</label>
+              </router-link>
+            </li> -->
+            <li class="nav-item">
               <router-link to="/numacros" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="ticket" class="fa-2xl" />
@@ -371,6 +405,32 @@ export default {
       <div class="col-md-10">
         <div class="main">
           <router-view></router-view>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Vamos criar uma modal para o chat aqui, que avre a partir de um balão -->
+  <!-- botão que abre a modal -->
+   <button type="button" class="btn btn-primary efeito-pulsante-de-um-segundo" data-bs-toggle="modal" data-bs-target="#chatModal"
+    style="position: fixed; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; padding: 0px; z-index: 1050; background-color: #02244a;">
+    <!-- <font-awesome-icon icon="comments" class="fa-2xl" /> -->
+     <img src="@/assets/logo/icon-bg-dark.png" alt="Logo Avantor" style="height: 40px;">
+    <!-- <font-awesome-icon icon="comment" class="fa-2xl" /> -->
+  </button>
+  <!-- Modal -->
+  <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby ="chatModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="chatModalLabel">
+          <!-- ícone da empresa no canto -->
+           <img src="@/assets/logo/icon-bg-dark.png" alt="Logo Avantor" style="height: 30px; margin-right: 10px;">
+            Assistente Virtual Avantor
+          </h5>
+          <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">❌</button>
+        </div>
+        <div class="modal-body">
+          <ChatWindow />
         </div>
       </div>
     </div>
@@ -555,4 +615,32 @@ a {
     max-width: 1250px !important;
   }
 } */
+ /** deixar a modal invisível para destacar apenas o chatbot */
+.modal {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+.modal-header {
+  background-color: #02244a !important;
+  color: white !important;
+}
+/** aumentar a largura do chat */
+.modal-dialog {
+  max-width: 90%;
+}
+/* // criar efeito pulsante no botão do chat */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(2, 36, 74, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(2, 36, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(2, 36, 74, 0);
+  }
+}
+.efeito-pulsante-de-um-segundo {
+  animation: pulse 2s infinite;
+}
 </style>

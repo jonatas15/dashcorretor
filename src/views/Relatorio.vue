@@ -150,7 +150,7 @@
             </div>
 
             <!-- Botão de Exportar para PDF -->
-            <!-- <button class="export-button" @click.prevent="exportToPDF">Exportar para PDF</button> -->
+            <button class="export-button" @click.prevent="exportToPDF">Exportar para PDF</button>
         </form>
         
         <button @click="openModal">Abrir Pré-visualização A4</button>
@@ -344,12 +344,12 @@ const loremIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
 const adjustedValue = ref(props.mediana)
 const percentPlus = ref(20) // Valor padrão para +%
 const percentMinus = ref(20) // Valor padrão para -%
-const solicitante = ref(loremIpsum) //ref('')
-const finalidade = ref(loremIpsum) //ref('')
-const descricaoImovel = ref(loremIpsum) //ref('')
-const descricaoRegiao = ref(loremIpsum) //ref('')
-const metodologia = ref(loremIpsum) //ref('')
-const conclusao = ref(loremIpsum) //ref('')
+const solicitante = ref('') //ref('')
+const finalidade = ref('') //ref('')
+const descricaoImovel = ref('') //ref('')
+const descricaoRegiao = ref('') //ref('')
+const metodologia = ref('') //ref('')
+const conclusao = ref('') //ref('')
 const apiKey = ref('')
 const fachadaImage = ref(null)
 const fotosPreviews = ref([])

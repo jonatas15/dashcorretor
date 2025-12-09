@@ -1,0 +1,5 @@
+[
+  { "id": 1, "room_id": 1, "sender": "Maria", "text": "Bom dia!", "created_at": "2025-01-01" },
+  { "id": 2, "room_id": 1, "sender": "João", "text": "Tudo certo por aí?", "created_at": "2025-01-01" },
+  { "id": 3, "room_id": 2, "sender": "Carlos", "text": "Precisamos emitir boletos.", "created_at": "2025-01-02" }
+]

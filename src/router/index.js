@@ -22,6 +22,7 @@ import Modular from '../views/Modular.vue';
 import Relatorio from '../views/Relatorio.vue';
 import Precificacao from '../views/Precificacao.vue';
 import PrintablePage from '../views/PrintablePage.vue';
+import ChatView from '../views/ChatView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,16 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+      meta: { 
+        default: true,
+        sidebar: false,
+        usuarioativo: true 
+      }
+    },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: ChatView,
       meta: { 
         default: true,
         sidebar: false,
