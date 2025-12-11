@@ -21,21 +21,21 @@
             <h3>Pesquisar Cliente</h3>
             <br>
             <br>
-            <p>
+            <div>
               <div class="row">
                 <div class="col-md-6">
                   <a href="https://painel.assertivasolucoes.com.br/login" target="_blank" class="btn btn-default botao-logo">
                     <img src="@/assets/logo/assertiva-logo.png" alt="">
                   </a>
                   <!-- <hr> -->
-                  <p class="caixa">
+                  <div class="caixa">
                     <strong>contato@cafeimobiliaria.com.br</strong>
                     <br />
                     <br />
                     <!-- <hr> -->
                     <!-- <strong>Caf3imob88@</strong><br> -->
                     <strong>Caf3Imob891732@%7867</strong><br>
-                  </p>
+                  </div>
                 </div>
                 <div class="col-md-6">
                   <a href="https://consulta5.confirmeonline.com.br/validarLogin/confirmeOnline.xhtml" target="_blank" class="btn btn-default botao-logo">
@@ -64,7 +64,7 @@
                   </p>
                 </div> -->
               </div>
-            </p>
+            </div>
         </div>
       </div>
     </div>

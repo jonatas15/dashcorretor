@@ -11,6 +11,7 @@
         :key="index"
         :role="msg.role"
         :content="msg.content"
+        style="color: black !important;"
       />
 
       <!-- indicador de carregamento -->
@@ -77,7 +78,7 @@ export default {
 
       // chamada ao backend FastAPI
       try {
-        const response = await fetch("http://SEU-SERVIDOR:8000/chat", {
+        const response = await fetch("http://0.0.0.0:8000/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

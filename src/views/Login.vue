@@ -9,12 +9,12 @@
             <br>
             <form v-on:keyup.enter="envia">
                 <div class="form-group">
-                    <p v-if="errors.length">
+                    <div v-if="errors.length">
                         <b>Por favor, corrija o(s) seguinte(s) erro(s):</b>
                         <ul>
                         <li v-for="error in errors" :key="error">{{ error }}</li>
                         </ul>
-                    </p>
+                    </div>
                 </div>
                 <div class="form-group">
                     <!-- <label for="exampleInputEmail1">Email address</label> -->
