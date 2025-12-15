@@ -14,6 +14,12 @@
         style="color: black !important;"
       />
 
+      <!-- <MessageBubble
+        :content="'Bom dia! Para fazer um bom lead, especialmente na área imobiliária, é importante seguir algumas estratégias que ajudam a captar contatos qualificados e com maior potencial de venda. Aqui vão algumas dicas baseadas no processo comercial da Avantor: 1. **Ofereça conteúdo relevante**: Utilize anúncios, posts em redes sociais e portais imobiliários que despertem o interesse do seu público-alvo. Apresente imóveis ou temas que sejam atraentes para quem está procurando investir em imóveis. 2. **Use uma abordagem consultiva no contato inicial**: Ao captar o lead, não parta direto para a venda. Procure entender as necessidades, desejos e desafios do cliente. Isso cria confiança e o posiciona como um consultor, não apenas um vendedor. 3. **Captação e pré-atendimento estruturado**: Depois de captar o lead, atue rapidamente, de preferência com uma ligação via WhatsApp para estabelecer conexão e iniciar uma conversa consultiva. Caso não atenda, envie mensagens e faça cadências de contato a cada 24 horas, sempre buscando abrir diálogo. 4. **Qualificação do lead através de perguntas**: Pergunte sobre o perfil do imóvel desejado e o que é prioridade para o cliente. Isso ajuda a direcionar melhor as ofertas e aumenta as chances de conversão. 5. **Persistência inteligente**: Não desista diante da ausência de respostas rápidas. Continue se comunicando com mensagens estratégicas para lembrar o lead sem ser inconveniente. Lembre-se: a venda é uma consequência de um processo bem conduzido, onde o objetivo principal é entender e ajudar o cliente. Se quiser, posso te ajudar com scripts e fluxogramas para estruturar esse processo com mais eficiência! Quer que eu envie?'"
+        role="assistant"
+        class="chatbot-response"
+      /> -->
+
       <!-- indicador de carregamento -->
       <div v-if="loading" class="self-start text-gray-500 text-sm">
         Digitando...
@@ -135,5 +141,34 @@ export default {
 /** aumentar a largura do chat */
 .modal-dialog {
   max-width: 500px;
+}
+.chatbot-response {
+  background: #f9fafb;
+  border-left: 4px solid #4f46e5;
+  padding: 16px 20px;
+  border-radius: 8px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #111827;
+  line-height: 1.6;
+}
+
+.chatbot-response ol {
+  margin: 12px 0 12px 20px;
+}
+
+.chatbot-response li {
+  margin-bottom: 12px;
+}
+
+.chatbot-response strong {
+  color: #1f2937;
+}
+
+.chatbot-response .cta {
+  margin-top: 16px;
+  padding: 12px;
+  background: #eef2ff;
+  border-radius: 6px;
+  font-weight: 500;
 }
 </style>
