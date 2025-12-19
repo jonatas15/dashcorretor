@@ -1,10 +1,11 @@
 <template>
-  <div class="flex flex-col h-full border rounded-lg shadow p-4 bg-white">
-
+  <div class="flex flex-col h-full border rounded-lg shadow p-4 bg-white w-full h-full card">
+    <div class="card-title">Assistente Virtual Avantor</div>
+    <div class="card-body">
     <!-- Área das mensagens -->
     <div
       ref="chatBody"
-      class="flex-1 overflow-y-auto mb-3 flex flex-col gap-2 pr-2"
+      class="flex-1 overflow-y-auto mb-3 flex flex-col gap-2 pr-2 h-full"
     >
       <MessageBubble
         v-for="(msg, index) in chatHistory"
@@ -27,7 +28,7 @@
     </div>
 
     <!-- Campo inferior -->
-    <form @submit.prevent="sendMessage" class="flex gap-2">
+    <form @submit.prevent="sendMessage" class="flex gap-2" id="formulario-modal-chat">
       <!-- <input
         v-model="input"
         type="text"
@@ -51,6 +52,7 @@
         Enviar <i class="fas fa-paper-plane ml-1"></i>
       </button>
     </form>
+  </div>
   </div>
 </template>
 

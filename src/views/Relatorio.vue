@@ -107,37 +107,103 @@
             <!-- Campo 5: Solicitante -->
             <div class="field">
                 <label>Solicitante</label>
-                <textarea v-model="solicitante" rows="3"></textarea>
+                <!-- <textarea v-model="solicitante" rows="3"></textarea> -->
+                 <QuillEditor
+                    v-model:content="solicitante"
+                    style="background-color: white;"
+                    content-type="html"
+                    theme="snow"
+                    :toolbar="[
+                        ['bold', 'italic', 'underline'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        ['clean']
+                    ]"
+                />
             </div>
 
             <!-- Campo 6: Finalidade da Avaliação -->
             <div class="field">
                 <label>Finalidade da Avaliação</label>
-                <textarea v-model="finalidade" rows="3"></textarea>
+                <!-- <textarea v-model="finalidade" rows="3"></textarea> -->
+                <QuillEditor
+                    v-model:content="finalidade"
+                    content-type="html"
+                    style="background-color: white;"
+                    theme="snow"
+                    :toolbar="[
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                    ]"
+                />
             </div>
 
             <!-- Campo 7: Descrição do Imóvel -->
             <div class="field">
                 <label>Descrição do Imóvel</label>
-                <textarea v-model="descricaoImovel" rows="5"></textarea>
+                <!-- <textarea v-model="descricaoImovel" rows="5"></textarea> -->
+                 <QuillEditor
+                    v-model:content="descricaoImovel"
+                    content-type="html"
+                    style="background-color: white;"
+                    theme="snow"
+                    :toolbar="[
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                    ]"
+                />
             </div>
 
             <!-- Campo 8: Descrição da Região -->
             <div class="field">
                 <label>Descrição da Região</label>
-                <textarea v-model="descricaoRegiao" rows="5"></textarea>
+                <!-- <textarea v-model="descricaoRegiao" rows="5"></textarea> -->
+                 <QuillEditor
+                    v-model:content="descricaoRegiao"
+                    content-type="html"
+                    style="background-color: white;"
+                    theme="snow"
+                    :toolbar="[
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                    ]"
+                />
             </div>
 
             <!-- Campo 9: Metodologia da Avaliação -->
             <div class="field">
                 <label>Metodologia da Avaliação</label>
-                <textarea v-model="metodologia" rows="5"></textarea>
+                <!-- <textarea v-model="metodologia" rows="5"></textarea> -->
+                 <QuillEditor
+                    v-model:content="metodologia"
+                    content-type="html"
+                    style="background-color: white;"
+                    theme="snow"
+                    :toolbar="[
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                    ]"
+                />
             </div>
 
             <!-- Campo 10: Conclusão -->
             <div class="field">
                 <label>Conclusão</label>
-                <textarea v-model="conclusao" rows="5"></textarea>
+                <!-- <textarea v-model="conclusao" rows="5"></textarea> -->
+                    <QuillEditor
+                        v-model:content="conclusao"
+                        content-type="html"
+                        style="background-color: white;"
+                        theme="snow"
+                        :toolbar="[
+                        ['bold', 'italic', 'underline'],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
+                        ['clean']
+                        ]"
+                    />
             </div>
 
             <!-- Campo 11: Anexar Fotos -->
@@ -150,10 +216,12 @@
             </div>
 
             <!-- Botão de Exportar para PDF -->
-            <button class="export-button" @click.prevent="exportToPDF">Exportar para PDF</button>
+            <!-- <button class="export-button" @click.prevent="exportToPDF">Exportar para PDF</button> -->
         </form>
         
-        <button @click="openModal">Abrir Pré-visualização A4</button>
+        <button @click="openModal" class="btn btn-primary my-3">
+            <font-awesome-icon icon="gauge" class="fa-1xl mx-1" /> Abrir Pré-visualização A4
+        </button>
         <Modal :isOpen="showModal" title="Pré-visualização da Página A4" @close="closeModal">
             <template #body>
             <!-- <PrintablePage
@@ -181,9 +249,13 @@ import html2canvas from 'html2canvas'
 import bairrosCoords from '@/assets/jsons/bairrosltlg.json'
 import logoSrc from '@/assets/logo/1.png'
 
+import { QuillEditor } from '@vueup/vue-quill'
+import '@vueup/vue-quill/dist/vue-quill.snow.css'
+
 /** ALTERNATIVA COM MODAL E PAGINA A4 */
 import Modal from './Modal.vue'
 import PrintablePage from './PrintablePage.vue'
+import { icon } from 'leaflet'
 const showModal = ref(false);
 
 const openModal = () => {

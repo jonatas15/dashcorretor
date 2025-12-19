@@ -64,6 +64,16 @@ export default {
       const chatModal = bootstrap.Modal.getInstance(document.getElementById('chatModal'));
       chatModal.hide();
     },
+    openChatModal() {
+      this.$nextTick(() => {
+        const el = document.getElementById('chatModal')
+        const modal = new bootstrap.Modal(el, {
+          backdrop: true,
+          focus: true
+        })
+        modal.show()
+      })
+    }
   },
   mounted() {
   },
@@ -77,6 +87,10 @@ export default {
           this.corretor = getnome.nome;
           // console.log(this.$route.meta)
           this.menuativo = true;
+          const modalEl = document.getElementById('chatModal')
+          const instance = bootstrap.Modal.getInstance(modalEl)
+          if (instance) instance.hide()
+
         } else {
           this.menuativo = false;
           this.corretor = "Logar";
@@ -411,30 +425,32 @@ export default {
   </div>
   <!-- Vamos criar uma modal para o chat aqui, que avre a partir de um balão -->
   <!-- botão que abre a modal -->
-   <button type="button" class="btn btn-primary efeito-pulsante-de-um-segundo" data-bs-toggle="modal" data-bs-target="#chatModal"
+   <div class="chatbot-box">
+     <ChatWindow />
+    </div>
+   <button type="button" class="btn btn-primary efeito-pulsante-de-um-segundo" @click="openChatModal"
     style="position: fixed; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; padding: 0px; z-index: 1050; background-color: #02244a;">
     <!-- <font-awesome-icon icon="comments" class="fa-2xl" /> -->
      <img src="@/assets/logo/icon-bg-dark.png" alt="Logo Avantor" style="height: 40px;">
     <!-- <font-awesome-icon icon="comment" class="fa-2xl" /> -->
   </button>
   <!-- Modal -->
-  <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby ="chatModalLabel" aria-hidden="true">
+  <!-- <div class="modal fade" id="chatModal" tabindex="-1" aria-labelledby ="chatModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="chatModalLabel">
-          <!-- ícone da empresa no canto -->
            <img src="@/assets/logo/icon-bg-dark.png" alt="Logo Avantor" style="height: 30px; margin-right: 10px;">
             Assistente Virtual Avantor
           </h5>
           <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">❌</button>
         </div>
         <div class="modal-body">
-          <ChatWindow />
+          
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="clearfix">
     <br>
     <br>
@@ -616,17 +632,33 @@ a {
   }
 } */
  /** deixar a modal invisível para destacar apenas o chatbot */
-.modal {
+/* #chatModal .modal {
   background-color: transparent !important;
   box-shadow: none !important;
 }
-.modal-header {
+#chatModal .modal-header {
   background-color: #02244a !important;
   color: white !important;
 }
-/** aumentar a largura do chat */
-.modal-dialog {
+#chatModal .modal-dialog {
   max-width: 90%;
+} */
+/* Chatbot fixo flutuante */
+.chatbot-box {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 460px;
+  height: auto;
+  padding: 0px;
+  border-radius: 5px;
+  background-color: #02244a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  cursor: pointer;
 }
 /* // criar efeito pulsante no botão do chat */
 @keyframes pulse {

@@ -2,7 +2,7 @@
   <div class="container mt-0 p-5 br-2 bg-white" style="border-top-right-radius: 90px">
     <h2>Sistema de Precificação de Imóveis</h2>
     <hr>
-    <form @submit.prevent="handleFilter">
+    <form @submit.prevent="handleFilter" id="formulario-precificacao" v-show="visualiza_relatorio == false">
       <div class="row">
         <div class="col-md-12">  
           <!-- <div class="p-0 mb-3 card">
@@ -40,7 +40,7 @@
         <!-- Bairro -->
         <div class="col-md-12 mb-3">
           <div class="card p-1 bairros_listados">
-          <label for="bairro" class="form-label py-2" @click="toggleDiv">
+          <label class="form-label py-2" @click="toggleDiv">
             Bairros: {{ form.bairro.length > 0 ?  form.bairro + " | ⏷" : 'Selecione 1/mais bairros ⏷' }}
           </label>
           <div class="row mx-2" v-show="verBairros" @click.self="hideDiv">
@@ -155,17 +155,17 @@
         <button type="button" class="btn btn-secondary" @click="resetForm">Limpar Campos</button>
       </div>
     </form>
-    <div v-show="carregando">
+    <div v-show="carregando && visualiza_relatorio == false">
       <img src="@/assets/actions/please-wait.gif" />
     </div>
-    <h3 class="mt-5" v-show="!carregando">Resultados</h3>
-    
-    <label class="fs-12 fw-bolder" v-show="!carregando">({{ pagination.total }} imóveis)</label>
-    <hr v-show="!carregando">
+    <h3 class="mt-5" v-show="!carregando && visualiza_relatorio == false">Resultados</h3>
+
+    <label class="fs-12 fw-bolder" v-show="!carregando && visualiza_relatorio == false">({{ pagination.total }} imóveis)</label>
+    <hr v-show="!carregando && visualiza_relatorio == false">
     <!-- {{ data[1] }} -->
     
     <div class="row">
-      <div :class="visualiza_relatorio ? 'col-md-12' : 'col-md-3'">
+      <div :class="visualiza_relatorio ? 'col-md-12' : 'col-md-3'" v-show="visualiza_relatorio == false">
         <h4 class="my-3">Sistema de Estimativa de Valores por Região</h4>
         <p style="color: red">
           Para filtrar a média dos preços, selecione os imóveis na tabela abaixo e clique em "Calcular Mediana". Se nenhum imóvel for selecionado, a mediana será calculada com base em todos os imóveis exibidos na tabela.
@@ -247,15 +247,15 @@
         </div>
       </div>
     </div>
+    <relatorio 
+      :mediana="mediana !== null ? mediana : 0" 
+      :imoveis="selecionados.length > 0 ? selecionados : data" 
+      :bairros="form.bairro"
+      :cidade="form.cidade"
+      v-if="visualiza_relatorio"
+    ></relatorio>
   </div>
   
-  <relatorio 
-    :mediana="mediana !== null ? mediana : 0" 
-    :imoveis="selecionados.length > 0 ? selecionados : data" 
-    :bairros="form.bairro"
-    :cidade="form.cidade"
-    v-if="visualiza_relatorio"
-    ></relatorio>
 </template>
 
 <script setup>
@@ -307,8 +307,8 @@ const dormitorios = ref(["1", "2", "3", "4+"]);
 const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
-// const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+const urlraiz = 'http://localhost:8080';
+// const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 

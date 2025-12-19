@@ -2,7 +2,7 @@
   <div class="container mt-0 p-5 br-2 bg-white" style="border-top-right-radius: 90px">
     <h2>Pesquisar Imóveis externos</h2>
     <hr>
-    <form @submit.prevent="handleFilter">
+    <form @submit.prevent="handleFilter" id="formulario_imoveis">
       <div class="row">
         <div class="col-md-12">  
           <div class="p-0 mb-3 card">
@@ -311,8 +311,8 @@ const dormitorios = ref(["1", "2", "3", "4+"]);
 const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
-// const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+const urlraiz = 'http://localhost:8080';
+// const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 
