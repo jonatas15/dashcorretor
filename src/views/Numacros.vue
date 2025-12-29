@@ -3,8 +3,8 @@
     <br>
 
     <div class="btn-group" role="group" aria-label="Basic example">
-      <router-link to="/numacros" class="btn btn-primary text-white fw-bolder">Placas</router-link>
-      <router-link to="/marketplace" class="btn btn-secondary text-white fw-bolder">Marketplace</router-link>
+      <!-- <router-link to="/numacros" class="btn btn-primary text-white fw-bolder">Placas</router-link> -->
+      <!-- <router-link to="/marketplace" class="btn btn-secondary text-white fw-bolder">Marketplace</router-link> -->
     </div>
 
     <hr>

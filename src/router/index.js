@@ -23,6 +23,9 @@ import Relatorio from '../views/Relatorio.vue';
 import Precificacao from '../views/Precificacao.vue';
 import PrintablePage from '../views/PrintablePage.vue';
 import ChatView from '../views/ChatView.vue';
+import Relatoriov2 from '../views/Relatoriov2.vue';
+import Secao1 from '../views/Secao1.vue';
+import Secao2 from '../views/Secao2.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -261,6 +264,36 @@ const router = createRouter({
       component: Login,
       meta: { 
         default: true,
+        sidebar: false,
+        usuarioativo: false 
+      }
+    },
+    {
+      path: '/relatoriov2',
+      name: 'relatoriov2',
+      component: Relatoriov2,
+      meta: { 
+        default: false,
+        sidebar: false,
+        usuarioativo: false 
+      }
+    },
+    {
+      path: '/secao1',
+      name: 'secao1',
+      component: Secao1,
+      meta: { 
+        default: false,
+        sidebar: false,
+        usuarioativo: false 
+      }
+    },
+    {
+      path: '/secao2',
+      name: 'secao2',
+      component: Secao2,
+      meta: { 
+        default: false,
         sidebar: false,
         usuarioativo: false 
       }

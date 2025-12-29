@@ -20,6 +20,7 @@ import "@fontsource/open-sans"; // Defaults to weight 400.
 export default {
   data() {
     return {
+      chatativo: false,
       corretor: "Sr. Café",
       corretorid: 0,
       ativo: this.$route.meta.usuarioativo, //this.$route.props.usuarioativo
@@ -57,22 +58,10 @@ export default {
     },
     // modal do chat
     openChatModal() { 
-      const chatModal = new bootstrap.Modal(document.getElementById('chatModal'));
-      chatModal.show();
+      this.chatativo = true;
     },
     closeChatModal() {
-      const chatModal = bootstrap.Modal.getInstance(document.getElementById('chatModal'));
-      chatModal.hide();
-    },
-    openChatModal() {
-      this.$nextTick(() => {
-        const el = document.getElementById('chatModal')
-        const modal = new bootstrap.Modal(el, {
-          backdrop: true,
-          focus: true
-        })
-        modal.show()
-      })
+      this.chatativo = false;
     }
   },
   mounted() {
@@ -324,7 +313,7 @@ export default {
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
                 <font-awesome-icon icon="ticket" class="fa-2xl" />
                 <br>
-                <label class="label-icon">Placas e Marketplace</label>
+                <label class="label-icon">Placas</label>
               </router-link>
             </li>
             <li class="nav-item">
@@ -425,7 +414,10 @@ export default {
   </div>
   <!-- Vamos criar uma modal para o chat aqui, que avre a partir de um balão -->
   <!-- botão que abre a modal -->
-   <div class="chatbot-box">
+   <div class="chatbot-box" v-show="chatativo">
+     <!-- botão fechar o chat -->
+      <button type="button" class="btn-close btn-close-danger m-2" aria-label="Close" @click="closeChatModal"
+        style="z-index: 9999 !important; color: red !important">x</button>
      <ChatWindow />
     </div>
    <button type="button" class="btn btn-primary efeito-pulsante-de-um-segundo" @click="openChatModal"

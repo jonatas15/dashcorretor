@@ -1,0 +1,30 @@
+{
+  "cliente": {
+    "nomes": ["Enzo Rodrigues", "Laura"]
+  },
+  "corretor": {
+    "nome": "Fulano Beltrano",
+    "creci": "00000",
+    "telefone": "(55) 99995-0484",
+    "email": "fulano@avantor.com.br"
+  },
+  "imovel": {
+    "endereco": "Rua Coronel Aníbal Garcia Barão",
+    "bairro": "Menino Jesus",
+    "area": 74,
+    "dormitorios": 3,
+    "banheiros": 1,
+    "vagas": 1,
+    "ano": 1997,
+    "posicaoSolar": "Leste",
+    "demanda": "Pouca demanda"
+  },
+  "marketing": [
+    "Fotos profissionais",
+    "Vídeo profissional",
+    "Portais imobiliários",
+    "Redes sociais",
+    "Google Ads",
+    "Visitas com corretores parceiros"
+  ]
+}

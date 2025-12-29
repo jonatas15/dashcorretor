@@ -1,6 +1,9 @@
 <template>
   <div class="flex flex-col h-full border rounded-lg shadow p-4 bg-white w-full h-full card">
-    <div class="card-title">Assistente Virtual Avantor</div>
+    <div class="card-title">
+      <h4 class="fs-bolder" style="">AVA</h4>
+      <sub class="text-muted">Assistente Virtual Avantor</sub>
+    </div>
     <div class="card-body">
     <!-- Área das mensagens -->
     <div
@@ -58,6 +61,8 @@
 
 <script>
 import MessageBubble from "./MessageBubble.vue";
+// json dos valores globais: valoresglobais.json
+import valoresglobais from "../valoresglobais.json";
 
 export default {
   name: "ChatWindow",
@@ -104,7 +109,7 @@ export default {
       } catch (e) {
         this.chatHistory.push({
           role: "assistant",
-          content: "❌ Erro ao conectar com o servidor.",
+          content: "❌ Servidor inativo no momento.",
         });
       }
 

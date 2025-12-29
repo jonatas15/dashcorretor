@@ -1,0 +1,25 @@
+{
+    "development": {
+        "url": {
+            "baseUrl": "http://localhost:5172/corretor"
+        },
+        "api": {
+            "baseUrl": "http://localhost:8080"
+        },
+        "avantor-ai": {
+            "baseUrl": "http://localhost:8000"
+        }
+    },
+    "production": {
+        "url": {
+            "baseUrl": "https://cafeimobiliaria.com.br/corretor"
+        },
+        "api": {
+            "baseUrl": "https://api.avantorimoveis.com.br/dadoscorretor"
+        },
+        "avantor-ai": {
+            "baseUrl": "https://api.avantorimoveis.com.br/avantor-ai"
+        }
+    },
+    "environment": "development"
+}

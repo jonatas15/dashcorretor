@@ -1,0 +1,9 @@
+@media print {
+  body {
+    background: white;
+  }
+
+  section {
+    page-break-inside: avoid;
+  }
+}

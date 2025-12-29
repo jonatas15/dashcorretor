@@ -346,6 +346,7 @@ const fetchData = async () => {
     `&banheiros=${form.banheiros}` +
     `&garagens=${form.garagens}` +
     `&mobiliado=${form.mobiliado}` +
+    `&paginafonte=precificacao` +
   ``);
   const result = await response.json();
   // console.log(result)
@@ -354,11 +355,11 @@ const fetchData = async () => {
   const imobsresult = await imobs.json();
   imobiliarias.value = imobsresult.data;
   // lista de cidades --------------------------------
-  const cities = await fetch(`${urlraiz}/imoveisex/getcidades`);
+  const cities = await fetch(`${urlraiz}/imoveisex/getcidades?paginafonte=precificacao`);
   const citiesresult = await cities.json();
   cidades.value = citiesresult.data;
   // lista de bairros --------------------------------
-  const bairrosx = await fetch(`${urlraiz}/imoveisex/getbairros`);
+  const bairrosx = await fetch(`${urlraiz}/imoveisex/getbairros?paginafonte=precificacao`);
   const bairrosxresult = await bairrosx.json();
   bairros.value = bairrosxresult.data;
   // lista de negocios --------------------------------
