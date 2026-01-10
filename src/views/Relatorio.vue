@@ -224,15 +224,22 @@
         </button>
         <Modal :isOpen="showModal" title="Pré-visualização da Página A4" @close="closeModal">
             <template #body>
-            <!-- <PrintablePage
-                :studyData="studyData"
-            /> -->
+                <!-- Uma div com scroll intrno pra ler só o relatorio -->
+                 <div style="max-height: 80vh; overflow-y: auto; padding-right: 10px;">
+                    <div ref="pdfComponent">
+                        {{ imoveis }}
+                        <Relatoriov2
+                            :mediana="adjustedValue"
+                            :imoveis="imoveis"
+                            :bairros="props.bairros"
+                            :cidade="props.cidade"
+                        />
+                    </div>
+                </div>
             </template>
             <template #footer>
             <!-- <button @click="printPage">Imprimir</button> -->
-            <!-- <button @click="closeModal">Fechar</button> -->
-            <PrintablePage ref="pdfComponent" :studyData="studyData" />
-            <button @click="gerarPDF">Gerar PDF</button>
+            <button @click="closeModal" class="w-25 my-3 btn btn-warning">Fechar</button>
             </template>
         </Modal>
     </div>
@@ -251,6 +258,7 @@ import logoSrc from '@/assets/logo/1.png'
 
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
+import Relatoriov2 from './Relatoriov2.vue'
 
 /** ALTERNATIVA COM MODAL E PAGINA A4 */
 import Modal from './Modal.vue'
@@ -299,102 +307,6 @@ const gerarPDF = () => {
   }
 };
 /** Fechando as tentativas com impressão modal A4 */
-
-const studyData = {
-  "proprietario": "Enzo Rodrigues e Laura",
-  "endereco": "Rua Coronel Anibal Garcia Barão",
-  "codigo": "135854",
-  "atualizado": "25/06/2024",
-  "agent": {
-    "name": "Raissa Gracioli da Silva",
-    "creci": "00000",
-    "phone": "(55) 99995-0484",
-    "email": "raissagracioli@remax.com.br",
-    "photo": "https://www.shutterstock.com/image-photo/african-american-woman-braids-telemarketer-600nw-2196587531.jpg"
-  },
-  "footer": {
-    "address": "Rua Silva Jardim, 1417, Centro, Santa Maria/RS | CNPJ: 18.268.552/0001-40",
-    "phone": "(55) 9912-8466"
-  },
-  "property": {
-    "endereco": "Rua Coronel Anibal Garcia Barão",
-    "bairro": "Menino Jesus",
-    "anoConstrucao": "1997",
-    "areaUtil": "74m²",
-    "dormitorios": 3,
-    "suites": 0,
-    "banheiros": 1,
-    "vagas": 1,
-    "infraestrutura": "Não tem",
-    "portaria": "Não",
-    "posicaoSolar": "Leste",
-    "estado": "Bom",
-    "semiMobiliado": "Não",
-    "vistaPanoramica": "Não",
-    "demandaRegiao": "Pouca demanda"
-  },
-  "samples": [
-    {
-      "location": "Centro - Rua Tuiuti",
-      "endereco": "Rua Tuiuti",
-      "area": "83m²",
-      "dormitorios": 3,
-      "preco": "320.000,00",
-      "precoM2": "3.855,42"
-    },
-    {
-      "location": "Centro - Rua Tuiuti",
-      "endereco": "Rua Tuiuti",
-      "area": "78m²",
-      "dormitorios": 3,
-      "preco": "245.000,00",
-      "precoM2": "3.141,03"
-    },
-    {
-      "location": "Cerrito - Rua Santinis",
-      "endereco": "Rua Santinis",
-      "area": "83m²",
-      "dormitorios": 3,
-      "preco": "270.000,00",
-      "precoM2": "3.253,01"
-    },
-    {
-      "location": "Centro - Rua Felipe De Oliveira",
-      "endereco": "Rua Felipe De Oliveira",
-      "area": "78m²",
-      "dormitorios": 3,
-      "preco": "275.000,00",
-      "precoM2": "3.525,64"
-    },
-    {
-      "location": "rosário - Rua Visconde De Pelotas",
-      "endereco": "Rua Visconde De Pelotas",
-      "area": "68m²",
-      "dormitorios": 3,
-      "preco": "289.000,00",
-      "precoM2": "4.250,00"
-    },
-    {
-      "location": "centro - Venâncio Aires",
-      "endereco": "Venâncio Aires",
-      "area": "80m²",
-      "dormitorios": 3,
-      "preco": "350.000,00",
-      "precoM2": "4.375,00"
-    }
-  ],
-  "average": {
-    "area": "78",
-    "preco": "291.500,00",
-    "precoM2": "3.733,35"
-  },
-  "results": {
-    "improvavel": "234.768,92",
-    "mercado": "218.335,09",
-    "competitivo": "199.553,58"
-  }
-}
-
 
 const props = defineProps({
     mediana: { type: Number, required: true },

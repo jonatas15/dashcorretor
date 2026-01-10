@@ -1,13 +1,12 @@
 <template>
   <!-- BOTÃO -->
-  <button class="print-btn" @click="printDiv">Imprimir PDF</button>
+  <button class="print-btn" @click="gerarPDF">Imprimir PDF</button>
 
   <!-- ÁREA IMPRIMÍVEL -->
   <div
     id="print-area"
-    style="/** zoom para a pagina aparecer inteira */ zoom: 0.7"
   >
-    <div v-for="(pagina, index) in paginas" :key="index" class="page-a4">
+    <div class="page-a4">
       <!-- :style="{ backgroundImage: `url(${pagina.banner})` }" -->
       <div class="header"></div>
 
@@ -24,8 +23,8 @@
           <div class="broker-info">
             <span class="label">ESTUDO REALIZADO POR:</span>
             <strong>{{ pagina.corretor.nome }}</strong>
-            <span>{{ pagina.corretor.telefone }}</span>
-            <span>{{ pagina.corretor.email }}</span>
+            <h5 class="identificacao-label">{{ pagina.corretor.telefone }}</h5>
+            <h5 class="identificacao-label">{{ pagina.corretor.email }}</h5>
           </div>
 
           <div class="logo">
@@ -213,9 +212,9 @@
       </div>
 
       <!-- RODAPÉ -->
-      <div class="page-footer">
+      <!-- <div class="page-footer">
         <span>www.avantorimoveis.com.br</span>
-      </div>
+      </div> -->
     </div>
     <div class="page-a4 page-analise no-background page-dados">
       <!-- HEADER -->
@@ -287,42 +286,35 @@
             <th>Endereço</th>
             <th>Área<br />priv.</th>
             <th>Dorm.</th>
-            <th>Suítes</th>
             <th>Banh.</th>
             <th>Vagas</th>
-            <th>Portaria</th>
-            <th>Infra</th>
             <th>Preço</th>
-            <th>Preço/m²</th>
             <th>Referência</th>
           </tr>
         </thead>
 
         <tbody>
           <tr
-            v-for="(item, index) in dados_para_a_tabela"
+            v-for="(item, index) in imoveis"
             :key="index"
             :class="{ highlight: item.highlight }"
           >
-            <td>{{ item.endereco }}</td>
+            <td>{{ item.bairro }}</td>
             <td>{{ item.area }}</td>
-            <td>{{ item.dorm }}</td>
-            <td>{{ item.suites }}</td>
-            <td>{{ item.banh }}</td>
-            <td>{{ item.vagas }}</td>
-            <td>{{ item.portaria }}</td>
-            <td>{{ item.infra }}</td>
-            <td>{{ item.preco }}</td>
-            <td>{{ item.precoM2 }}</td>
+            <td>{{ item.dormitorios }}</td>
+            <td>{{ item.banheiros }}</td>
+            <td>{{ item.garagens }}</td>
+            <td>{{ item.valor }}</td>
+            <!-- <td>{{ item.imobiliaria }}</td> -->
             <td>
               <a
-                v-if="item.referenciaUrl"
-                :href="item.referenciaUrl"
+                v-if="item.url"
+                :href="item.url"
                 target="_blank"
               >
                 Ver
               </a>
-              <span v-else>{{ item.referencia }}</span>
+              <span v-else>{{ item.imobiliaria }}</span>
             </td>
           </tr>
         </tbody>
@@ -332,9 +324,9 @@
           <tr>
             <td>Resultado médio</td>
             <td>{{ media.area }}</td>
-            <td colspan="6"></td>
-            <td>{{ media.preco }}</td>
-            <td>{{ media.precoM2 }}</td>
+            <td colspan="2"></td>
+            <td>Média:</td>
+            <td>{{ mediana }}</td>
             <td></td>
           </tr>
         </tfoot>
@@ -376,6 +368,21 @@ import { ref } from "vue";
 import { onMounted } from "vue";
 import { defineProps } from "vue";
 import fs from 'fs';
+import html2pdf from "html2pdf.js";
+
+const props = defineProps({
+  imoveis: {
+    type: Array,
+    required: true,
+  },
+  mediana: {
+    type: String,
+  }
+});
+
+// variável que recebe os dados da tabela de imóveis
+const imoveis = props.imoveis || dados_para_a_tabela;
+const mediana = props.mediana
 
 // defineProps({
 //   logo: {
@@ -500,8 +507,7 @@ const cards = [
   },
 ];
 
-const paginas = [
-  {
+const pagina = {
     banner: "/banner.png",
     logo: "/logo.png",
     titulo: `ESTUDO
@@ -516,8 +522,60 @@ const paginas = [
       email: "fulano@avantor.com.br",
       foto: "/avatar.png",
     },
-  },
-];
+  };
+async function loadPrintStyles() {
+  const res = await fetch('/assets/estilo.css');
+
+  if (!res.ok) {
+    throw new Error('Erro ao carregar CSS: ' + res.status);
+  }
+
+  const css = await res.text();
+  console.log('CSS carregado com sucesso:', css.substring(0, 200));
+
+  return css;
+}
+function injectPrintStyle(css) {
+  let styleTag = document.getElementById('print-style');
+
+  if (!styleTag) {
+    styleTag = document.createElement('style');
+    styleTag.id = 'print-style';
+    document.head.appendChild(styleTag);
+  }
+
+  styleTag.innerHTML = css;
+}
+
+
+async function gerarPDF() {
+  const element = document.getElementById('print-area');
+  if (!element) return;
+
+  const css = await loadPrintStyles();
+  injectPrintStyle(css);
+
+  const opt = {
+    margin: [0, 0, 0, 0],
+    filename: 'relatorio.pdf',
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
+      letterRendering: true
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['css'] }
+  };
+
+  await html2pdf().set(opt).from(element).save();
+}
+
+
+/* substituir getPrintStyles por arquivo externo */
+/* carregar css do arquivo estilo.css */
+
 
 function printDiv() {
   // desativar as margens do body para impressão
@@ -548,652 +606,15 @@ function printDiv() {
     printWindow.close();
   }, 300);
 }
-/* substituir getPrintStyles por arquivo externo */
-/* carregar css do arquivo estilo.css */
-import printCss from '@/assets/estilo.css?raw';
-function getPrintStyles() {
-  return printCss;
-}
+
 
 // function getPrintStyles() {
 //   return `
     
 //   `;
 // }
+onMounted(() => {
+  // carregar o css na página também:
+  loadPrintStyles().then(css => injectPrintStyle(css));
+});
 </script>
-
-<style scoped>
-/* ===== RESET BÁSICO ===== */
-* {
-  box-sizing: border-box;
-}
-
-/* ===== BOTÃO ===== */
-.print-btn {
-  margin: 10mm;
-  padding: 4mm 8mm;
-  font-size: 4mm;
-  cursor: pointer;
-}
-
-/* ===== PÁGINA A4 ===== */
-.page-a4 {
-  width: 210mm;
-  height: 297mm;
-  background: #ffffff;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #0b2a55;
-  overflow: hidden;
-  page-break-after: always;
-  break-after: page;
-  background-image: url("/banner-inteiro.png");
-  background-size: contain;
-  background-position: center;
-}
-.no-background {
-  background-image: none !important;
-}
-
-/* Remove quebra da última página */
-.page-a4:last-child {
-  page-break-after: auto;
-  break-after: auto;
-}
-
-/* ===== BANNER ===== */
-.header {
-  height: 150mm;
-  background-size: cover;
-  background-position: center;
-}
-
-/* ===== CONTEÚDO ===== */
-.content {
-  display: flex;
-  padding: 20mm;
-  height: calc(297mm - 140mm);
-}
-
-/* ===== COLUNA ESQUERDA ===== */
-.left {
-  flex: 1;
-  margin-top: 20mm;
-  text-align: left;
-}
-
-.left h1 {
-  white-space: pre-line;
-  font-size: 9mm;
-  line-height: 1.2;
-  font-weight: 500;
-  letter-spacing: 0.3mm;
-}
-
-/* ===== COLUNA DIREITA ===== */
-.right {
-  width: 60mm;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: left;
-  margin-left: 30mm;
-}
-
-/* ===== AVATAR ===== */
-.avatar {
-  width: 55mm;
-  height: 55mm;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 4mm solid #0b2a55;
-  margin-bottom: 6mm;
-  margin-top: -10mm;
-}
-
-.avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* ===== INFO CORRETOR ===== */
-.broker-info {
-  text-align: left;
-  font-size: 3.2mm;
-  line-height: 1.4;
-  margin-bottom: 12mm;
-}
-
-.broker-info .label {
-  font-size: 2.6mm;
-  color: #6b7280;
-}
-
-.broker-info strong {
-  display: block;
-  font-size: 3.5mm;
-  margin: 1mm 0;
-}
-
-/* ===== LOGO ===== */
-.logo img {
-  width: 35mm;
-  margin-top: auto;
-}
-
-/* ===== PRINT ===== */
-@media print {
-  body {
-    margin: 0;
-  }
-
-  .print-btn {
-    display: none;
-  }
-
-  .page-a4 {
-    box-shadow: none;
-  }
-
-  * {
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
-}
-.page-analise {
-  padding: 15mm 20mm;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #0b2a55;
-}
-
-/* HEADER */
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-top {
-  height: 8mm;
-}
-
-.header-title {
-  font-size: 3mm;
-  color: #6b7280;
-}
-
-/* LINHAS */
-.divider,
-.section-divider {
-  border: none;
-  border-top: 0.4mm solid #0b2a55;
-  margin: 6mm 0;
-}
-
-/* TEXTO */
-.page-body {
-  text-align: left;
-}
-.page-body h2 {
-  font-size: 5mm;
-  margin-bottom: 5mm;
-}
-
-.page-body h3 {
-  font-size: 4mm;
-  margin: 6mm 0 3mm;
-}
-
-.page-body p {
-  font-size: 3.2mm;
-  line-height: 1.6;
-  margin-bottom: 4mm;
-}
-
-/* GRÁFICO DE PREÇO */
-.price-chart {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2mm;
-  margin: 8mm 0;
-}
-
-.price-chart .label {
-  font-size: 2.6mm;
-  text-align: center;
-  width: 20mm;
-}
-
-.pill {
-  height: 18mm;
-  padding: 0 6mm;
-  border-radius: 9mm;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3.2mm;
-  font-weight: bold;
-  color: #ffffff;
-}
-
-.pill.blue {
-  background: #1e4fd8;
-  width: 50mm;
-}
-
-.pill.yellow {
-  background: #fbbf24;
-  color: #0b2a55;
-}
-
-.pill.orange {
-  background: #fb923c;
-}
-
-.pill.red {
-  background: #e11d48;
-}
-
-/* LISTA */
-.advantages {
-  font-size: 3.2mm;
-  line-height: 1.6;
-  padding-left: 6mm;
-}
-
-/* RODAPÉ */
-.page-footer {
-  position: absolute;
-  bottom: 10mm;
-  right: 20mm;
-  font-size: 2.8mm;
-  color: #0b2a55;
-}
-
-/** Container */
-.containerx {
-  text-align: center;
-  font-family: sans-serif;
-}
-.timeline {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 160mm;
-  margin-bottom: 3mm;
-}
-.left-label {
-  color: #1a4e8a;
-  font-weight: bold;
-  font-size: 10pt;
-  white-space: nowrap;
-}
-.right-label {
-  color: #d32f2f;
-  font-weight: bold;
-  font-size: 10pt;
-  white-space: nowrap;
-}
-.arrow {
-  flex: 1;
-  height: 0.5mm;
-  background-color: #1a4e8a;
-  position: relative;
-  margin: 0 3mm;
-}
-.arrow::after {
-  content: "";
-  position: absolute;
-  right: -1.5mm;
-  top: -1mm;
-  border: 1.3mm solid transparent;
-  border-left-color: #1a4e8a;
-}
-.bar {
-  display: flex;
-  width: 160mm;
-  border-radius: 13mm;
-  overflow: hidden;
-  box-shadow: 0 0.5mm 1mm rgba(0, 0, 0, 0.1);
-}
-.segment {
-  color: white;
-  font-weight: bold;
-  font-size: 12pt;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3mm 5mm;
-  white-space: nowrap;
-  height: 20mm;
-  /* border-radius: 50% 0 0 50%; */
-  /** sobrepor os segmentos um sobre o outro: */
-}
-.blue {
-  background-color: #1a73e8;
-  flex: 2; /* Larger width for the first segment */
-}
-.yellow {
-  background-color: #fbbc04;
-  flex: 1;
-}
-.orange {
-  background-color: #ea8600;
-  flex: 1;
-}
-.red {
-  background-color: #d93025;
-  flex: 1;
-}
-
-/**  TERCEIRA PÁGINA */
-.page-marketing {
-  padding: 15mm 20mm;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #0b2a55;
-}
-
-/* HEADER */
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-top {
-  height: 8mm;
-}
-
-.header-title {
-  font-size: 3mm;
-  color: #6b7280;
-}
-
-/* DIVISORES */
-.divider,
-.section-divider {
-  border: none;
-  border-top: 0.4mm solid #0b2a55;
-  margin: 6mm 0;
-}
-
-.row-divider {
-  border: none;
-  border-top: 0.2mm solid #e5e7eb;
-  margin: 6mm 0;
-}
-
-/* TÍTULO */
-.page-marketing h2 {
-  font-size: 5mm;
-  margin-bottom: 4mm;
-}
-
-/* INTRO */
-.intro {
-  font-size: 3.2mm;
-  line-height: 1.6;
-  margin-bottom: 6mm;
-  max-width: 160mm;
-}
-
-/* LINHAS */
-.marketing-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-align: left;
-}
-
-.marketing-row ul {
-  font-size: 3.2mm;
-  line-height: 1.6;
-  padding-left: 5mm;
-  margin: 0;
-  width: 110mm;
-}
-
-.marketing-row li {
-  margin-bottom: 1.5mm;
-}
-
-/* ÍCONES */
-.icons {
-  display: flex;
-  gap: 6mm;
-  align-items: center;
-}
-
-.icons img {
-  height: 10mm;
-  object-fit: contain;
-}
-
-/* RODAPÉ */
-.page-footer {
-  position: absolute;
-  bottom: 10mm;
-  right: 20mm;
-  font-size: 2.8mm;
-  color: #0b2a55;
-}
-/** Quarta página */
-.page-dados {
-  padding: 15mm 20mm;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #0b2a55;
-  text-align: left !important;
-}
-
-/* HEADER */
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-top {
-  height: 8mm;
-}
-
-.header-title {
-  font-size: 3mm;
-  color: #6b7280;
-}
-
-/* DIVISORES */
-.divider,
-.section-divider {
-  border: none;
-  border-top: 0.4mm solid #0b2a55;
-  margin: 6mm 0;
-}
-
-/* TÍTULOS */
-.page-dados h2 {
-  font-size: 4.5mm;
-  margin-bottom: 3mm;
-}
-
-.page-dados h3 {
-  font-size: 3.6mm;
-  margin: 4mm 0 2mm;
-  color: #1e3a8a;
-}
-
-/* LISTAS */
-.data-list {
-  font-size: 3.2mm;
-  line-height: 1.6;
-  padding-left: 5mm;
-  margin-bottom: 6mm;
-}
-
-.data-list li {
-  margin-bottom: 1.2mm;
-}
-
-/* TEXTO */
-.text {
-  font-size: 3.2mm;
-  line-height: 1.6;
-  margin-bottom: 4mm;
-}
-
-/* RODAPÉ */
-.page-footer {
-  position: absolute;
-  bottom: 10mm;
-  right: 20mm;
-  font-size: 2.8mm;
-  color: #0b2a55;
-}
-/** Quinta página */
-.page-tabela {
-  padding: 15mm 20mm;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #0b2a55;
-}
-
-/* TÍTULO */
-.page-tabela h2 {
-  font-size: 4.5mm;
-  margin-bottom: 4mm;
-}
-
-/* DIVISOR */
-.divider {
-  border: none;
-  border-top: 0.4mm solid #0b2a55;
-  margin-bottom: 6mm;
-}
-
-/* TABELA */
-.comparative-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 2.8mm;
-}
-
-/* CABEÇALHO */
-.comparative-table thead th {
-  background: #0b4aa2;
-  color: #ffffff;
-  padding: 3mm 2mm;
-  text-align: center;
-  border-right: 0.2mm solid #ffffff;
-}
-
-.comparative-table thead th:last-child {
-  border-right: none;
-}
-
-/* CORPO */
-.comparative-table tbody td {
-  padding: 3mm 2mm;
-  border-bottom: 0.2mm solid #e5e7eb;
-  text-align: center;
-}
-
-.comparative-table tbody td:first-child {
-  text-align: left;
-}
-
-/* LINHA DESTACADA */
-.comparative-table tbody tr.highlight {
-  background: #e6f2ff;
-}
-
-/* RODAPÉ */
-.comparative-table tfoot td {
-  background: #0b4aa2;
-  color: #ffffff;
-  padding: 3mm 2mm;
-  font-weight: bold;
-}
-
-/* LINKS */
-.comparative-table a {
-  color: #1d4ed8;
-  text-decoration: none;
-}
-
-/* OBSERVAÇÃO */
-.note {
-  font-size: 2.6mm;
-  line-height: 1.6;
-  color: #4b5563;
-  margin-top: 6mm;
-}
-/** CARD FINAL */
-.valor-range-wrapper {
-  margin-top: 12mm;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-/* CARDS */
-.cards {
-  display: flex;
-  justify-content: space-between;
-  gap: 6mm;
-  margin-bottom: 8mm;
-}
-
-.card {
-  flex: 1;
-  background: #ffffff;
-  border-radius: 2mm;
-  padding: 6mm 4mm;
-  text-align: center;
-  box-shadow: 0 0.6mm 2mm rgba(0, 0, 0, 0.08);
-}
-
-.card h4 {
-  font-size: 3mm;
-  font-weight: bold;
-  color: #1e2a5a;
-  margin-bottom: 4mm;
-}
-
-.card .valor {
-  font-size: 4mm;
-  font-weight: bold;
-  color: #1e2a5a;
-  margin-bottom: 3mm;
-}
-
-.card small {
-  font-size: 2.6mm;
-  color: #6b7280;
-}
-
-/* BARRA DE GRADIENTE */
-.gradient-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 5mm;
-}
-
-.tick {
-  flex: 1;
-  height: 100%;
-  margin: 0 0.4mm;
-  border-radius: 0.6mm;
-  background: linear-gradient(
-    to right,
-    #ff0000,
-    #ff7a00,
-    #ffd500,
-    #7ed957,
-    #2ecc71
-  );
-}
-@media print {
-  .container {
-    /* Ajustes opcionais para impressão/PDF */
-    page-break-inside: avoid;
-  }
-}
-</style>

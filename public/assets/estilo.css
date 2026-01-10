@@ -1,23 +1,37 @@
-@page {
+/* @page {
   size: A4;
-  margin: 15mm 12mm;
-}
+  margin: 0;
+} */
 
 * {
-    box-sizing: border-box;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  font-kerning: normal !important;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
     margin: 0;
+    padding: 0;
+  }
+  
+  #print-area {
+  width: 210mm;
+  min-height: 297mm;
+  box-sizing: border-box;
 }
 
 .page-a4 {
+    position: relative;
     width: 210mm;
-    height: 297mm;
-    page-break-after: always;
-    break-after: page;
+    min-height: 297mm;
+    box-sizing: border-box;
+    /* page-break-after: always;
+    break-after: page; */
     font-family: Arial, Helvetica, sans-serif;
     color: #0b2a55;
     background-image: url('/banner-inteiro.png');
@@ -25,13 +39,13 @@ body {
     background-position: center;
 }
 
-.no-background {
-    background-image: none !important;
-}
-
 .page-a4:last-child {
     page-break-after: auto;
     break-after: auto;
+}
+
+.no-background {
+    background-image: none !important;
 }
 
 .header {
@@ -70,13 +84,21 @@ body {
     margin-left: 30mm;
 }
 
+.identificacao-label {
+    font-size: 2.6mm;
+    color: #6b7280;
+    margin-bottom: 2mm;
+    /* quebra de linha */
+    white-space: pre-line;
+}
+
 /* ===== AVATAR ===== */
 .avatar {
     width: 55mm;
     height: 55mm;
     border-radius: 50%;
     overflow: hidden;
-    border: 4mm solid #0b2a55;
+    border: 3mm solid #0b2a55;
     margin-bottom: 6mm;
     margin-top: -10mm;
 }
@@ -88,7 +110,7 @@ body {
 }
 
 .broker-info {
-    text-align: left;
+    text-align: justify;
     font-size: 3.2mm;
     line-height: 1.4;
     margin-bottom: 12mm;
@@ -155,6 +177,7 @@ body {
     font-size: 3.2mm;
     line-height: 1.6;
     margin-bottom: 4mm;
+    text-align: justify !important;
 }
 
 /* GRÁFICO DE PREÇO */
@@ -206,16 +229,17 @@ body {
     font-size: 3.2mm;
     line-height: 1.6;
     padding-left: 6mm;
+    text-align: justify !important;
 }
 
 /* RODAPÉ */
-.page-footer {
+/* .page-footer {
     position: absolute;
     bottom: 10mm;
     right: 20mm;
     font-size: 2.8mm;
     color: #0b2a55;
-}
+} */
 
 /**
      * Container
@@ -342,7 +366,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    text-align: left;
+    text-align: justify;
 }
 
 .marketing-row ul {
@@ -355,6 +379,7 @@ body {
 
 .marketing-row li {
     margin-bottom: 1.5mm;
+    text-align: left;
 }
 
 /* ÍCONES */
@@ -370,13 +395,13 @@ body {
 }
 
 /* RODAPÉ */
-.page-footer {
+/* .page-footer {
     position: absolute;
     bottom: 10mm;
     right: 20mm;
     font-size: 2.8mm;
     color: #0b2a55;
-}
+} */
 
 @media print {
     .container {
@@ -390,7 +415,7 @@ body {
   padding: 15mm 20mm;
   font-family: Arial, Helvetica, sans-serif;
   color: #0b2a55;
-  text-align: left !important;
+  text-align: justify !important;
 }
 
 /* HEADER */
@@ -435,10 +460,12 @@ body {
   line-height: 1.6;
   padding-left: 5mm;
   margin-bottom: 6mm;
+  text-align: justify !important;
 }
 
 .data-list li {
   margin-bottom: 1.2mm;
+  text-align: left;
 }
 
 /* TEXTO */
@@ -449,13 +476,13 @@ body {
 }
 
 /* RODAPÉ */
-.page-footer {
+/* .page-footer {
   position: absolute;
   bottom: 10mm;
   right: 20mm;
   font-size: 2.8mm;
   color: #0b2a55;
-}
+} */
 /** Quinta página */
 .page-tabela {
   padding: 15mm 20mm;
@@ -504,7 +531,7 @@ body {
 }
 
 .comparative-table tbody td:first-child {
-  text-align: left;
+  text-align: justify;
 }
 
 /* LINHA DESTACADA */

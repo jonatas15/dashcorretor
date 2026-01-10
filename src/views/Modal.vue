@@ -46,7 +46,7 @@ const close = () => emit('close');
   background: white;
   padding: 20px;
   border-radius: 8px;
-  max-width: 90%;
+  max-width: 60%;
   max-height: 90%;
   overflow: auto;
   position: relative;
