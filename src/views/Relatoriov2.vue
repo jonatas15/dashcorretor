@@ -14,8 +14,10 @@
         </div>
 
         <div class="right">
-          <div class="avatar">
-            <img :src="pagina.corretor.foto" />
+          <div class="avatar" :style="`background-image: url(${foto})`">
+            <!-- {{ fotocorretor }} -->
+            <!-- <img :src="avatarBase64" /> -->
+             <!-- <img :src="`${API_URL}/proxy-image?url=${encodeURIComponent(fotocorretor)}`" /> -->
           </div>
 
           <div class="broker-info">
@@ -370,6 +372,8 @@ import { defineProps } from "vue";
 import fs from 'fs';
 import html2pdf from "html2pdf.js";
 
+const API_URL = 'http://localhost:8080'; // seu Yii2
+
 const props = defineProps({
   imoveis: {
     type: Array,
@@ -399,7 +403,12 @@ const props = defineProps({
   identifiqueiNoImovel: {
     type: String,
   },
+  fotocorretor: {
+    type: String,
+  },
 });
+
+const foto = `${API_URL}/proxy-image?url=${encodeURIComponent(props.fotocorretor)}`;
 
 // variável que recebe os dados da tabela de imóveis
 const imoveis = props.imoveis || dados_para_a_tabela;
@@ -584,10 +593,11 @@ async function gerarPDF() {
   const opt = {
     margin: [0, 0, 0, 0],
     filename: 'relatorio.pdf',
-    image: { type: 'jpeg', quality: 1 },
+    image: { type: 'jpeg', quality: 5 },
     html2canvas: {
       scale: 2,
       useCORS: true,
+      allowTaint: false,
       backgroundColor: '#ffffff',
       letterRendering: true
     },
@@ -597,6 +607,18 @@ async function gerarPDF() {
 
   await html2pdf().set(opt).from(element).save();
 }
+
+// async function imageToBase64(url) {
+//   const res = await fetch(url);
+//   const blob = await res.blob();
+
+//   return new Promise((resolve) => {
+//     const reader = new FileReader();
+//     reader.onloadend = () => resolve(reader.result);
+//     reader.readAsDataURL(blob);
+//   });
+// }
+// const avatarBase64 = await imageToBase64(props.fotocorretor);
 
 
 /* substituir getPrintStyles por arquivo externo */

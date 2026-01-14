@@ -1,9 +1,9 @@
 <template>
     <div class="avaliacao-container">
-        <h2>Avaliação de Imóvel</h2>
+        <h4>Avaliação de Imóvel</h4>
 
-        <h3>Bairros Pesquisados: {{ props.bairros.join(', ') }}</h3>
-        
+        <h5><strong>Bairros Pesquisados:</strong> {{ props.bairros.join(', ') }}</h5>
+        <hr>
         <!-- Mapa com círculo ao redor do ponto central -->
         <div class="map-section" v-show="false">
             <l-map
@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <h3>Imóveis Comparáveis Utilizados na Mediana</h3>
+        <h4>Imóveis Comparáveis</h4>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -164,6 +164,32 @@
                 />
             </div>
 
+            <!-- Avatar do Avaliador -->
+            <div class="field">
+                <label>Corretor Avaliador</label>
+                <div class="field-group">
+                    <div class="field">
+                        <strong>{{ corretor.nome }}</strong><br>
+                        <span>Email: {{ corretor.email }}</span><br>
+                        <span>Celular: {{ corretor.celular }}</span>
+                        
+                    </div>
+                    <div class="field">
+
+                        <!-- Avatar do corretor, pegando de https://api.jetimob.com/webservice/tZuuHuri8Q3ohAf7cvmMm8hTmWrXKJoEdes8ViSi/corretores pelo email -->
+                        <img
+                        :src="retornaCorretorAvatar(corretor.email)"
+                        alt="Avatar do Corretor"
+                        class="preview-image small mt-2"
+                    />
+                </div>
+                <!-- <div class="field">
+                    {{ corretor }}
+                    <img :src="corretor.foto">
+                </div> -->
+                </div>
+            </div>
+
             <!-- Campo 8: Descrição da Região -->
             <!-- <div class="field">
                 <label>Descrição da Região</label>
@@ -248,6 +274,7 @@
                             }"
                             :dadosImovel="finalidade"
                             :identifiqueiNoImovel="descricaoImovel"
+                            :fotocorretor="retornaCorretorAvatar(corretor.email)"
 
                         />
                     </div>
@@ -264,12 +291,14 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
+// import { required } from 'vuelidate/lib/validators'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import html2canvas from 'html2canvas'
 import bairrosCoords from '@/assets/jsons/bairrosltlg.json'
+import corretoresData from '@/assets/jsons/corretores.json'
 import logoSrc from '@/assets/logo/1.png'
 
 import { QuillEditor } from '@vueup/vue-quill'
@@ -339,11 +368,12 @@ onMounted(() => {
   if (localStorage.getItem('authUser')) {
     dadoscorretor.value = localStorage.getItem('authUser');
     corretorlogado.value = JSON.parse(dadoscorretor.value);
-    // console.log(corretorlogado.value)
+    console.log(corretorlogado.value)
     corretor.value = {
         nome: corretorlogado.value.nome,
         email: corretorlogado.value.email,
-        celular: corretorlogado.value.celular
+        celular: corretorlogado.value.celular,
+        foto: corretorlogado.value.foto
     }
     console.log (corretor.value)
   }
@@ -608,6 +638,32 @@ async function getImageDimensions(base64) {
     });
 }
 
+const fotoquevaiprorelatorio = retornaCorretorAvatar(corretor.value.email);
+
+function retornaCorretorAvatar(email) {
+    const emailHash = email;
+    /** precisamos ler o json, buscar pelo email, e retornar o avatar */
+    try {
+        // Validação do email de entrada
+        if (!email) {
+            return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
+        }
+        
+        // pega o avatar do corretor pelo email no json local
+        const corretoresArray = Array.isArray(corretoresData) ? corretoresData : corretoresData.corretores;
+        const corretorEncontrado = corretoresArray.find(corretor => 
+            corretor.email && corretor.email.trim().toLowerCase() === email.trim().toLowerCase()
+        );
+        if (corretorEncontrado && corretorEncontrado.avatar) {
+            return corretorEncontrado.avatar;
+        } else {
+            return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
+        }
+    } catch (error) {
+        console.error('Erro ao carregar o JSON de corretores:', error);
+        return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
+    }
+}
 
 </script>
 
