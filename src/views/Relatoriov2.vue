@@ -1,7 +1,5 @@
 <template>
   <!-- BOTÃO -->
-  <button class="print-btn" @click="gerarPDF">Imprimir PDF</button>
-
   <!-- ÁREA IMPRIMÍVEL -->
   <div
     id="print-area"
@@ -22,9 +20,9 @@
 
           <div class="broker-info">
             <span class="label">ESTUDO REALIZADO POR:</span>
-            <strong>{{ pagina.corretor.nome }}</strong>
-            <h5 class="identificacao-label">{{ pagina.corretor.telefone }}</h5>
-            <h5 class="identificacao-label">{{ pagina.corretor.email }}</h5>
+            <strong>{{ corretor.nome }}</strong>
+            <h5 class="identificacao-label">{{ corretor.celular }}</h5>
+            <h5 class="identificacao-label">{{ corretor.email }}</h5>
           </div>
 
           <div class="logo">
@@ -46,7 +44,7 @@
 
       <!-- CONTEÚDO -->
       <div class="page-body">
-        <h2>OLÁ, ENZO RODRIGUES E LAURA.</h2>
+        <h2>OLÁ, {{ cliente.nome }}.</h2>
 
         <p>
           Entender a posição do seu imóvel no mercado é o primeiro passo para
@@ -231,11 +229,12 @@
       <h2>DADOS PRINCIPAIS DO SEU IMÓVEL:</h2>
       <h3>CARACTERÍSTICAS DO IMÓVEL</h3>
 
-      <ul class="data-list">
+      <!-- <ul class="data-list">
         <li v-for="(item, index) in caracteristicas" :key="index">
           <strong>{{ item.label }}:</strong> {{ item.value }}
         </li>
-      </ul>
+      </ul> -->
+      <div v-html="dadosImovel"></div>
 
       <hr class="section-divider" />
 
@@ -243,11 +242,9 @@
       <h2>O QUE IDENTIFIQUEI NO SEU IMÓVEL:</h2>
       <h3>METODOLOGIA APLICADA</h3>
 
-      <p class="text">
-        {{ metodologiaTexto }}
-      </p>
+      <div v-html="identifiqueiNoImovel"></div>
 
-      <ul class="data-list">
+      <!-- <ul class="data-list">
         <li v-for="(item, index) in criteriosComparacao" :key="index">
           {{ item }}
         </li>
@@ -255,7 +252,7 @@
 
       <p class="text">
         {{ conclusaoTexto }}
-      </p>
+      </p> -->
 
       <!-- RODAPÉ -->
       <!-- <div class="page-footer">
@@ -304,7 +301,7 @@
             <td>{{ item.dormitorios }}</td>
             <td>{{ item.banheiros }}</td>
             <td>{{ item.garagens }}</td>
-            <td>{{ item.valor }}</td>
+            <td>R$ {{ Math.round(item.valor).toLocaleString() }}</td>
             <!-- <td>{{ item.imobiliaria }}</td> -->
             <td>
               <a
@@ -323,10 +320,11 @@
         <tfoot>
           <tr>
             <td>Resultado médio</td>
-            <td>{{ media.area }}</td>
+            <td></td>
             <td colspan="2"></td>
             <td>Média:</td>
             <td>{{ mediana }}</td>
+             <!-- <td>{{ m }}</td> -->
             <td></td>
           </tr>
         </tfoot>
@@ -341,7 +339,7 @@
             class="card"
           >
             <h4>{{ card.titulo }}</h4>
-            <div class="valor">{{ card.valor }}</div>
+            <div class="valor py-1" :style="'background-color: ' + card.colorpill + ';'">{{ card.valor }}</div>
             <small>{{ card.descricao }}</small>
           </div>
         </div>
@@ -361,6 +359,8 @@
       </p>
     </div>
   </div>
+
+  <button class="print-btn btn btn-primary" @click="gerarPDF">Gerar Documento PDF</button>
 </template>
 <script setup>
 import { file } from 'jszip';
@@ -377,12 +377,35 @@ const props = defineProps({
   },
   mediana: {
     type: String,
-  }
+  },
+  vImprovavel: {
+    type: String,
+  },
+  vMercado: {
+    type: String,
+  },
+  vCompetitivo: {
+    type: String,
+  },
+  corretor: {
+    type: Object,
+  },
+  cliente: {
+    type: Object,
+  },
+  dadosImovel: {
+    type: String,
+  },
+  identifiqueiNoImovel: {
+    type: String,
+  },
 });
 
 // variável que recebe os dados da tabela de imóveis
 const imoveis = props.imoveis || dados_para_a_tabela;
-const mediana = props.mediana
+const mediana = "R$ " + Math.round(props.mediana).toLocaleString() || 'R$ 500.000'
+const mediana_valor = props.mediana || 500000
+// o valor sugerido para a venda é 
 
 // defineProps({
 //   logo: {
@@ -491,19 +514,22 @@ const media = {
 
 const cards = [
   {
-    titulo: "Preço sugerido de venda",
-    valor: "R$ 520.000",
-    descricao: "Valor ideal para venda rápida e eficiente",
+    titulo: "Valor Improvável",
+    valor: "R$ " + Math.round(props.vImprovavel).toLocaleString(),
+    descricao: "Média do m² pesquisado x área priv. do imóvel avaliado",
+    colorpill: 'red'
   },
   {
-    titulo: "Preço máximo recomendado",
-    valor: "R$ 580.000",
-    descricao: "Acima deste valor, o imóvel pode demorar mais para vender",
+    titulo: "Valor de Mercado",
+    valor: "R$ " + Math.round(props.vMercado).toLocaleString(),
+    descricao: "Valor Improvável decrescido de -7%",
+    colorpill: 'blue'
   },
   {
-    titulo: "Preço mínimo recomendado",
-    valor: "R$ 480.000",
-    descricao: "Abaixo deste valor, pode haver perda de patrimônio",
+    titulo: "Valor Competitivo",
+    valor: "R$ " + Math.round(props.vCompetitivo).toLocaleString(),
+    descricao: "Valor Improvável decrescido de -15%",
+    colorpill: 'green'
   },
 ];
 

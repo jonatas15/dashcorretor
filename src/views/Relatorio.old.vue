@@ -5,7 +5,7 @@
         <h3>Bairros Pesquisados: {{ props.bairros.join(', ') }}</h3>
         
         <!-- Mapa com círculo ao redor do ponto central -->
-        <div class="map-section" v-show="false">
+        <div class="map-section">
             <l-map
                 ref="mapRef"
                 style="height: 400px; width: 100%;"
@@ -66,7 +66,7 @@
         <!-- Formulário de Avaliação -->
         <form class="avaliacao-form">
             <!-- Campo 1: Fachada do Imóvel -->
-            <!-- <div class="field">
+            <div class="field">
                 <label>Fachada do Imóvel</label>
                 <div class="streetview-controls">
                     <input type="text" v-model="apiKey" placeholder="Insira sua API Key do Google Maps" />
@@ -74,41 +74,33 @@
                 </div>
                 <input type="file" accept="image/*" @change="handleFachadaUpload" />
                 <img v-if="fachadaImage" :src="fachadaImage" alt="Fachada do Imóvel" class="preview-image" />
-            </div> -->
+            </div>
 
             <!-- Campo 2: Ajuste do Valor Final -->
             <div class="field">
-                <label>Valor de Mercado (R$)</label>
+                <label>Ajuste do Valor Final (R$)</label>
                 <input type="number" v-model="adjustedValue" />
             </div>
 
             <!-- Campos 3 e 4: Valores Máximo e Mínimo -->
             <div class="field-group">
                 <div class="field">
-                    <label>Valor Improvável<br>(% em relação ao valor médio)</label>
-                    <input type="number" v-model="valorImprovavel" min="0" step="0.1" />
+                    <label>Porcentagem para Mais (%)</label>
+                    <input type="number" v-model="percentPlus" min="0" step="0.1" />
                 </div>
                 <div class="field">
-                    <label>Valor de Mercado<br>(% em relação ao valor improvável)</label>
-                    <input type="number" v-model="valorMercado" min="0" step="0.1" />
-                </div>
-                <div class="field">
-                    <label>Valor Improvável<br>(% em relação ao valor improvável)</label>
-                    <input type="number" v-model="valorCompetitivo" min="0" step="0.1" />
+                    <label>Porcentagem para Menos (%)</label>
+                    <input type="number" v-model="percentMinus" min="0" step="0.1" />
                 </div>
             </div>
             <div class="field-group">
                 <div class="field">
-                    <label>Valor Improvável (R$)</label>
-                    <label>R$ {{ Math.round(vImprovavel).toLocaleString() }}</label>
+                    <label>Valor Máximo (R$)</label>
+                    <input type="number" :value="maxValue" readonly />
                 </div>
                 <div class="field">
-                    <label>Valor de Mercado (R$)</label>
-                    <label>R$ {{ Math.round(vMercado).toLocaleString() }}</label>
-                </div>
-                <div class="field">
-                    <label>Valor Competitivo (R$)</label>
-                    <label>R$ {{ Math.round(vCompetitivo).toLocaleString() }}</label>
+                    <label>Valor Mínimo (R$)</label>
+                    <input type="number" :value="minValue" readonly />
                 </div>
             </div>
 
@@ -116,7 +108,7 @@
             <div class="field">
                 <label>Solicitante</label>
                 <!-- <textarea v-model="solicitante" rows="3"></textarea> -->
-                 <!-- <QuillEditor
+                 <QuillEditor
                     v-model:content="solicitante"
                     style="background-color: white;"
                     content-type="html"
@@ -126,13 +118,12 @@
                         [{ list: 'ordered' }, { list: 'bullet' }],
                         ['clean']
                     ]"
-                /> -->
-                <input type="text" v-model="solicitante">
+                />
             </div>
 
             <!-- Campo 6: Finalidade da Avaliação -->
             <div class="field">
-                <label>Principais dados do Imóvel</label>
+                <label>Finalidade da Avaliação</label>
                 <!-- <textarea v-model="finalidade" rows="3"></textarea> -->
                 <QuillEditor
                     v-model:content="finalidade"
@@ -149,7 +140,7 @@
 
             <!-- Campo 7: Descrição do Imóvel -->
             <div class="field">
-                <label>O que identifiquei no seu imóvel</label>
+                <label>Descrição do Imóvel</label>
                 <!-- <textarea v-model="descricaoImovel" rows="5"></textarea> -->
                  <QuillEditor
                     v-model:content="descricaoImovel"
@@ -165,8 +156,9 @@
             </div>
 
             <!-- Campo 8: Descrição da Região -->
-            <!-- <div class="field">
+            <div class="field">
                 <label>Descrição da Região</label>
+                <!-- <textarea v-model="descricaoRegiao" rows="5"></textarea> -->
                  <QuillEditor
                     v-model:content="descricaoRegiao"
                     content-type="html"
@@ -178,11 +170,12 @@
                     ['clean']
                     ]"
                 />
-            </div> -->
+            </div>
 
             <!-- Campo 9: Metodologia da Avaliação -->
-            <!-- <div class="field">
+            <div class="field">
                 <label>Metodologia da Avaliação</label>
+                <!-- <textarea v-model="metodologia" rows="5"></textarea> -->
                  <QuillEditor
                     v-model:content="metodologia"
                     content-type="html"
@@ -194,11 +187,12 @@
                     ['clean']
                     ]"
                 />
-            </div> -->
+            </div>
 
             <!-- Campo 10: Conclusão -->
-            <!-- <div class="field">
+            <div class="field">
                 <label>Conclusão</label>
+                <!-- <textarea v-model="conclusao" rows="5"></textarea> -->
                     <QuillEditor
                         v-model:content="conclusao"
                         content-type="html"
@@ -210,16 +204,16 @@
                         ['clean']
                         ]"
                     />
-            </div> -->
+            </div>
 
             <!-- Campo 11: Anexar Fotos -->
-            <!-- <div class="field">
+            <div class="field">
                 <label>Anexar Fotos</label>
                 <input type="file" accept="image/*" multiple @change="handleFotosUpload" />
                 <div class="photos-preview">
                     <img v-for="(photo, index) in fotosPreviews" :key="index" :src="photo" alt="Foto anexada" class="preview-image small" />
                 </div>
-            </div> -->
+            </div>
 
             <!-- Botão de Exportar para PDF -->
             <!-- <button class="export-button" @click.prevent="exportToPDF">Exportar para PDF</button> -->
@@ -232,23 +226,13 @@
             <template #body>
                 <!-- Uma div com scroll intrno pra ler só o relatorio -->
                  <div style="max-height: 80vh; overflow-y: auto; padding-right: 10px;">
-                    <div ref="pdfComponent" style="">
-                        <!-- {{ imoveis }} -->
+                    <div ref="pdfComponent">
+                        {{ imoveis }}
                         <Relatoriov2
                             :mediana="adjustedValue"
                             :imoveis="imoveis"
                             :bairros="props.bairros"
                             :cidade="props.cidade"
-                            :vImprovavel="vImprovavel"
-                            :vMercado="vMercado"
-                            :vCompetitivo="vCompetitivo"
-                            :corretor ="corretor"
-                            :cliente="{
-                                nome: solicitante
-                            }"
-                            :dadosImovel="finalidade"
-                            :identifiqueiNoImovel="descricaoImovel"
-
                         />
                     </div>
                 </div>
@@ -262,7 +246,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -331,24 +315,6 @@ const props = defineProps({
     cidade: { type: String, default: 'Santa Maria' }
 })
 
-const dadoscorretor = ref('')
-const corretorlogado = ref({})
-const corretor = ref({})
-
-onMounted(() => {
-  if (localStorage.getItem('authUser')) {
-    dadoscorretor.value = localStorage.getItem('authUser');
-    corretorlogado.value = JSON.parse(dadoscorretor.value);
-    // console.log(corretorlogado.value)
-    corretor.value = {
-        nome: corretorlogado.value.nome,
-        email: corretorlogado.value.email,
-        celular: corretorlogado.value.celular
-    }
-    console.log (corretor.value)
-  }
-})
-
 //vamos limitar os imóveis a 10 para evitar lentidão
 const imoveis = computed(() => {
     return props.imoveis.slice(0, 10)
@@ -360,9 +326,8 @@ const mapRef = ref(null)
 const loremIpsum = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate.`
 // Estados
 const adjustedValue = ref(props.mediana)
-const valorImprovavel = ref(12) // Valor da Mediana menos 12%
-const valorMercado = ref(7) // Valor da Mediana menos 12%
-const valorCompetitivo = ref(15) // Valor da Mediana menos 12%
+const percentPlus = ref(20) // Valor padrão para +%
+const percentMinus = ref(20) // Valor padrão para -%
 const solicitante = ref('') //ref('')
 const finalidade = ref('') //ref('')
 const descricaoImovel = ref('') //ref('')
@@ -382,12 +347,9 @@ watch(() => props.mediana, (newVal) => {
   adjustedValue.value = newVal;
 })
 
-// Computeds para valor Improvável
-const vImprovavel = computed(() => adjustedValue.value * (1 - valorImprovavel.value / 100))
-// Valor de mercado = vImprovavel - 7%
-const vMercado = computed(() => vImprovavel.value * (1 - valorMercado.value/100))
-// Valor competitivo = vImprovavel - 15%
-const vCompetitivo = computed(() => vImprovavel.value * (1 - valorCompetitivo.value/100))
+// Computeds para max e min
+const maxValue = computed(() => adjustedValue.value * (1 + percentPlus.value / 100))
+const minValue = computed(() => adjustedValue.value * (1 - percentMinus.value / 100))
 
 // Normalizar as chaves do JSON para lowercase
 const normalizedCoords = {};
@@ -608,7 +570,211 @@ async function getImageDimensions(base64) {
     });
 }
 
+// Exportar para PDF
+async function exportToPDF() {
+    const doc = new jsPDF({ unit: 'mm' })
+    let y = 30 // Iniciar conteúdo após o espaço para cabeçalho
 
+    // const logoBase64 = await getBase64(logoSrc)
+    const logoBase64 = logoSrc
+    const footerText = "Avantor Negócios Imobiliários Ltda. * Creci 24.707J * Rua Silva Jardim, 1417, Centro, Santa Maria/RS | R. 3300, nº 341, Sala 12, Balneário Camboriú/SC CNPJ: 18.268.552/0001-40"
+
+    // Título
+    doc.setFontSize(18)
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Relatório de Avaliação de Imóvel', 10, y, { lineHeight: 15 })
+    doc.setFont('helvetica', 'normal')
+
+    // Data
+    doc.setFontSize(12)
+    y = addTextWithPageBreak(doc, `Data: ${new Date().toLocaleDateString('pt-BR')}`, 10, y)
+
+    // Bairros Pesquisados
+    doc.setFont('helvetica', 'bold')
+    // y = addTextWithPageBreak(doc, `Bairros Pesquisados: ${props.bairros.join(', ')}`, 10, y)
+    doc.setFont('helvetica', 'normal')
+    const bairroslistadosaqui = doc.splitTextToSize(props.bairros.join(', '), 200)
+    y = addSplitTextWithPageBreak(doc, bairroslistadosaqui, 10, y)
+    doc.setFontSize(12)
+    doc.setFont('helvetica', 'normal')
+    /**
+     * // Campo 5: Solicitante
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Solicitante:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const solicitanteLines = doc.splitTextToSize(solicitante.value, 180)
+    y = addSplitTextWithPageBreak(doc, solicitanteLines, 10, y)
+    doc.setFontSize(12)
+     */
+
+    // Mapa
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Mapa da Região:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    if (mapRef.value) {
+        try {
+            const map = mapRef.value.leafletObject;
+            map.invalidateSize();
+            await new Promise(resolve => setTimeout(resolve, 500)); // Delay para renderização
+            const mapElement = mapRef.value.$el
+            const canvas = await html2canvas(mapElement, {
+                useCORS: true,
+                allowTaint: true,
+                scale: 2 // Maior resolução para melhor qualidade
+            })
+            const mapImg = canvas.toDataURL('image/png')
+            const pdfWidth = 190;
+            const pdfHeight = (canvas.height / canvas.width) * pdfWidth;
+            y = await addImageWithPageBreak(doc, mapImg, 'PNG', 10, y, pdfWidth, pdfHeight)
+        } catch (error) {
+            console.error('Erro ao capturar mapa:', error)
+            y = addTextWithPageBreak(doc, '(Mapa não pôde ser carregado)', 10, y)
+        }
+    } else {
+        y = addTextWithPageBreak(doc, '(Mapa não disponível)', 10, y)
+    }
+
+    // Imóveis Comparáveis
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Imóveis Comparáveis:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const columns = ['Imobiliária', 'Cidade', 'Bairro', 'Negócio', 'Finalidade', 'Valor', 'Área (m²)', 'Dormitórios', 'Banheiros', 'Garagens', 'Mobiliado']
+    const rows = imoveis.value.map(item => [
+        item.imobiliaria || 'N/A',
+        item.cidade || 'N/A',
+        item.bairro || 'N/A',
+        item.negocio || 'N/A',
+        item.finalidade == 'Locacao' ? 'Locação' : item.finalidade || 'N/A',
+        `R$ ${Math.round(item.valor).toLocaleString('pt-BR')}`,
+        Math.round(item.area).toLocaleString('pt-BR'),
+        item.dormitorios || 'N/A',
+        item.banheiros || 'N/A',
+        item.garagens || 'N/A',
+        item.mobiliado == 1 ? 'Mobiliado' : item.mobiliado == 2 ? 'Semi-mobiliado' : 'Não mobiliado'
+    ])
+    autoTable(doc, {
+        head: [columns],
+        body: rows,
+        startY: y,
+        theme: 'grid',
+        styles: { fontSize: 8 },
+        margin: { top: 30, bottom: 30, left: 10, right: 10 },
+        pageBreak: 'auto'
+    })
+    y = doc.lastAutoTable.finalY + 10
+
+    // Campo 1: Fachada
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Fachada do Imóvel:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    if (fachadaImage.value) {
+        try {
+            const base64 = await getBase64(fachadaFile.value || fachadaImage.value)
+            const { width: naturalWidth, height: naturalHeight } = await getImageDimensions(base64)
+            const pdfWidth = 190
+            const pdfHeight = (naturalHeight / naturalWidth) * pdfWidth
+            y = await addImageWithPageBreak(doc, base64, 'JPEG', 10, y, pdfWidth, pdfHeight)
+        } catch (error) {
+            console.error('Erro ao adicionar imagem da fachada:', error)
+            y = addTextWithPageBreak(doc, '(Imagem não pôde ser carregada)', 10, y)
+        }
+    } else {
+        y = addTextWithPageBreak(doc, 'Nenhuma imagem fornecida', 10, y)
+    }
+
+    // Card estilizado para Ajuste do Valor Final
+    y = drawStyledCard(doc, 'Ajuste do Valor Final:', `R$ ${adjustedValue.value.toLocaleString('pt-BR')}`, 10, y, 190, 25)
+
+    // Card estilizado para Intervalos Máximo e Mínimo (combinado em um card horizontal)
+    y = drawStyledCard(doc, 'Intervalo de Valores:', `Máximo: R$ ${maxValue.value.toLocaleString('pt-BR')} | Mínimo: R$ ${minValue.value.toLocaleString('pt-BR')}`, 10, y, 190, 25)
+
+    // Campo 5: Solicitante
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Solicitante:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const solicitanteLines = doc.splitTextToSize(solicitante.value, 180)
+    y = addSplitTextWithPageBreak(doc, solicitanteLines, 10, y)
+    doc.setFontSize(12)
+
+    // Campo 6: Finalidade
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Finalidade da Avaliação:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const finalidadeLines = doc.splitTextToSize(finalidade.value, 180)
+    y = addSplitTextWithPageBreak(doc, finalidadeLines, 10, y)
+    doc.setFontSize(12)
+
+    // Campo 7: Descrição Imóvel
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Descrição do Imóvel:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const descImovelLines = doc.splitTextToSize(descricaoImovel.value, 180)
+    y = addSplitTextWithPageBreak(doc, descImovelLines, 10, y)
+    doc.setFontSize(12)
+
+    // Campo 8: Descrição Região
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Descrição da Região:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const descRegiaoLines = doc.splitTextToSize(descricaoRegiao.value, 180)
+    y = addSplitTextWithPageBreak(doc, descRegiaoLines, 10, y)
+    doc.setFontSize(12)
+
+    // Campo 9: Metodologia
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Metodologia da Avaliação:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const metodoLines = doc.splitTextToSize(metodologia.value, 180)
+    y = addSplitTextWithPageBreak(doc, metodoLines, 10, y)
+    doc.setFontSize(12)
+
+    // Campo 10: Conclusão
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Conclusão:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    const conclusaoLines = doc.splitTextToSize(conclusao.value, 180)
+    y = addSplitTextWithPageBreak(doc, conclusaoLines, 10, y)
+    doc.setFontSize(12)
+
+    // Campo 11: Fotos
+    doc.setFont('helvetica', 'bold')
+    y = addTextWithPageBreak(doc, 'Fotos Anexadas:', 10, y)
+    doc.setFont('helvetica', 'normal')
+    for (let i = 0; i < fotosFiles.value.length; i++) {
+        try {
+            const base64 = await getBase64(fotosFiles.value[i])
+            const { width: naturalWidth, height: naturalHeight } = await getImageDimensions(base64)
+            const pdfWidth = 190
+            const pdfHeight = (naturalHeight / naturalWidth) * pdfWidth
+            y = await addImageWithPageBreak(doc, base64, 'JPEG', 10, y, pdfWidth, pdfHeight)
+        } catch (error) {
+            console.error(`Erro ao adicionar foto ${i + 1}:`, error)
+            y = addTextWithPageBreak(doc, `(Foto ${i + 1} não pôde ser carregada)`, 10, y)
+        }
+    }
+
+    // Adicionar cabeçalho e rodapé em todas as páginas
+    const totalPages = doc.getNumberOfPages();
+    for (let i = 1; i <= totalPages; i++) {
+        doc.setPage(i);
+
+        // Cabeçalho: Logo sem fundo adicional (removido o retângulo branco para testar)
+        doc.addImage(logoBase64, 'PNG', 10, 5, 50, 20); // Ajuste as dimensões conforme o tamanho real do logo
+
+        // Rodapé
+        doc.setFontSize(8);
+        doc.setTextColor(100);
+        const footerLines = doc.splitTextToSize(footerText, 190);
+        let footerY = doc.internal.pageSize.height - (footerLines.length * 5) - 10; // Ajustado para melhor posicionamento (mais espaço na parte inferior)
+        footerLines.forEach((line, index) => {
+            doc.text(line, 10, footerY + index * 5);
+        });
+        doc.setTextColor(0);
+    }
+
+    // Salvar PDF
+    doc.save('avaliacao_imovel.pdf')
+}
 </script>
 
 <style scoped>

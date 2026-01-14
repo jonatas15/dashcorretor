@@ -581,6 +581,7 @@ body {
   padding: 6mm 4mm;
   text-align: center;
   box-shadow: 0 0.6mm 2mm rgba(0, 0, 0, 0.08);
+  align-items: center;
 }
 
 .card h4 {
@@ -595,6 +596,9 @@ body {
   font-weight: bold;
   color: #1e2a5a;
   margin-bottom: 3mm;
+  color: white !important;
+  border-radius: 10px !important;
+  width: 75% !important;
 }
 
 .card small {
