@@ -372,7 +372,8 @@ import { defineProps } from "vue";
 import fs from 'fs';
 import html2pdf from "html2pdf.js";
 
-const API_URL = 'http://localhost:8080'; // seu Yii2
+// const API_URL = 'http://localhost:8080'; // seu Yii2
+const API_URL = 'https://www.avantorimoveis.com.br/dadoscorretor'; // seu Yii2 Online
 
 const props = defineProps({
   imoveis: {

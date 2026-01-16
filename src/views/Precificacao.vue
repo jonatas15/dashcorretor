@@ -189,20 +189,27 @@
           <thead>
             <tr>
               <th>✅</th>
-              <th>Imobiliária</th>
-              <!-- <th>Estado</th> -->
-              <!-- <th>Cidade</th> -->
-              <th>Bairro</th>
-              <th>Negócio</th>
-              <!-- <th>Finalidade</th> -->
-              <th>Valor</th>
-              <th>Área (m²)</th>
-              <th>Cômodos</th>
-              <!-- <th>Banheiros</th>
-              <th>Dormitórios</th>
-              <th>Garagens</th> -->
-              <!-- <th>Salas</th> -->
-              <!-- <th>Mobiliado</th> -->
+              <th @click="sortBy('imobiliaria')" style="cursor: pointer;">
+                Imobiliária
+                <font-awesome-icon v-if="sort.column === 'imobiliaria'" :icon="sort.direction === 'asc' ? 'arrow-up' : 'arrow-down'" />
+              </th>
+              <th @click="sortBy('bairro')" style="cursor: pointer;">
+                Bairro
+                <font-awesome-icon v-if="sort.column === 'bairro'" :icon="sort.direction === 'asc' ? 'arrow-up' : 'arrow-down'" />
+              </th>
+              <th @click="sortBy('negocio')" style="cursor: pointer;">
+                Negócio
+                <font-awesome-icon v-if="sort.column === 'negocio'" :icon="sort.direction === 'asc' ? 'arrow-up' : 'arrow-down'" />
+              </th>
+              <th @click="sortBy('valor')" style="cursor: pointer;">
+                Valor
+                <font-awesome-icon v-if="sort.column === 'valor'" :icon="sort.direction === 'asc' ? 'arrow-up' : 'arrow-down'" />
+              </th>
+              <th @click="sortBy('area')" style="cursor: pointer;">
+                Área (m²)
+                <font-awesome-icon v-if="sort.column === 'area'" :icon="sort.direction === 'asc' ? 'arrow-up' : 'arrow-down'" />
+              </th>
+              <th>Cômodos</th> <!-- Não ordenável, pois é composto. Veja considerações abaixo. -->
             </tr>
           </thead>
           <tbody>
@@ -307,8 +314,8 @@ const dormitorios = ref(["1", "2", "3", "4+"]);
 const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
-const urlraiz = 'http://localhost:8080';
-// const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+// const urlraiz = 'http://localhost:8080';
+const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 
@@ -327,6 +334,11 @@ const parseValor = (val) => {
   const cleaned = val.replace(/\./g, '').replace(/,/g, '.');
   return parseFloat(cleaned);
 };
+
+const sort = ref({
+  column: '', // Coluna atual (ex: 'valor')
+  direction: 'asc' // 'asc' ou 'desc'
+});
 
 const fetchData = async () => {
   carregando.value = true;
@@ -347,7 +359,9 @@ const fetchData = async () => {
     `&garagens=${form.garagens}` +
     `&mobiliado=${form.mobiliado}` +
     `&paginafonte=precificacao` +
-  ``);
+    `&sort_by=${sort.value.column}` +  // Novo parâmetro
+    `&sort_dir=${sort.value.direction}`  // Novo parâmetro
+  );
   const result = await response.json();
   // console.log(result)
   // lista de imobiliárias --------------------------------
@@ -379,21 +393,35 @@ const fetchData = async () => {
   carregando.value = false;
 };
 
-
+const sortBy = (column) => {
+  if (sort.value.column === column) {
+    // Alterna direção se for a mesma coluna
+    sort.value.direction = sort.value.direction === 'asc' ? 'desc' : 'asc';
+  } else {
+    // Muda coluna e reseta para asc
+    sort.value.column = column;
+    sort.value.direction = 'asc';
+  }
+  pagination.page = 1; // Reseta para página 1 ao ordenar
+  fetchData(); // Recarrega dados com nova ordenação
+};
 
 // Atualizar a tabela com filtros
 const handleFilter = () => {
-  pagination.page = 1; // Resetar para a primeira página
-  selecionados.value = []; // Limpar selecionados ao filtrar
-  mediana.value = null; // Resetar mediana
+  pagination.page = 1;
+  selecionados.value = [];
+  mediana.value = null;
+  sort.value.column = ''; // Opcional: reseta ordenação ao filtrar
+  sort.value.direction = 'asc';
   fetchData();
 };
 
+// No changePage:
 const changePage = (newPage) => {
   pagination.page = newPage;
-  selecionados.value = []; // Limpar selecionados ao mudar página
-  mediana.value = null; // Resetar mediana
-  fetchData();
+  selecionados.value = [];
+  mediana.value = null;
+  fetchData(); // Mantém a ordenação atual
 };
 // const alteraomax = () => {
 //   // console.log('chamou a function');
@@ -477,6 +505,9 @@ const reduz_ns = (palavra) => {
 const recarregarPagina = () => {
   window.location.reload();
 };
+
+//------------------------------------------------------------------------------------------------ 2026 - Ordenamento
+
 
 onMounted(() => {
   fetchData();

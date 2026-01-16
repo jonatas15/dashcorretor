@@ -191,8 +191,8 @@ export default {
       anovindo: "2025",
       searchCorretor: 1,
       posicao: 0,
-      // apibase: "https://www.avantorimoveis.com.br/dadoscorretor/api/corretor",
-      apibase: "http://localhost:8080/api/corretor",
+      apibase: "https://www.avantorimoveis.com.br/dadoscorretor/api/corretor",
+      // apibase: "http://localhost:8080/api/corretor",
       macros: [
         {
           campo: "Leads Recebidos",
