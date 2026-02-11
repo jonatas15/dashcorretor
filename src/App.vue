@@ -27,7 +27,9 @@ export default {
       sidebar: this.$route.meta.sidebar,
       ativamenumobile: "",
       menuativo: localStorage.getItem('authUser') ? true : false,
-      corretoresadmin: false
+      corretoresadmin: false,
+      corretordados: [],
+      fotocorretor: ""
     }
   },
   components: {
@@ -74,12 +76,14 @@ export default {
         if (localStorage.getItem('authUser')) {
           var getnome = JSON.parse(localStorage.getItem('authUser'));
           this.corretor = getnome.nome;
+          this.corretordados = getnome;
           // console.log(this.$route.meta)
           this.menuativo = true;
           const modalEl = document.getElementById('chatModal')
           const instance = bootstrap.Modal.getInstance(modalEl)
           if (instance) instance.hide()
-
+          // pega a foto em /assets/fotos-corretores
+          this.fotocorretor = getnome.jetimobid
         } else {
           this.menuativo = false;
           this.corretor = "Logar";
@@ -240,6 +244,12 @@ export default {
         <div id="sidebar-cafe" class="d-flex flex-column flex-shrink-0 bg-light"
           style="width: 70%;float: right !important;margin-right: 15% !important;">
           <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
+            
+            <li class="nav-item">
+              <!-- foto do corretor pelo id -->
+               {{ fotocorretor }}
+               <img :src="'@/assets/fotos-corretores/' + fotocorretor + '.jpg'">
+              </li>
             <li class="nav-item">
               <router-link to="/" class="nav-link py-3 border-bottom-inativar" aria-current="page"
                 data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
