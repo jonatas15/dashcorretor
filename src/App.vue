@@ -1,18 +1,27 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 let num = ref(40);
 function formatDate(date) {
-  let dia = date.getDate()
+  let dia = date.getDate();
   let mes = [
-    'janeiro', 'fevereiro', 'março', 'abril',
-    'maio', 'junho', 'julho', 'agosto', 'setembro',
-    'outubro', 'novembro', 'dezembro'
-  ][date.getMonth()]
-  let ano = date.getFullYear()
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro",
+  ][date.getMonth()];
+  let ano = date.getFullYear();
 
-  return `${dia} de ${mes} de ${ano}`
+  return `${dia} de ${mes} de ${ano}`;
 }
-let hoje = formatDate(new Date())
+let hoje = formatDate(new Date());
 </script>
 <script>
 import ChatWindow from "./components/ChatWindow.vue";
@@ -29,7 +38,8 @@ export default {
       menuativo: localStorage.getItem('authUser') ? true : false,
       corretoresadmin: false,
       corretordados: [],
-      fotocorretor: ""
+      fotocorretor: "",
+      caminhofoto: ""
     }
   },
   components: {
@@ -64,9 +74,20 @@ export default {
     },
     closeChatModal() {
       this.chatativo = false;
+    },
+    async verificaSeArquivoExiste(arquivo) {
+      try {
+        const response = await fetch(arquivo, { method: 'HEAD' });
+
+        if (response.ok) {
+          return arquivo;
+        }
+
+        return 'assets/fotos-corretores/foto-perfil.jpg';
+      } catch (e) {
+        return 'assets/fotos-corretores/foto-perfil.jpg';
+      }
     }
-  },
-  mounted() {
   },
   watch:{
     $route (to, from){
@@ -83,7 +104,7 @@ export default {
           const instance = bootstrap.Modal.getInstance(modalEl)
           if (instance) instance.hide()
           // pega a foto em /assets/fotos-corretores
-          this.fotocorretor = getnome.jetimobid
+          
         } else {
           this.menuativo = false;
           this.corretor = "Logar";
@@ -98,6 +119,22 @@ export default {
       if (this.corretorid == 1 || this.corretorid == 10 || this.corretorid == 73  || this.corretorid == 43  || this.corretorid == 91) {
         this.corretoresadmin = true;
       }
+      this.fotocorretor = getnome.jetimobid
+          this.fotocorretor += ".jpg"
+          // traz arquivo fotocorretor da pasta public/assets
+          this.caminhofoto = `assets/fotos-corretores/${this.fotocorretor}`
+          
+          
+          // verifica se arquivo existe, senão usa foto padrão
+          // fetch(this.caminhofoto)
+          //   .then(response => {
+          //     if (!response.ok) {
+          //       this.caminhofoto = 'assets/fotos-corretores/foto-perfil.jpg'
+          //     }
+          //   })
+          //   .catch(() => {
+          //     this.caminhofoto = 'assets/fotos-corretores/foto-perfil.jpg'
+          //   })
       // console.log(this.$route.meta)
       this.menuativo = true;
     } else {
@@ -109,26 +146,48 @@ export default {
 <template>
   <!-- Nav Superior e Logo -->
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid ">
+    <div class="container-fluid">
       <div class="navbar-nav left">
         <router-link class="navbar-brand logomarca" to="#">
-          <img src="@/assets/logo/1.png" alt="" width="100">
+          <img src="@/assets/logo/1.png" alt="" width="100" />
         </router-link>
       </div>
-      <button v-if="menuativo" class="navbar-toggler" type="button" @click="handleFocusOn">
+      <button
+        v-if="menuativo"
+        class="navbar-toggler"
+        type="button"
+        @click="handleFocusOn"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div :class="'collapse navbar-collapse collapse' + ativamenumobile" id="navbarNav" @mouseleave="handleFocusOut()">
+      <div
+        :class="'collapse navbar-collapse collapse' + ativamenumobile"
+        id="navbarNav"
+        @mouseleave="handleFocusOut()"
+      >
         <ul class="navbar-nav">
-          <li class="nav-item menu-mobile v-b-tooltip.hover" style="text-align: end;margin-top: 10px;" v-if="$route.meta.usuarioativo">
+          <li
+            class="nav-item menu-mobile v-b-tooltip.hover"
+            style="text-align: end; margin-top: 10px"
+            v-if="$route.meta.usuarioativo"
+          >
             <!-- white-space: nowrap; -->
             <!-- Santa Maria, {{ new Date().getDate() }} de {{ new Date() }} de {{ new Date().getFullYear() }} -->
             Santa Maria, {{ hoje }}
-            <br>
+            <br />
             Seja bem vindo, {{ corretor }}
-            <br>
-            <button class="btn btn-link nav-item v-b-tooltip.hover" @click="logout()" title="Sair"
-              style="float: right; padding-right: 0px;font-weight: bolder;color: black;">
+            <br />
+            <button
+              class="btn btn-link nav-item v-b-tooltip.hover"
+              @click="logout()"
+              title="Sair"
+              style="
+                float: right;
+                padding-right: 0px;
+                font-weight: bolder;
+                color: black;
+              "
+            >
               Sair
             </button>
           </li>
@@ -137,14 +196,22 @@ export default {
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Home
             </router-link>
           </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretoresadmin">
-            <router-link class="nav-link" aria-current="page" to="/administracao">
+          <li
+            class="nav-item menu-mobile btn-block m-0 p-2 text-start"
+            v-if="corretoresadmin"
+          >
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/administracao"
+            >
               <font-awesome-icon icon="gauge" class="fa-2xl" /> Administração
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/atendimento">
-              <font-awesome-icon icon="gauge" class="fa-2xl" /> Script de Atendimento
+              <font-awesome-icon icon="gauge" class="fa-2xl" /> Script de
+              Atendimento
             </router-link>
           </li>
           <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretoresadmin">
@@ -159,7 +226,8 @@ export default {
           </li> -->
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link class="nav-link" aria-current="page" to="/equacoes">
-              <font-awesome-icon icon="house" class="fa-2xl" /> Projeção de resultados
+              <font-awesome-icon icon="house" class="fa-2xl" /> Projeção de
+              resultados
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
@@ -173,7 +241,11 @@ export default {
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/precificacao">
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/precificacao"
+            >
               <font-awesome-icon icon="house" class="fa-2xl" /> Precificação
             </router-link>
           </li>
@@ -188,16 +260,25 @@ export default {
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/universidade">
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/universidade"
+            >
               <font-awesome-icon icon="star" class="fa-2xl" /> Universidade Café
             </router-link>
           </li>
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/solicitar-contrato">
-              <font-awesome-icon icon="rectangle-list" class="fa-2xl" /> Solicitar Contrato
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/solicitar-contrato"
+            >
+              <font-awesome-icon icon="rectangle-list" class="fa-2xl" />
+              Solicitar Contrato
             </router-link>
           </li>
-        <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
           <router-link class="nav-link" aria-current="page" to="/meus-resultados">
               <font-awesome-icon icon="user" class="fa-2xl" /> Meus resultados
             </router-link>
@@ -213,21 +294,35 @@ export default {
             </router-link>
           </li> -->
           <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/pesquisar-cliente">
-              <font-awesome-icon icon="briefcase" class="fa-2xl" /> Pesquisar cliente
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/pesquisar-cliente"
+            >
+              <font-awesome-icon icon="briefcase" class="fa-2xl" /> Pesquisar
+              cliente
             </router-link>
           </li>
         </ul>
       </div>
       <div class="navbar-nav right desktop">
-        <div class="nav-item v-b-tooltip.hover" style="text-align: end;">
+        <div class="nav-item v-b-tooltip.hover" style="text-align: end">
           <!-- Santa Maria, {{ new Date().getDate() }} de {{ new Date() }} de {{ new Date().getFullYear() }} -->
           Santa Maria, {{ hoje }}
-          <br>
+          <br />
           Seja bem vindo, {{ corretor }}
-          <br>
-          <button class="btn btn-link nav-item v-b-tooltip.hover" @click="logout()" title="Sair"
-            style="float: right; padding-right: 0px;font-weight: bolder;color: black;">
+          <br />
+          <button
+            class="btn btn-link nav-item v-b-tooltip.hover"
+            @click="logout()"
+            title="Sair"
+            style="
+              float: right;
+              padding-right: 0px;
+              font-weight: bolder;
+              color: black;
+            "
+          >
             Sair
           </button>
         </div>
@@ -238,43 +333,66 @@ export default {
     </div>
   </nav>
   <!-- Menu Lateral -->
-  <div  class="container text-center">
+  <div class="container text-center">
     <div class="row align-items-start">
       <div v-if="menuativo" class="col-md-2" style="">
-        <div id="sidebar-cafe" class="d-flex flex-column flex-shrink-0 bg-light"
-          style="width: 70%;float: right !important;margin-right: 15% !important;">
+        <div
+          id="sidebar-cafe"
+          class="d-flex flex-column flex-shrink-0 bg-light"
+          style="
+            width: 70%;
+            float: right !important;
+            margin-right: 15% !important;
+          "
+        >
           <ul class="nav nav-pills nav-flush flex-column mb-auto text-center">
-            
             <li class="nav-item">
               <!-- foto do corretor pelo id -->
-               {{ fotocorretor }}
-               <img :src="'@/assets/fotos-corretores/' + fotocorretor + '.jpg'">
-              </li>
+              <!-- {{ fotocorretor }} -->
+                <div class="perfil-corretor">
+                  <img :src="caminhofoto" @error="(e) => e.target.src = 'assets/fotos-corretores/foto-perfil.jpg'" />
+                </div>
+            </li>
             <li class="nav-item">
-              <router-link to="/" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <br>
-                <br>
-                <br>
-                <br>
+              <router-link
+                to="/"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
+                
                 <font-awesome-icon icon="gauge" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Dashboard</label>
               </router-link>
             </li>
             <li class="nav-item" v-if="corretoresadmin">
-              <router-link to="/administracao" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Administração">
+              <router-link
+                to="/administracao"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Administração"
+              >
                 <font-awesome-icon icon="gauge" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Administração</label>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/atendimento" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Script de Atendimento">
+              <router-link
+                to="/atendimento"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Script de Atendimento"
+              >
                 <font-awesome-icon icon="gauge" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Script de Atendimento</label>
               </router-link>
             </li>
@@ -295,18 +413,30 @@ export default {
               </router-link>
             </li> -->
             <li class="nav-item">
-              <router-link to="/imoveis" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/imoveis"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="house" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Pesquisar Imóveis Externos</label>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/precificacao" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/precificacao"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="money-bill-wave" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Precificação</label>
               </router-link>
             </li>
@@ -319,26 +449,44 @@ export default {
               </router-link>
             </li> -->
             <li class="nav-item">
-              <router-link to="/numacros" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/numacros"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="ticket" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Placas</label>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/equacoes" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/equacoes"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="chart-column" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Projeção de Resultados 2025</label>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/download" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Script de Atendimento">
+              <router-link
+                to="/download"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Script de Atendimento"
+              >
                 <font-awesome-icon icon="download" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Baixar Imagens</label>
               </router-link>
             </li>
@@ -351,28 +499,45 @@ export default {
               </router-link>
             </li> -->
             <li class="nav-item">
-              <router-link to="/documentos" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/documentos"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="download" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon"> Documentos</label>
               </router-link>
             </li>
-            
-            
+
             <li class="nav-item">
-              <router-link to="/universidade" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/universidade"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="star" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Universidade Café</label>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link to="/solicitar-contrato" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/solicitar-contrato"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="rectangle-list" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Solicitar Contrato</label>
               </router-link>
             </li>
@@ -401,39 +566,70 @@ export default {
               </router-link>
             </li> -->
             <li class="nav-item">
-              <router-link to="/pesquisar-cliente" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
+              <router-link
+                to="/pesquisar-cliente"
+                class="nav-link py-3 border-bottom-inativar"
+                aria-current="page"
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-original-title="Home"
+              >
                 <font-awesome-icon icon="briefcase" class="fa-2xl" />
-                <br>
+                <br />
                 <label class="label-icon">Pesquisar cliente</label>
               </router-link>
             </li>
             <li class="nav-item">
-              <br>
-              <br>
+              <br />
+              <br />
             </li>
           </ul>
         </div>
       </div>
       <div class="col-md-10">
         <div class="main">
-          <router-view></router-view>
+          <router-view :fotocorretor="caminhofoto"></router-view>
         </div>
       </div>
     </div>
   </div>
   <!-- Vamos criar uma modal para o chat aqui, que avre a partir de um balão -->
   <!-- botão que abre a modal -->
-   <div class="chatbot-box" v-show="chatativo">
-     <!-- botão fechar o chat -->
-      <button type="button" class="btn-close btn-close-danger m-2" aria-label="Close" @click="closeChatModal"
-        style="z-index: 9999 !important; color: red !important">x</button>
-     <ChatWindow />
-    </div>
-   <button type="button" class="btn btn-primary efeito-pulsante-de-um-segundo" @click="openChatModal"
-    style="position: fixed; bottom: 20px; right: 20px; border-radius: 50%; width: 60px; height: 60px; padding: 0px; z-index: 1050; background-color: #02244a;">
+  <div class="chatbot-box" v-show="chatativo">
+    <!-- botão fechar o chat -->
+    <button
+      type="button"
+      class="btn-close btn-close-danger m-2"
+      aria-label="Close"
+      @click="closeChatModal"
+      style="z-index: 9999 !important; color: red !important"
+    >
+      x
+    </button>
+    <ChatWindow />
+  </div>
+  <button
+    type="button"
+    class="btn btn-primary efeito-pulsante-de-um-segundo"
+    @click="openChatModal"
+    style="
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      padding: 0px;
+      z-index: 1050;
+      background-color: #02244a;
+    "
+  >
     <!-- <font-awesome-icon icon="comments" class="fa-2xl" /> -->
-     <img src="@/assets/logo/icon-bg-dark.png" alt="Logo Avantor" style="height: 40px;">
+    <img
+      src="@/assets/logo/icon-bg-dark.png"
+      alt="Logo Avantor"
+      style="height: 40px"
+    />
     <!-- <font-awesome-icon icon="comment" class="fa-2xl" /> -->
   </button>
   <!-- Modal -->
@@ -454,21 +650,23 @@ export default {
     </div>
   </div> -->
   <div class="clearfix">
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
   </div>
   <footer class="bg-light text-center">
     <!-- Copyright -->
     <div class="text-center p-3" style="">
       © {{ new Date().getFullYear() }} Copyright: ®
-      <a class="text-dark" href="https://cafeinteligencia.com.br/">Café Negócios Imobiliário</a>
+      <a class="text-dark" href="https://cafeinteligencia.com.br/"
+        >Café Negócios Imobiliário</a
+      >
     </div>
     <!-- Copyright -->
   </footer>
@@ -511,7 +709,6 @@ nav,
   border-top-left-radius: 90px;
   border-bottom-left-radius: 90px;
   box-shadow: 23.16px 17.453px 32.5px rgba(0, 0, 0, 0.16);
-  ;
 }
 
 #sidebar-cafe:hover {
@@ -577,7 +774,6 @@ a {
 
 /* navbar becomes mobile sidebar under lg breakpoint */
 @media (max-width: 990px) {
-
   .navbar-collapse.collapsing .navbar-nav {
     display: block;
     position: fixed;
@@ -633,7 +829,7 @@ a {
     max-width: 1250px !important;
   }
 } */
- /** deixar a modal invisível para destacar apenas o chatbot */
+/** deixar a modal invisível para destacar apenas o chatbot */
 /* #chatModal .modal {
   background-color: transparent !important;
   box-shadow: none !important;
@@ -676,5 +872,22 @@ a {
 }
 .efeito-pulsante-de-um-segundo {
   animation: pulse 2s infinite;
+}
+.perfil-corretor {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: hidden;
+  /* padding: 20px; */
+  margin-top: 30px;
+}
+.perfil-corretor img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 80px;
 }
 </style>

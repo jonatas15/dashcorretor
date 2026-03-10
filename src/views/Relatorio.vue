@@ -178,7 +178,8 @@
 
                         <!-- Avatar do corretor, pegando de https://api.jetimob.com/webservice/tZuuHuri8Q3ohAf7cvmMm8hTmWrXKJoEdes8ViSi/corretores pelo email -->
                         <img
-                        :src="retornaCorretorAvatar(corretor.email)"
+                        :src="corretor.foto"
+                        @error="(e) => e.target.src = 'assets/fotos-corretores/foto-perfil.jpg'"
                         alt="Avatar do Corretor"
                         class="preview-image small mt-2"
                     />
@@ -357,8 +358,11 @@ const props = defineProps({
     mediana: { type: Number, required: true },
     imoveis: { type: Array, default: () => [] },
     bairros: { type: Array, default: () => [] },
-    cidade: { type: String, default: 'Santa Maria' }
+    cidade: { type: String, default: 'Santa Maria' },
+    fotocorretor: String
 })
+
+const fotocorretor = props.fotocorretor
 
 const dadoscorretor = ref('')
 const corretorlogado = ref({})
@@ -373,9 +377,10 @@ onMounted(() => {
         nome: corretorlogado.value.nome,
         email: corretorlogado.value.email,
         celular: corretorlogado.value.celular,
-        foto: corretorlogado.value.foto
+        foto: fotocorretor
     }
-    console.log (corretor.value)
+    console.log ("corretor.value")
+    console.log (props.fotocorretor)
   }
 })
 
@@ -643,25 +648,29 @@ const fotoquevaiprorelatorio = retornaCorretorAvatar(corretor.value.email);
 function retornaCorretorAvatar(email) {
     const emailHash = email;
     /** precisamos ler o json, buscar pelo email, e retornar o avatar */
-    try {
-        // Validação do email de entrada
-        if (!email) {
+    if (props.fotocorretor) {
+        return props.fotocorretor;
+    } else {
+        try {
+            // Validação do email de entrada
+            if (!email) {
+                return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
+            }
+            
+            // pega o avatar do corretor pelo email no json local
+            const corretoresArray = Array.isArray(corretoresData) ? corretoresData : corretoresData.corretores;
+            const corretorEncontrado = corretoresArray.find(corretor => 
+                corretor.email && corretor.email.trim().toLowerCase() === email.trim().toLowerCase()
+            );
+            if (corretorEncontrado && corretorEncontrado.avatar) {
+                return corretorEncontrado.avatar;
+            } else {
+                return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
+            }
+        } catch (error) {
+            console.error('Erro ao carregar o JSON de corretores:', error);
             return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
         }
-        
-        // pega o avatar do corretor pelo email no json local
-        const corretoresArray = Array.isArray(corretoresData) ? corretoresData : corretoresData.corretores;
-        const corretorEncontrado = corretoresArray.find(corretor => 
-            corretor.email && corretor.email.trim().toLowerCase() === email.trim().toLowerCase()
-        );
-        if (corretorEncontrado && corretorEncontrado.avatar) {
-            return corretorEncontrado.avatar;
-        } else {
-            return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
-        }
-    } catch (error) {
-        console.error('Erro ao carregar o JSON de corretores:', error);
-        return `https://www.gravatar.com/avatar/${emailHash}?d=identicon`;
     }
 }
 

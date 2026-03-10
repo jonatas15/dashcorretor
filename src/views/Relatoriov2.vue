@@ -14,7 +14,7 @@
         </div>
 
         <div class="right">
-          <div class="avatar" :style="`background-image: url(${foto})`">
+          <div class="avatar" :style="`background-image: url(${foto})`" crossorigin="anonymous">
             <!-- {{ fotocorretor }} -->
             <!-- <img :src="avatarBase64" /> -->
              <!-- <img :src="`${API_URL}/proxy-image?url=${encodeURIComponent(fotocorretor)}`" /> -->
@@ -598,7 +598,7 @@ async function gerarPDF() {
     html2canvas: {
       scale: 2,
       useCORS: true,
-      allowTaint: false,
+      allowTaint: true,
       backgroundColor: '#ffffff',
       letterRendering: true
     },

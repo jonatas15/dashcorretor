@@ -259,6 +259,7 @@
       :imoveis="selecionados.length > 0 ? selecionados : data" 
       :bairros="form.bairro"
       :cidade="form.cidade"
+      :fotocorretor="fotocorretor"
       v-if="visualiza_relatorio"
     ></relatorio>
   </div>
@@ -266,7 +267,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, reactive, computed, onMounted, onBeforeUnmount, defineProps } from 'vue';
 import {Money} from 'v-money';
 // Vamos criar uma modal para exportrar o relatório
 // import Modal from '@/components/Modal.vue';
@@ -279,6 +280,12 @@ import Relatorio from './Relatorio.vue';
 
 const visualiza_relatorio = ref(false);
 
+const props = defineProps({
+  fotocorretor: String
+});
+const fotocorretor = ref(props.fotocorretor || "");
+
+console.log(fotocorretor.value)
 
 const initialForm = {
   imobiliaria: '',
@@ -314,8 +321,8 @@ const dormitorios = ref(["1", "2", "3", "4+"]);
 const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
-const urlraiz = 'http://localhost:8080';
-// const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+// const urlraiz = 'http://localhost:8080';
+const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 

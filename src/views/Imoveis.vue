@@ -200,14 +200,56 @@
       <thead>
         <tr>
           <th v-if="mediana !== null">Selecionar</th>
-          <th>Imobiliária</th>
+          <th @click="changeSort('imobiliaria')" style="cursor:pointer; text-decoration: none;" class="filterlink">
+            Imobiliária
+            <span class="sort-indicator" aria-hidden="true">
+              <span :class="['sort-arrow', { active: sortBy === 'imobiliaria' && sortDir === 'asc' }]">▲</span>
+              <span :class="['sort-arrow', { active: sortBy === 'imobiliaria' && sortDir === 'desc' }]">▼</span>
+            </span>
+          </th>
           <!-- <th>Estado</th> -->
-          <th>Cidade</th>
-          <th>Bairro</th>
-          <th>Negócio</th>
-          <th>Finalidade</th>
-          <th>Valor</th>
-          <th>Área (m²)</th>
+          <th @click="changeSort('cidade')" style="cursor:pointer; text-decoration: none;" class="filterlink">
+            Cidade
+            <span class="sort-indicator" aria-hidden="true">
+              <span :class="['sort-arrow', { active: sortBy === 'cidade' && sortDir === 'asc' }]">▲</span>
+              <span :class="['sort-arrow', { active: sortBy === 'cidade' && sortDir === 'desc' }]">▼</span>
+            </span>
+          </th>
+          <th @click="changeSort('bairro')" style="cursor:pointer; text-decoration: none;" class="filterlink">
+            Bairro
+            <span class="sort-indicator" aria-hidden="true">
+              <span :class="['sort-arrow', { active: sortBy === 'bairro' && sortDir === 'asc' }]">▲</span>
+              <span :class="['sort-arrow', { active: sortBy === 'bairro' && sortDir === 'desc' }]">▼</span>
+            </span>
+          </th>
+          <th @click="changeSort('negocio')" style="cursor:pointer; text-decoration: none;" class="filterlink">
+            Negócio
+            <span class="sort-indicator" aria-hidden="true">
+              <span :class="['sort-arrow', { active: sortBy === 'negocio' && sortDir === 'asc' }]">▲</span>
+              <span :class="['sort-arrow', { active: sortBy === 'negocio' && sortDir === 'desc' }]">▼</span>
+            </span>
+          </th>
+          <th @click="changeSort('finalidade')" style="cursor:pointer; text-decoration: none;" class="filterlink">
+            Finalidade
+            <span class="sort-indicator" aria-hidden="true">
+              <span :class="['sort-arrow', { active: sortBy === 'finalidade' && sortDir === 'asc' }]">▲</span>
+              <span :class="['sort-arrow', { active: sortBy === 'finalidade' && sortDir === 'desc' }]">▼</span>
+            </span>
+          </th>
+          <th @click="changeSort('valor')" style="cursor:pointer; text-decoration: none;" class="filterlink">
+            Valor
+            <span class="sort-indicator" aria-hidden="true">
+              <span :class="['sort-arrow', { active: sortBy === 'valor' && sortDir === 'asc' }]">▲</span>
+              <span :class="['sort-arrow', { active: sortBy === 'valor' && sortDir === 'desc' }]">▼</span>
+            </span>
+          </th>
+          <th @click="changeSort('area')" style="cursor:pointer; text-decoration: none;" class="filterlink">
+            Área (m²)
+            <span class="sort-indicator" aria-hidden="true">
+              <span :class="['sort-arrow', { active: sortBy === 'area' && sortDir === 'asc' }]">▲</span>
+              <span :class="['sort-arrow', { active: sortBy === 'area' && sortDir === 'desc' }]">▼</span>
+            </span>
+          </th>
           <th>Cômodos</th>
           <!-- <th>Banheiros</th>
           <th>Dormitórios</th>
@@ -224,7 +266,7 @@
           <td><a :href="item.url" target="_blank"><font-awesome-icon icon="link"/> {{ item.imobiliaria ? item.imobiliaria : 'ver imóvel' }}</a></td>
           <!-- <td>{{ item.estado }}</td> -->
           <td>{{ item.cidade }}</td>
-          <td>{{ item.bairro }}</td>
+          <td>{{ reduz_ns(item.bairro) }}</td>
           <td>{{ item.negocio }}</td>
           <td>{{ item.finalidade == 'Locacao' ? 'Locação' : item.finalidade }}</td>
           <td>R$ {{ Math.round(item.valor).toLocaleString() }}</td>
@@ -264,7 +306,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue';
+import { ref, reactive, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 import {Money} from 'v-money';
 // Vamos criar uma modal para exportrar o relatório
 // import Modal from '@/components/Modal.vue';
@@ -300,6 +342,10 @@ const carregando = ref(false);
 const verNegocios = ref(false);
 const verBairros = ref(false);
 
+// ordenação
+const sortBy = ref('');
+const sortDir = ref('asc');
+
 const data = ref([]);
 const totalvendas = ref();
 const totalalugas = ref();
@@ -311,8 +357,8 @@ const dormitorios = ref(["1", "2", "3", "4+"]);
 const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
-// const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+const urlraiz = 'http://localhost:8080';
+// const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
 
 const range = ref([-5, 5]);
 
@@ -350,6 +396,8 @@ const fetchData = async () => {
     `&banheiros=${form.banheiros}` +
     `&garagens=${form.garagens}` +
     `&mobiliado=${form.mobiliado}` +
+    `&sort_by=${sortBy.value}` +
+    `&sort_dir=${sortDir.value}` +
   ``);
   const result = await response.json();
   // console.log(result)
@@ -362,9 +410,7 @@ const fetchData = async () => {
   const citiesresult = await cities.json();
   cidades.value = citiesresult.data;
   // lista de bairros --------------------------------
-  const bairrosx = await fetch(`${urlraiz}/imoveisex/getbairros`);
-  const bairrosxresult = await bairrosx.json();
-  bairros.value = bairrosxresult.data;
+  await fetchBairros();
   // lista de negocios --------------------------------
   const negociosx = await fetch(`${urlraiz}/imoveisex/getnegocios`);
   const negociosxresult = await negociosx.json();
@@ -380,6 +426,17 @@ const fetchData = async () => {
   // console.log(result);
   pagination.total = result.pagination.total;
   carregando.value = false;
+};
+
+// Função para carregar bairros baseado na cidade selecionada
+const fetchBairros = async () => {
+  let url = `${urlraiz}/imoveisex/getbairros`;
+  if (form.cidade) {
+    url += `?cidade=${form.cidade}`;
+  }
+  const bairrosx = await fetch(url);
+  const bairrosxresult = await bairrosx.json();
+  bairros.value = bairrosxresult.data;
 };
 
 
@@ -398,6 +455,19 @@ const changePage = (newPage) => {
   mediana.value = null; // Resetar mediana
   fetchData();
 };
+
+const changeSort = (column) => {
+  if (sortBy.value === column) {
+    sortDir.value = sortDir.value === 'asc' ? 'desc' : 'asc';
+  } else {
+    sortBy.value = column;
+    sortDir.value = 'asc';
+  }
+  // refazer filtro/página 1
+  pagination.page = 1;
+  fetchData();
+};
+
 // const alteraomax = () => {
 //   // console.log('chamou a function');
 //   if (form.valormax < form.valormin) {
@@ -427,6 +497,8 @@ const resetForm = () => {
   selecionados.value = []; // Limpar selecionados ao resetar o formulário
   mediana.value = null; // Resetar mediana
   pagination.page = 1; // Resetar para a primeira página
+  sortBy.value = '';
+  sortDir.value = 'asc';
   fetchData();
 };
 
@@ -484,6 +556,13 @@ const recarregarPagina = () => {
 onMounted(() => {
   fetchData();
   document.addEventListener('click', handleClickOutside);
+  
+  // Watch para monitorar mudanças na cidade e atualizar bairros
+  watch(() => form.cidade, async (newCidade) => {
+    await fetchBairros();
+    // Limpar bairros selecionados quando mudar de cidade
+    form.bairro = [];
+  });
 });
 
 onBeforeUnmount(() => {
@@ -563,5 +642,29 @@ onBeforeUnmount(() => {
 #opt-venda:checked + label,
 #opt-locacao:checked + label {
   color: #fff !important;
+}
+.filterlink {
+  color: green !important;
+  font-weight: 800 !important;
+  text-decoration: none !important;
+}
+
+.sort-indicator {
+  display: inline-flex;
+  flex-direction: column;
+  margin-left: 6px;
+  line-height: 0.7;
+  vertical-align: middle;
+}
+
+.sort-arrow {
+  font-size: 12px;
+  color: #8ea38e;
+  font-weight: 700;
+}
+
+.sort-arrow.active {
+  color: #0b6b0b;
+  text-shadow: 0 0 1px rgba(11, 107, 11, 0.3);
 }
 </style>
