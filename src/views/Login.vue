@@ -113,7 +113,7 @@
                         // }
 
                         // Testte de Login
-                        if (this.form.email.trim() == u.email.trim() && this.form.password.trim() == u.registro.trim()) {
+                        if (this.form.email.trim() == u.email.trim() && this.form.password.trim() == u.registro.trim() && u.ativo == 1) {
                             // console.log("usuário válido");
                             localStorage.setItem('authUser', JSON.stringify(u));
                             this.$router.push({

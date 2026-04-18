@@ -259,7 +259,7 @@ export default {
               <font-awesome-icon icon="download" class="fa-2xl" /> Documentos
             </router-link>
           </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
+          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
             <router-link
               class="nav-link"
               aria-current="page"
@@ -277,7 +277,7 @@ export default {
               <font-awesome-icon icon="rectangle-list" class="fa-2xl" />
               Solicitar Contrato
             </router-link>
-          </li>
+          </li> -->
           <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
           <router-link class="nav-link" aria-current="page" to="/meus-resultados">
               <font-awesome-icon icon="user" class="fa-2xl" /> Meus resultados
@@ -513,7 +513,7 @@ export default {
               </router-link>
             </li>
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <router-link
                 to="/universidade"
                 class="nav-link py-3 border-bottom-inativar"
@@ -526,7 +526,7 @@ export default {
                 <br />
                 <label class="label-icon">Universidade Café</label>
               </router-link>
-            </li>
+            </li> -->
             <li class="nav-item">
               <router-link
                 to="/solicitar-contrato"

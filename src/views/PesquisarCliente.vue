@@ -29,26 +29,28 @@
                   </a>
                   <!-- <hr> -->
                   <div class="caixa">
-                    <strong>contato@cafeimobiliaria.com.br</strong>
+                    <strong id="user_assertiva">{{ credenciais.assertiva.usuario }}</strong>
                     <br />
                     <br />
                     <!-- <hr> -->
                     <!-- <strong>Caf3imob88@</strong><br> -->
-                    <strong>Caf3Imob891732@%7867</strong><br>
+                    <strong id="senha_assertiva">{{ credenciais.assertiva.senha }}</strong><br>
                   </div>
                 </div>
                 <div class="col-md-6">
-                  <a href="https://consulta5.confirmeonline.com.br/validarLogin/confirmeOnline.xhtml" target="_blank" class="btn btn-default botao-logo">
+                  <!-- <a href="https://consulta5.confirmeonline.com.br/validarLogin/confirmeOnline.xhtml" target="_blank" class="btn btn-default botao-logo"> -->
+                  <a href="https://confirme30.confirmeonline.com.br/auth" target="_blank" class="btn btn-default botao-logo">
                     <img src="@/assets/logo/img_logo_login.jpg" alt="">
                   </a>
                   <div class="caixa">
-                    <strong>Usuario: CANEI00005 | Senha: KQ0#frm#</strong>
-                    <br />
-                    <br />
-                    <strong>Usuario: CANEI00004 | Senha: XoTt$TgJ</strong><br>
+                    <template v-for="(conta, index) in credenciais.confirme.contas" :key="`confirme-${index}`">
+                      <strong :id="`user_confirme${index + 1}`">Usuario: {{ conta.usuario }} | Senha: {{ conta.senha }}</strong>
+                      <br />
+                      <br v-if="index < credenciais.confirme.contas.length - 1" />
+                    </template>
                     <hr>
                     <div class="col-md-12 my-3">
-                      <span class="text-danger">** Será solicitado um código de confirmação, verificar com a Patrícia.</span>
+                      <span class="text-danger">{{ credenciais.confirme.observacao }}</span>
                     </div>
                   </div>
                 </div>
@@ -70,6 +72,60 @@
     </div>
   </template>
   
+  <script>
+  export default {
+    data() {
+      return {
+        credenciais: {
+          assertiva: {
+            usuario: 'contato@cafeimobiliaria.com.br',
+            senha: 'Avantor891732@%7867'
+          },
+          confirme: {
+            contas: [
+              { usuario: 'CANEI00005', senha: 'KQ0#frm#' },
+              { usuario: 'CANEI00004', senha: 'XoTt$TgJ' }
+            ],
+            observacao: '** Será solicitado um código de confirmação, verificar com a Patrícia.'
+          }
+        }
+      }
+    },
+    mounted() {
+      this.carregarCredenciais()
+    },
+    methods: {
+      async carregarCredenciais() {
+        try {
+          const resposta = await fetch(`${import.meta.env.BASE_URL}jsons/senhas.json`, { cache: 'no-store' })
+
+          if (!resposta.ok) {
+            throw new Error(`Falha ao carregar senhas.json: ${resposta.status}`)
+          }
+
+          const dados = await resposta.json()
+
+          this.credenciais = {
+            assertiva: {
+              ...this.credenciais.assertiva,
+              ...(dados.assertiva || {})
+            },
+            confirme: {
+              ...this.credenciais.confirme,
+              ...(dados.confirme || {}),
+              contas: Array.isArray(dados?.confirme?.contas) && dados.confirme.contas.length > 0
+                ? dados.confirme.contas
+                : this.credenciais.confirme.contas
+            }
+          }
+        } catch (erro) {
+          console.warn('Nao foi possivel carregar jsons/senhas.json. Mantendo credenciais padrao.', erro)
+        }
+      }
+    }
+  }
+  </script>
+
   <style>
   /* @media (min-width: 1024px) {
     .universidade {
