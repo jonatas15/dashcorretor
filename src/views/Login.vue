@@ -58,12 +58,12 @@
   <script>
 //   import {required, minLength, email} from "vuelidate";
   import axios from "axios";
+  import { API_URL } from "@/config/api";
   export default {
     name: 'login',
     data() {
         return {
-            // apibase: 'http://localhost:8080/api/corretor',
-            apibase: 'https://www.avantorimoveis.com.br/dadoscorretor/api/corretor',
+            apibase: API_URL.apiCorretor,
             errors: [],
             corretores: [],
             form: {

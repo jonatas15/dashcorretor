@@ -167,6 +167,7 @@ import Progress from "./Progress.vue";
 import Chartall from "./Chartall.vue";
 import axios from "axios";
 import "@fontsource/exo-2";
+import { API_URL } from "@/config/api";
 export default {
   name: "administracao",
   data() {
@@ -188,10 +189,10 @@ export default {
       corretor: [],
       dadoscorretor: [],
       searchTime: "Atual",
-      anovindo: "2025",
+      anoVindo: new Date().getFullYear(),
       searchCorretor: 1,
       posicao: 0,
-      apibase: "https://www.avantorimoveis.com.br/dadoscorretor/api/corretor",
+      apibase: API_URL.apiCorretor,
       // apibase: "http://localhost:8080/api/corretor",
       macros: [
         {
@@ -247,7 +248,8 @@ export default {
       corretormacros: [],
       corretorlabels: [],
       listacorretoresvgc: [],
-      sociosids: [10, 42, 43, 1]
+      sociosids: [10, 42, 43, 1],
+      anoAtual: new Date().getFullYear(),
     };
   },
   components: {

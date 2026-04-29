@@ -269,6 +269,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted, onBeforeUnmount, defineProps } from 'vue';
 import {Money} from 'v-money';
+import { API_URL } from "@/config/api";
 // Vamos criar uma modal para exportrar o relatório
 // import Modal from '@/components/Modal.vue';
 import Relatorio from './Relatorio.vue';
@@ -322,7 +323,7 @@ const garagens = ref(["1", "2", "3", "4+"]);
 const banheiros = ref(["1", "2", "3", "4+"]);
 const finalidades = ref([]);
 // const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+const urlraiz = API_URL.baseUrl;
 
 const range = ref([-5, 5]);
 

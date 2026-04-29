@@ -216,6 +216,7 @@
   <script lang="ts">
   import Progress from './Progress.vue';
   import axios from "axios";
+  import { API_URL } from "@/config/api";
   import "@fontsource/exo-2";
 
   import {
@@ -247,7 +248,7 @@
           posicao: 0,
           // urlmarca: "https://avantorimoveis.com.br/dadoscorretor",
           // urlmarca: "https://www.avantorimoveis.com.br/dadoscorretor/api/imovel",
-          urlmarca: "http://localhost:8080/api/imovel",
+          urlmarca: API_URL.apiImovel,
           urlvisitas: "https://www.avantorimoveis.com.br/sistema/api/visita",
           // urlmarca: "",
           imoveis: [],

@@ -10,6 +10,7 @@ BarElement,
 CategoryScale,
 LinearScale, PointElement, LineElement } from 'chart.js';
 import { Doughnut, Bar, Line } from 'vue-chartjs';
+import { API_URL } from "@/config/api";
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend, PointElement, LineElement);
 import axios from "axios";
 export default {
@@ -26,7 +27,7 @@ export default {
     },
     data() {
         return {
-            apibase: 'https://www.avantorimoveis.com.br/dadoscorretor/api/corretor',
+            apibase: API_URL.apiCorretor,
             varcorretor: [],
             corretorlocal: [],
             // corretorlabels: [],

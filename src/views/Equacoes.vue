@@ -30,6 +30,8 @@ const metaOportunidadesMes = computed(() => {
     : 0;
 });
 
+const AnoAtual = new Date().getFullYear();
+
 onMounted(() => {
   metaVendasAnual.value = 1000000;
   ticketMedio.value = 221000;
@@ -39,7 +41,7 @@ onMounted(() => {
 <template>
   <div class="container mt-0 p-5 br-2 bg-white">
   <div class="w-container">
-    <h1>Projeção de Resultados 2025</h1>
+    <h1>Projeção de Resultados {{ AnoAtual }}</h1>
     <div class="w-dados row m-3">
       <div>
         <label class="form-label fs-5">Meta de Vendas Anual:</label>

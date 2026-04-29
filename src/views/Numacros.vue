@@ -8,7 +8,7 @@
     </div>
 
     <hr>
-    <h4><strong>Placas</strong></h4>
+    <h4><strong>Placas (2026)</strong></h4>
 
     <!-- FILTROS -->
     <div class="border px-4 py-2 pb-3 d-flex align-items-center">
@@ -100,12 +100,13 @@
                 v-model="placasInputs[`${corretor.id}-${meses[i]}`][index]"
                 class="form-control text-center my-1 ph-danger"
                 :placeholder="'código #' + (index +1) +'º'"
+                :disabled="isMesBloqueado(meses[i])"
               />
               <br>
               <button
                 class="btn btn-success"
                 @click="atualizarPlacas(corretor.id, meses[i], corretor.placas?.[String(i)])"
-                :disabled="desabilitado[`${corretor.id}-${meses[i]}`]"
+                :disabled="desabilitado[`${corretor.id}-${meses[i]}`] || isMesBloqueado(meses[i])"
               >🗹</button>
             </div>
           </td>
@@ -117,6 +118,7 @@
 
 <script setup>
 import { onMounted, computed, ref, reactive } from "vue";
+import { API_URL } from "@/config/api";
 
 const desabilitado = reactive({});
 const useradmin = ref(false);
@@ -127,8 +129,7 @@ const meses = [
   "novembro", "dezembro"
 ];
 
-// const urlraiz = 'http://localhost:8080';
-const urlraiz = 'https://www.avantorimoveis.com.br/dadoscorretor';
+const urlraiz = API_URL.baseUrl;
 
 function strMes(mes) {
   // se já for string com nome do mês, retorna diretamente
@@ -148,6 +149,13 @@ const placasInputs = reactive({}); // Armazena os valores de cada campo dividido
 // FILTROS reativos
 const selectedCorretor = ref("");
 const selectedMes = ref(""); // armazenará índice do mês como number ou "" para todos
+const currentMonthIndex = ref(new Date().getMonth());
+
+function isMesBloqueado(mes) {
+  if (useradmin.value) return false;
+  const mesIndex = meses.indexOf(mes);
+  return mesIndex > -1 && mesIndex < currentMonthIndex.value;
+}
 
 // Computed: array de índices de mês a renderizar (0..11)
 const monthIndices = computed(() => {
@@ -170,6 +178,10 @@ const filteredCorretores = computed(() => {
 });
 
 const atualizarPlacas = async (corretorId, mes, quantidade) => {
+  if (isMesBloqueado(mes)) {
+    alert("Este mês está bloqueado para edição.");
+    return;
+  }
   console.log(`Atualizando placa do corretor ${corretorId} no mês ${mes} com valor ${quantidade}`);
   const placasString = getPlacasFormatadas(corretorId, mes).value;
   await fetch(`${urlraiz}/placas/atualiza?corretorId=${corretorId}&mes=${mes}&quantidade=${encodeURIComponent(placasString)}`);

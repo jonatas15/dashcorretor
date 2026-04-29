@@ -39,7 +39,28 @@ export default {
       corretoresadmin: false,
       corretordados: [],
       fotocorretor: "",
-      caminhofoto: ""
+      caminhofoto: "",
+      menuItems: [
+        { id: "home", to: "/", icon: "gauge", mobileLabel: "Home", desktopLabel: "Dashboard", enabled: true, showMobile: true, showDesktop: true },
+        { id: "administracao", to: "/administracao", icon: "gauge", mobileLabel: "Administração", desktopLabel: "Administração", enabled: true, showMobile: true, showDesktop: true, adminOnly: true },
+        { id: "atendimento", to: "/atendimento", icon: "gauge", mobileLabel: "Script de Atendimento", desktopLabel: "Script de Atendimento", enabled: true, showMobile: true, showDesktop: true },
+        { id: "equacoes", to: "/equacoes", icon: "chart-column", mobileLabel: "Projeção de resultados", desktopLabel: "Projeção de Resultados 2025", enabled: true, showMobile: true, showDesktop: true },
+        { id: "numacros", to: "/numacros", icon: "ticket", mobileLabel: "Placas", desktopLabel: "Placas", enabled: true, showMobile: true, showDesktop: true },
+        { id: "imoveis", to: "/imoveis", icon: "house", mobileLabel: "Imóveis Externos", desktopLabel: "Pesquisar Imóveis Externos", enabled: true, showMobile: true, showDesktop: true },
+        { id: "precificacao", to: "/precificacao", icon: "money-bill-wave", mobileLabel: "Precificação", desktopLabel: "Precificação", enabled: true, showMobile: true, showDesktop: true },
+        { id: "download", to: "/download", icon: "download", mobileLabel: "Baixar Imagens", desktopLabel: "Baixar Imagens", enabled: true, showMobile: false, showDesktop: true },
+        { id: "documentos", to: "/documentos", icon: "download", mobileLabel: "Documentos", desktopLabel: "Documentos", enabled: true, showMobile: true, showDesktop: true },
+        { id: "solicitar-contrato", to: "/solicitar-contrato", icon: "rectangle-list", mobileLabel: "Solicitar Contrato", desktopLabel: "Solicitar Contrato", enabled: true, showMobile: false, showDesktop: true },
+        { id: "pesquisar-cliente", to: "/pesquisar-cliente", icon: "briefcase", mobileLabel: "Pesquisar cliente", desktopLabel: "Pesquisar cliente", enabled: true, showMobile: true, showDesktop: true }
+      ]
+    }
+  },
+  computed: {
+    mobileMenuItems() {
+      return this.menuItems.filter(item => this.isMenuVisible(item, "mobile"));
+    },
+    desktopMenuItems() {
+      return this.menuItems.filter(item => this.isMenuVisible(item, "desktop"));
     }
   },
   components: {
@@ -74,6 +95,12 @@ export default {
     },
     closeChatModal() {
       this.chatativo = false;
+    },
+    isMenuVisible(item, view) {
+      if (!item.enabled) return false;
+      if (item.adminOnly && !this.corretoresadmin) return false;
+      if (view === "mobile") return item.showMobile !== false;
+      return item.showDesktop !== false;
     },
     async verificaSeArquivoExiste(arquivo) {
       try {
@@ -191,116 +218,17 @@ export default {
               Sair
             </button>
           </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/">
-              <font-awesome-icon icon="gauge" class="fa-2xl" /> Home
-            </router-link>
-          </li>
           <li
             class="nav-item menu-mobile btn-block m-0 p-2 text-start"
-            v-if="corretoresadmin"
+            v-for="item in mobileMenuItems"
+            :key="item.id"
           >
             <router-link
               class="nav-link"
               aria-current="page"
-              to="/administracao"
+              :to="item.to"
             >
-              <font-awesome-icon icon="gauge" class="fa-2xl" /> Administração
-            </router-link>
-          </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/atendimento">
-              <font-awesome-icon icon="gauge" class="fa-2xl" /> Script de
-              Atendimento
-            </router-link>
-          </li>
-          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start" v-if="corretoresadmin">
-            <router-link class="nav-link" aria-current="page" to="/admvisitas">
-              <font-awesome-icon icon="chart-column" class="fa-2xl" /> Relatórios de Visitas e Prospecção
-            </router-link>
-          </li> -->
-          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/registro-visitas">
-              <font-awesome-icon icon="thumbtack" class="fa-2xl" /> Registrar as visitas
-            </router-link>
-          </li> -->
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/equacoes">
-              <font-awesome-icon icon="house" class="fa-2xl" /> Projeção de
-              resultados
-            </router-link>
-          </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/numacros">
-              <font-awesome-icon icon="house" class="fa-2xl" /> Placas
-            </router-link>
-          </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/imoveis">
-              <font-awesome-icon icon="house" class="fa-2xl" /> Imóveis Externos
-            </router-link>
-          </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link
-              class="nav-link"
-              aria-current="page"
-              to="/precificacao"
-            >
-              <font-awesome-icon icon="house" class="fa-2xl" /> Precificação
-            </router-link>
-          </li>
-          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/followup">
-              <font-awesome-icon icon="house" class="fa-2xl" /> Follow-up de METAS
-            </router-link>
-          </li> -->
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/documentos">
-              <font-awesome-icon icon="download" class="fa-2xl" /> Documentos
-            </router-link>
-          </li>
-          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link
-              class="nav-link"
-              aria-current="page"
-              to="/universidade"
-            >
-              <font-awesome-icon icon="star" class="fa-2xl" /> Universidade Café
-            </router-link>
-          </li>
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link
-              class="nav-link"
-              aria-current="page"
-              to="/solicitar-contrato"
-            >
-              <font-awesome-icon icon="rectangle-list" class="fa-2xl" />
-              Solicitar Contrato
-            </router-link>
-          </li> -->
-          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-          <router-link class="nav-link" aria-current="page" to="/meus-resultados">
-              <font-awesome-icon icon="user" class="fa-2xl" /> Meus resultados
-            </router-link>
-          </li> -->
-          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/analise-dados">
-              <font-awesome-icon icon="gear" class="fa-2xl" /> Análise de dados
-            </router-link>
-          </li> -->
-          <!-- <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link class="nav-link" aria-current="page" to="/buscar-proprietario">
-              <font-awesome-icon icon="search" class="fa-2xl" /> Buscar proprietário
-            </router-link>
-          </li> -->
-          <li class="nav-item menu-mobile btn-block m-0 p-2 text-start">
-            <router-link
-              class="nav-link"
-              aria-current="page"
-              to="/pesquisar-cliente"
-            >
-              <font-awesome-icon icon="briefcase" class="fa-2xl" /> Pesquisar
-              cliente
+              <font-awesome-icon :icon="item.icon" class="fa-2xl" /> {{ item.mobileLabel }}
             </router-link>
           </li>
         </ul>
@@ -353,230 +281,18 @@ export default {
                   <img :src="caminhofoto" @error="(e) => e.target.src = 'assets/fotos-corretores/foto-perfil.jpg'" />
                 </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-for="item in desktopMenuItems" :key="item.id">
               <router-link
-                to="/"
+                :to="item.to"
                 class="nav-link py-3 border-bottom-inativar"
                 aria-current="page"
                 data-bs-toggle="tooltip"
                 data-bs-placement="right"
-                data-bs-original-title="Home"
+                :data-bs-original-title="item.desktopLabel"
               >
-                
-                <font-awesome-icon icon="gauge" class="fa-2xl" />
+                <font-awesome-icon :icon="item.icon" class="fa-2xl" />
                 <br />
-                <label class="label-icon">Dashboard</label>
-              </router-link>
-            </li>
-            <li class="nav-item" v-if="corretoresadmin">
-              <router-link
-                to="/administracao"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Administração"
-              >
-                <font-awesome-icon icon="gauge" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Administração</label>
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link
-                to="/atendimento"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Script de Atendimento"
-              >
-                <font-awesome-icon icon="gauge" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Script de Atendimento</label>
-              </router-link>
-            </li>
-            <!-- <li class="nav-item" v-if="corretoresadmin">
-              <router-link to="/admvisitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Administração">
-                <font-awesome-icon icon="chart-column" class="fa-2xl" />
-                <br>
-                <label class="label-icon">Relatórios de Visitas e Prospecção</label>
-              </router-link>
-            </li> -->
-            <!-- <li class="nav-item">
-              <router-link to="/registro-visitas" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <font-awesome-icon icon="thumbtack" class="fa-2xl" />
-                <br>
-                <label class="label-icon">Registrar as visitas</label>
-              </router-link>
-            </li> -->
-            <li class="nav-item">
-              <router-link
-                to="/imoveis"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="house" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Pesquisar Imóveis Externos</label>
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link
-                to="/precificacao"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="money-bill-wave" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Precificação</label>
-              </router-link>
-            </li>
-            <!-- <li class="nav-item">
-              <router-link to="/chat" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <font-awesome-icon icon="comment" class="fa-2xl" />
-                <br>
-                <label class="label-icon">Chat</label>
-              </router-link>
-            </li> -->
-            <li class="nav-item">
-              <router-link
-                to="/numacros"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="ticket" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Placas</label>
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link
-                to="/equacoes"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="chart-column" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Projeção de Resultados 2025</label>
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link
-                to="/download"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Script de Atendimento"
-              >
-                <font-awesome-icon icon="download" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Baixar Imagens</label>
-              </router-link>
-            </li>
-            <!-- <li class="nav-item">
-              <router-link to="/followup" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <font-awesome-icon icon="list" class="fa-2xl" />
-                <br>
-                <label class="label-icon"> Follow-up de METAS</label>
-              </router-link>
-            </li> -->
-            <li class="nav-item">
-              <router-link
-                to="/documentos"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="download" class="fa-2xl" />
-                <br />
-                <label class="label-icon"> Documentos</label>
-              </router-link>
-            </li>
-
-            <!-- <li class="nav-item">
-              <router-link
-                to="/universidade"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="star" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Universidade Café</label>
-              </router-link>
-            </li> -->
-            <li class="nav-item">
-              <router-link
-                to="/solicitar-contrato"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="rectangle-list" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Solicitar Contrato</label>
-              </router-link>
-            </li>
-            <!-- <li class="nav-item">
-              <router-link to="/meus-resultados" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <font-awesome-icon icon="user" class="fa-2xl" />
-                <br>
-                <label class="label-icon">Meus resultados</label>
-              </router-link>
-            </li> -->
-            <!-- <li class="nav-item">
-              <router-link to="/analise-dados" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <font-awesome-icon icon="gear" class="fa-2xl" />
-                <br>
-                <label class="label-icon">Análise de dados</label>
-              </router-link>
-            </li> -->
-            <!-- <li class="nav-item">
-              <router-link to="/buscar-proprietario" class="nav-link py-3 border-bottom-inativar" aria-current="page"
-                data-bs-toggle="tooltip" data-bs-placement="right" data-bs-original-title="Home">
-                <font-awesome-icon icon="search" class="fa-2xl" />
-                <br>
-                <label class="label-icon">Buscar proprietário</label>
-              </router-link>
-            </li> -->
-            <li class="nav-item">
-              <router-link
-                to="/pesquisar-cliente"
-                class="nav-link py-3 border-bottom-inativar"
-                aria-current="page"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-original-title="Home"
-              >
-                <font-awesome-icon icon="briefcase" class="fa-2xl" />
-                <br />
-                <label class="label-icon">Pesquisar cliente</label>
+                <label class="label-icon">{{ item.desktopLabel }}</label>
               </router-link>
             </li>
             <li class="nav-item">

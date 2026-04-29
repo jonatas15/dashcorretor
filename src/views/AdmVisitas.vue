@@ -109,6 +109,7 @@ import ChartVisitas from "./ChartVisitas.vue";
 import axios from "axios";
 import "@fontsource/exo-2";
 import Toggle from '@vueform/toggle';
+import { API_URL } from "@/config/api";
 export default {
   name: "admvisitas",
   data() {
@@ -152,7 +153,7 @@ export default {
       searchCorretor: 0,
       propcorretor: 0,
       posicao: 0,
-      apibase: "https://www.avantorimoveis.com.br/dadoscorretor/api/corretor",
+      apibase: API_URL.apiCorretor,
       urlvisitas: "https://www.avantorimoveis.com.br/sistema/api/visita",
       macros: [
         {
