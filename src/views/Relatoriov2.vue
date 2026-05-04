@@ -366,7 +366,7 @@
 </template>
 <script setup>
 import { file } from 'jszip';
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { onMounted } from "vue";
 import { defineProps } from "vue";
 import fs from 'fs';
@@ -409,7 +409,17 @@ const props = defineProps({
   },
 });
 
-const foto = `${API_URL}/proxy-image?url=${encodeURIComponent(props.fotocorretor)}`;
+const foto = computed(() => {
+  const src = props.fotocorretor || "";
+  if (!src) return "";
+
+  // Data URL e blob (upload local) devem ser usados diretamente
+  if (src.startsWith("data:") || src.startsWith("blob:")) {
+    return src;
+  }
+
+  return `${API_URL_CONFIG}/proxy-image?url=${encodeURIComponent(src)}`;
+});
 
 // variável que recebe os dados da tabela de imóveis
 const imoveis = props.imoveis || dados_para_a_tabela;

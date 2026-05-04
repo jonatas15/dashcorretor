@@ -29,6 +29,9 @@ import Secao2 from '../views/Secao2.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior() {
+    return { top: 0, behavior: 'smooth' };
+  },
   routes: [
     {
       path: '/',

@@ -230,7 +230,7 @@ import Progress from './Progress.vue';
 import axios from "axios";
 import "@fontsource/exo-2";
 import Modalimovel from '../components/Modalimovel.vue';
-
+import API_URL from "../config/api";
 export default {
   name: 'home',
   data() {
@@ -289,7 +289,7 @@ export default {
         param: "",
         prefx: "R$"
       }],
-      urlvisitas: "https://www.avantorimoveis.com.br/sistema/api/visita",
+      urlvisitas: API_URL.apiVisita,
       visitas: [],
       anoAtual: new Date().getFullYear(),
     }

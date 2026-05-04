@@ -2,7 +2,23 @@
   <div class="container mt-0 p-5 br-2 bg-white" style="border-top-right-radius: 90px">
     <h2>Sistema de Precificação de Imóveis</h2>
     <hr>
-    <form @submit.prevent="handleFilter" id="formulario-precificacao" v-show="visualiza_relatorio == false">
+    <!-- Stepper de etapas -->
+    <nav class="stepper mb-4 bg-transparent" aria-label="Progresso da precificação">
+      <button
+        v-for="step in steps"
+        :key="step.number"
+        type="button"
+        class="step-item"
+        :class="stepClass(step.number)"
+        :disabled="isStepDisabled(step.number)"
+        :aria-current="currentStep === step.number ? 'step' : undefined"
+        @click="goToStep(step.number)"
+      >
+        <span class="step-circle">{{ step.number }}</span>
+        <span class="step-label">{{ step.label }}</span>
+      </button>
+    </nav>
+    <form @submit.prevent="handleFilter" id="formulario-precificacao" v-show="currentStep === 1">
       <div class="row">
         <div class="col-md-12">  
           <!-- <div class="p-0 mb-3 card">
@@ -151,41 +167,62 @@
         </div> -->
       </div>
       <div class="d-flex gap-3">
-        <button type="submit" class="btn btn-primary">Filtrar</button>
+        <button type="submit" class="btn btn-primary">Buscar Imóveis</button>
         <button type="button" class="btn btn-secondary" @click="resetForm">Limpar Campos</button>
       </div>
     </form>
-    <div v-show="carregando && visualiza_relatorio == false">
+    <div v-show="carregando && currentStep === 2">
       <img src="@/assets/actions/please-wait.gif" />
     </div>
-    <h3 class="mt-5" v-show="!carregando && visualiza_relatorio == false">Resultados</h3>
+    <h3 class="mt-5" v-show="!carregando && currentStep === 2">Resultados</h3>
 
-    <label class="fs-12 fw-bolder" v-show="!carregando && visualiza_relatorio == false">({{ pagination.total }} imóveis)</label>
-    <hr v-show="!carregando && visualiza_relatorio == false">
+    <label class="fs-12 fw-bolder" v-show="!carregando && currentStep === 2">({{ pagination.total }} imóveis)</label>
+    <hr v-show="!carregando && currentStep === 2">
     <!-- {{ data[1] }} -->
     
-    <div class="row">
-      <div :class="visualiza_relatorio ? 'col-md-12' : 'col-md-3'" v-show="visualiza_relatorio == false">
-        <h4 class="my-3">Sistema de Estimativa de Valores por Região</h4>
-        <p style="color: red">
-          Para filtrar a média dos preços, selecione os imóveis na tabela abaixo e clique em "Calcular Mediana". Se nenhum imóvel for selecionado, a mediana será calculada com base em todos os imóveis exibidos na tabela.
-        </p>
-        <h5 v-if="form.bairro.length >= 0">{{ form.bairro.join(',') }}</h5>
-        <div class="d-flex justify-content-center mb-3" v-show="!carregando && data.length > 0">
-          <button class="btn btn-info text-white" @click="calculateMedian">Calcular Mediana</button>
-        </div>
-        <div v-if="mediana !== null" class="alert alert-info" v-show="!carregando">
-          Mediana dos valores: <hr><strong class="fs-3">R$ {{ Math.round(mediana).toLocaleString() }}</strong>
-        </div>
-        <!-- Gerar o Relatório: -->
-        <div v-if="mediana !== null">
-        <button class="btn btn-success my-3" @click="visualiza_relatorio = true" v-show="!carregando && data.length > 0">
-          Gerar Relatório
-        </button>
+    <!-- Modal de Mediana -->
+    <Teleport to="body">
+      <div v-if="showModalMediana" class="modal-backdrop-custom" @click.self="showModalMediana = false">
+        <div class="modal-box-custom">
+          <div class="modal-box-header">
+            <h5 class="mb-0">Calcular Mediana</h5>
+            <button type="button" class="btn-close" @click="showModalMediana = false"></button>
+          </div>
+          <div class="modal-box-body">
+            <p class="text-danger small">
+              A mediana foi calculada com os imóveis selecionados. Se nenhum estiver selecionado, o cálculo usa todos os imóveis exibidos.
+            </p>
+            <h6 v-if="form.bairro.length > 0" class="text-muted">{{ form.bairro.join(', ') }}</h6>
+            <div v-if="mediana !== null" class="alert alert-info text-center">
+              Mediana dos valores:<hr>
+              <strong class="fs-3">R$ {{ Math.round(mediana).toLocaleString() }}</strong>
+              <div class="mt-2 text-muted small">
+                {{ selecionados.length > 0 ? selecionados.length + ' imóveis selecionados' : pagination.total + ' imóveis (todos)' }}
+              </div>
+            </div>
+            <div v-if="mediana !== null" class="d-grid">
+              <button class="btn btn-success" @click="currentStep = 3; showModalMediana = false">
+                Gerar Relatório →
+              </button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-md-9">
-        <table class="table table-striped" v-show="!carregando && data.length > 0 && visualiza_relatorio == false">
+    </Teleport>
+
+    <div v-show="currentStep === 2">
+      <!-- Barra de ações da etapa 2 -->
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <button type="button" class="btn btn-outline-secondary btn-sm" @click="currentStep = 1">← Voltar para Pesquisa</button>
+        <div class="d-flex align-items-center gap-2">
+          <span v-if="selecionados.length > 0" class="badge bg-info text-white">{{ selecionados.length }} selecionado(s)</span>
+          <button class="btn btn-info text-white btn-sm" @click="openMedianaModal" :disabled="carregando || data.length === 0">
+            Calcular Mediana
+          </button>
+        </div>
+      </div>
+      <div>
+          <table class="table table-striped" v-show="!carregando && data.length > 0">
           <thead>
             <tr>
               <th>✅</th>
@@ -215,7 +252,7 @@
           <tbody>
             <tr v-for="(item, index) in data" :key="index">
               <td>
-                <input type="checkbox" v-model="selecionados" :value="item" :id="'select-' + index">
+                <input type="checkbox" :checked="item.url in selecionadosMap" @change="toggleSelecionado(item)" :id="'select-' + index">
               </td>
               <td><a :href="item.url" target="_blank"><font-awesome-icon icon="link"/> {{ item.imobiliaria ? item.imobiliaria : 'ver imóvel' }}</a></td>
               <!-- <td>{{ item.estado }}</td> -->
@@ -243,7 +280,7 @@
             </tr>
           </tbody>
         </table>
-        <div class="pagination" v-show="!carregando && visualiza_relatorio == false">
+        <div class="pagination">
           <button class="btn btn-info" :disabled="pagination.page === 1" @click="changePage(pagination.page - 1)">
             Anterior
           </button>
@@ -254,14 +291,16 @@
         </div>
       </div>
     </div>
-    <relatorio 
-      :mediana="mediana !== null ? mediana : 0" 
-      :imoveis="selecionados.length > 0 ? selecionados : data" 
-      :bairros="form.bairro"
-      :cidade="form.cidade"
-      :fotocorretor="fotocorretor"
-      v-if="visualiza_relatorio"
-    ></relatorio>
+    <div v-if="currentStep === 3">
+      <button type="button" class="btn btn-outline-secondary btn-sm mb-3" @click="currentStep = 2">← Voltar para Resultados</button>
+      <relatorio 
+        :mediana="mediana !== null ? mediana : 0" 
+        :imoveis="selecionados.length > 0 ? selecionados : data" 
+        :bairros="form.bairro"
+        :cidade="form.cidade"
+        :fotocorretor="fotocorretor"
+      ></relatorio>
+    </div>
   </div>
   
 </template>
@@ -279,7 +318,15 @@ import Relatorio from './Relatorio.vue';
 // import 'vue-range-slider/dist/vue-range-slider.css'
 // import VueThousandSeparator from 'vue-thousand-separator';
 
-const visualiza_relatorio = ref(false);
+const currentStep = ref(1); // 1: Pesquisa | 2: Resultados/Mediana | 3: Relatório
+const showModalMediana = ref(false);
+const medianaCalculada = ref(false);
+
+const steps = [
+  { number: 1, label: 'Pesquisa' },
+  { number: 2, label: 'Resultados' },
+  { number: 3, label: 'Relatório' },
+];
 
 const props = defineProps({
   fotocorretor: String
@@ -333,7 +380,18 @@ const pagination = reactive({
   total: 0,
 });
 
-const selecionados = ref([]);
+const selecionadosMap = ref({});
+const selecionados = computed(() => Object.values(selecionadosMap.value));
+const toggleSelecionado = (item) => {
+  const key = item.url;
+  if (key in selecionadosMap.value) {
+    const updated = { ...selecionadosMap.value };
+    delete updated[key];
+    selecionadosMap.value = updated;
+  } else {
+    selecionadosMap.value = { ...selecionadosMap.value, [key]: item };
+  }
+};
 const mediana = ref(null);
 
 const parseValor = (val) => {
@@ -347,6 +405,38 @@ const sort = ref({
   column: '', // Coluna atual (ex: 'valor')
   direction: 'asc' // 'asc' ou 'desc'
 });
+
+const stepClass = (stepNumber) => {
+  if (isStepDisabled(stepNumber)) return 'is-locked';
+  if (stepNumber < currentStep.value) return 'is-done';
+  if (stepNumber === currentStep.value) return 'is-active';
+  return 'is-pending';
+};
+
+const isStepDisabled = (stepNumber) => {
+  if (stepNumber === 1) return false;
+  if (stepNumber === 2) return !(data.value.length > 0 || pagination.total > 0);
+  if (stepNumber === 3) return !medianaCalculada.value;
+  return false;
+};
+
+const goToStep = (stepNumber) => {
+  if (isStepDisabled(stepNumber)) return;
+
+  if (stepNumber === 1) {
+    currentStep.value = 1;
+    return;
+  }
+
+  if (stepNumber === 2 && (data.value.length > 0 || pagination.total > 0)) {
+    currentStep.value = 2;
+    return;
+  }
+
+  if (stepNumber === 3 && (data.value.length > 0 || selecionados.value.length > 0)) {
+    currentStep.value = 3;
+  }
+};
 
 const fetchData = async () => {
   carregando.value = true;
@@ -411,25 +501,26 @@ const sortBy = (column) => {
     sort.value.direction = 'asc';
   }
   pagination.page = 1; // Reseta para página 1 ao ordenar
+  medianaCalculada.value = false;
   fetchData(); // Recarrega dados com nova ordenação
 };
 
 // Atualizar a tabela com filtros
 const handleFilter = () => {
   pagination.page = 1;
-  selecionados.value = [];
+  selecionadosMap.value = {};
   mediana.value = null;
-  sort.value.column = ''; // Opcional: reseta ordenação ao filtrar
+  medianaCalculada.value = false;
+  sort.value.column = '';
   sort.value.direction = 'asc';
   fetchData();
+  currentStep.value = 2;
 };
 
-// No changePage:
 const changePage = (newPage) => {
   pagination.page = newPage;
-  selecionados.value = [];
-  mediana.value = null;
-  fetchData(); // Mantém a ordenação atual
+  medianaCalculada.value = false;
+  fetchData();
 };
 // const alteraomax = () => {
 //   // console.log('chamou a function');
@@ -457,8 +548,9 @@ const resetForm = () => {
     if (Array.isArray(form[key])) { form[key] = []; }
   });
   // limpa também os campos checked
-  selecionados.value = []; // Limpar selecionados ao resetar o formulário
+  selecionadosMap.value = {}; // Limpar selecionados ao resetar o formulário
   mediana.value = null; // Resetar mediana
+  medianaCalculada.value = false;
   pagination.page = 1; // Resetar para a primeira página
   fetchData();
 };
@@ -477,6 +569,7 @@ const calculateMedian = () => {
 
   if (valores.length === 0) {
     mediana.value = 0;
+    medianaCalculada.value = true;
     return;
   }
 
@@ -488,6 +581,12 @@ const calculateMedian = () => {
   } else {
     mediana.value = (valores[meio])/100;
   }
+  medianaCalculada.value = true;
+};
+
+const openMedianaModal = () => {
+  calculateMedian();
+  showModalMediana.value = true;
 };
 
 const handleClickOutside = (event) => {
@@ -528,6 +627,167 @@ onBeforeUnmount(() => {
 </script>
 
 <style>
+.stepper {
+  --step-neutral: #d8dde3;
+  --step-neutral-text: #7e8b97;
+  --step-active: #2f95dc;
+  --step-done: #30c56b;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: flex-start;
+  width: 100%;
+}
+
+.step-item {
+  position: relative;
+  background: transparent;
+  border: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  color: var(--step-neutral-text);
+  cursor: pointer;
+  padding: 0;
+}
+
+.step-item::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 100%;
+  height: 4px;
+  border-radius: 999px;
+  background: transparent;
+}
+
+.step-item:last-child::after {
+  display: none;
+}
+
+.step-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  background: var(--step-neutral);
+  border: 2px solid var(--step-neutral);
+  z-index: 2;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.step-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.step-item.is-done .step-circle {
+  background: var(--step-done);
+  border-color: var(--step-done);
+  color: #fff;
+}
+
+.step-item.is-done .step-label {
+  color: var(--step-done);
+}
+
+.step-item.is-done::after {
+  background: var(--step-done);
+}
+
+.step-item.is-active .step-circle {
+  background: var(--step-active);
+  border-color: var(--step-active);
+  color: #fff;
+  box-shadow: none;
+}
+
+.step-item.is-active .step-label {
+  color: var(--step-active);
+}
+
+.step-item.is-pending .step-circle {
+  color: #fff;
+}
+
+.step-item.is-locked .step-circle {
+  background: #e3e8ed;
+  border-color: #e3e8ed;
+  color: #fff;
+}
+
+.step-item.is-locked {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.step-item:disabled {
+  pointer-events: none;
+}
+
+.step-item:hover .step-circle {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 767.98px) {
+  .step-circle {
+    width: 30px;
+    height: 30px;
+    font-size: 0.86rem;
+  }
+
+  .step-label {
+    font-size: 0.8rem;
+  }
+
+  .step-item::after {
+    top: 14px;
+    height: 3px;
+  }
+}
+
+/* Modal customizada - Mediana */
+.modal-backdrop-custom {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box-custom {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  width: 100%;
+  max-width: 440px;
+  overflow: hidden;
+}
+
+.modal-box-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #dee2e6;
+  background: #f8f9fa;
+}
+
+.modal-box-body {
+  padding: 1.25rem;
+}
+
 .pagination {
   display: flex;
   justify-content: center;

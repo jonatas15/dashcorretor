@@ -79,6 +79,8 @@ import axios from "axios";
 
 import Toggle from "@vueform/toggle";
 
+import API_URL from "../config/api";
+
 export default {
   data() {
     return {
@@ -278,7 +280,7 @@ export default {
     //   this.renderChart(this.chartData, this.chartOptions);
     // this.visitas
     axios
-      .get("https://www.avantorimoveis.com.br/sistema/api/visita")
+      .get(API_URL.apiVisita)
       .then((res) => {
         // console.log(res.data)
         this.visitas = res.data.filter(
@@ -289,7 +291,7 @@ export default {
         );
       });
     axios
-      .get("https://www.avantorimoveis.com.br/dadoscorretor/api/corretor")
+      .get(API_URL.apiCorretor)
       .then((response) => {
         this.corretores = response.data;
         // console.log(this.corretores)

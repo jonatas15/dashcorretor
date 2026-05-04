@@ -12,12 +12,14 @@ const API_CONFIG = {
   local: {
     baseUrl: 'http://localhost:8080',
     apiCorretor: 'http://localhost:8080/api/corretor',
+    apiVisita: 'http://localhost:8080/api/visita',
     apiProprietario: 'http://localhost:8080/api/proprietario',
     apiImovel: 'http://localhost:8080/api/imovel',
   },
   remote: {
     baseUrl: 'https://www.avantorimoveis.com.br/dadoscorretor',
     apiCorretor: 'https://www.avantorimoveis.com.br/dadoscorretor/api/corretor',
+    apiVisita: 'https://www.avantorimoveis.com.br/dadoscorretor/api/visita',
     apiProprietario: 'https://www.avantorimoveis.com.br/dadoscorretor/api/proprietario',
     apiImovel: 'https://www.avantorimoveis.com.br/dadoscorretor/api/imovel',
   }

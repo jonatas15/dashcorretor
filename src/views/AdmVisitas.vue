@@ -154,7 +154,7 @@ export default {
       propcorretor: 0,
       posicao: 0,
       apibase: API_URL.apiCorretor,
-      urlvisitas: "https://www.avantorimoveis.com.br/sistema/api/visita",
+      urlvisitas: API_URL.apiVisita,
       macros: [
         {
           campo: "Leads Recebidos",

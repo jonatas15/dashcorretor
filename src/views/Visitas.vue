@@ -249,7 +249,7 @@
           // urlmarca: "https://avantorimoveis.com.br/dadoscorretor",
           // urlmarca: "https://www.avantorimoveis.com.br/dadoscorretor/api/imovel",
           urlmarca: API_URL.apiImovel,
-          urlvisitas: "https://www.avantorimoveis.com.br/sistema/api/visita",
+          urlvisitas: API_URL.apiVisita,
           // urlmarca: "",
           imoveis: [],
           todosimoveis: [],
@@ -388,7 +388,7 @@
       },
       cadastrar (self) {
         // console.log("bora chamar a API");
-        axios.post("https://www.avantorimoveis.com.br/sistema/api/visita/create", {
+        axios.post(`${API_URL.apiVisita}/create`, {
           usuario_id: 1,
           data_visita: this.formataStringData(this.form.datavisita), //moment(String(this.form.datavisita)).format('Y-MM-D'),
           // data_visita: moment(String(this.form.datavisita)).format('YYYY-MM-DD'),
@@ -459,7 +459,7 @@
         this.$refs.codigoimv.focus();
       },
       converter (id, recebeinvertido) {
-        axios.put("https://www.avantorimoveis.com.br/sistema/api/visita/update?id=" + id, {
+        axios.put(`${API_URL.apiVisita}/update?id=` + id, {
           convertido: recebeinvertido
         }).then(response => {
           console.log(response);
@@ -475,7 +475,7 @@
         this.$forceUpdate();
       },
       excluir (id) {
-        axios.delete("https://www.avantorimoveis.com.br/sistema/api/visita/delete?id=" + id).then(response => {
+        axios.delete(`${API_URL.apiVisita}/delete?id=` + id).then(response => {
           console.log(response);
           this.$refs.alert.showAlert(
             'success', // There are 4 types of alert: success, info, warning, error

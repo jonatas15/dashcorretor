@@ -169,16 +169,26 @@
                 <label>Corretor Avaliador</label>
                 <div class="field-group">
                     <div class="field">
-                        <strong>{{ corretor.nome }}</strong><br>
-                        <span>Email: {{ corretor.email }}</span><br>
-                        <span>Celular: {{ corretor.celular }}</span>
-                        
+                        <label>Nome</label>
+                        <input type="text" v-model="corretor.nome" placeholder="Nome do corretor avaliador" />
+
+                        <label>Email</label>
+                        <input type="email" v-model="corretor.email" placeholder="email@dominio.com" />
+
+                        <label>Telefone</label>
+                        <input type="text" v-model="corretor.celular" placeholder="(00) 00000-0000" />
+
+                        <label>Foto (URL)</label>
+                        <input type="text" v-model="corretor.foto" placeholder="https://..." />
+
+                        <label>Ou enviar foto</label>
+                        <input type="file" accept="image/*" @change="handleCorretorFotoUpload" />
                     </div>
                     <div class="field">
 
                         <!-- Avatar do corretor, pegando de https://api.jetimob.com/webservice/tZuuHuri8Q3ohAf7cvmMm8hTmWrXKJoEdes8ViSi/corretores pelo email -->
                         <img
-                        :src="corretor.foto"
+                        :src="corretor.foto || retornaCorretorAvatar(corretor.email)"
                         @error="(e) => e.target.src = 'assets/fotos-corretores/foto-perfil.jpg'"
                         alt="Avatar do Corretor"
                         class="preview-image small mt-2"
@@ -275,7 +285,7 @@
                             }"
                             :dadosImovel="finalidade"
                             :identifiqueiNoImovel="descricaoImovel"
-                            :fotocorretor="retornaCorretorAvatar(corretor.email)"
+                            :fotocorretor="corretor.foto || retornaCorretorAvatar(corretor.email)"
 
                         />
                     </div>
@@ -366,7 +376,12 @@ const fotocorretor = props.fotocorretor
 
 const dadoscorretor = ref('')
 const corretorlogado = ref({})
-const corretor = ref({})
+const corretor = ref({
+    nome: '',
+    email: '',
+    celular: '',
+    foto: ''
+})
 
 onMounted(() => {
   if (localStorage.getItem('authUser')) {
@@ -383,6 +398,17 @@ onMounted(() => {
     console.log (props.fotocorretor)
   }
 })
+
+function handleCorretorFotoUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        corretor.value.foto = e.target?.result || '';
+    };
+    reader.readAsDataURL(file);
+}
 
 //vamos limitar os imóveis a 10 para evitar lentidão
 const imoveis = computed(() => {
