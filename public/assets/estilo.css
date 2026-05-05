@@ -68,7 +68,7 @@ body {
 
 .left h1 {
     white-space: pre-line;
-    font-size: 9mm;
+    font-size: 8mm;
     line-height: 1.2;
     font-weight: 500;
     letter-spacing: 0.3mm;
@@ -76,12 +76,12 @@ body {
 
 /* ===== COLUNA DIREITA ===== */
 .right {
-    width: 60mm;
+    width: 30mm;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: left;
-    margin-left: 30mm;
+    margin-left: 5mm;
 }
 
 .identificacao-label {
@@ -142,7 +142,7 @@ body {
 }
 
 .logo img {
-    width: 35mm;
+    width: 45mm;
     margin-top: auto;
 }
 
@@ -482,6 +482,20 @@ body {
   text-align: left;
 }
 
+/* Ficha estruturada do imóvel */
+.imovel-specs {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 8mm;
+  row-gap: 0.8mm;
+}
+
+.imovel-specs li {
+  text-align: left;
+}
+
 /* TEXTO */
 .text {
   font-size: 3.2mm;
@@ -626,19 +640,25 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 5mm;
+  overflow: hidden;
+  border-radius: 0.8mm;
+  background: linear-gradient(
+    to right,
+    #1d4ed8,
+    #06b6d4,
+    #22c55e,
+    #f59e0b,
+    #ef4444
+  );
 }
 
 .tick {
   flex: 1;
   height: 100%;
-  margin: 0 0.4mm;
-  border-radius: 0.6mm;
-  background: linear-gradient(
-    to right,
-    #ff0000,
-    #ff7a00,
-    #ffd500,
-    #7ed957,
-    #2ecc71
-  );
+  background: transparent;
+  border-right: 0.18mm solid rgba(255, 255, 255, 0.22);
+}
+
+.tick:last-child {
+  border-right: none;
 }

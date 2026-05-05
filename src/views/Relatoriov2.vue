@@ -81,9 +81,9 @@
         <!-- GRÁFICO SIMPLIFICADO -->
         <div class="containerx">
           <div class="timeline">
-            <span class="left-label">MENOS TEMPO DE VENDA</span>
+            <span class="left-label">MENOR TEMPO DE VENDA</span>
             <div class="arrow"></div>
-            <span class="right-label">MAIS TEMPO DE VENDA</span>
+            <span class="right-label">MAIOR TEMPO DE VENDA</span>
           </div>
           <div class="bar">
             <div class="segment blue">PREÇO DE MERCADO</div>
@@ -229,22 +229,33 @@
 
       <!-- DADOS DO IMÓVEL -->
       <h2>DADOS PRINCIPAIS DO SEU IMÓVEL:</h2>
-      <h3>CARACTERÍSTICAS DO IMÓVEL</h3>
 
-      <!-- <ul class="data-list">
-        <li v-for="(item, index) in caracteristicas" :key="index">
-          <strong>{{ item.label }}:</strong> {{ item.value }}
+      <!-- Lista estruturada com os campos preenchidos no formulário -->
+      <ul
+        class="data-list imovel-specs"
+        v-if="Array.isArray(props.dadosImovelEstruturado) && props.dadosImovelEstruturado.some(c => c.mostrar && c.value)"
+      >
+        <li
+          v-for="(campo, idx) in props.dadosImovelEstruturado.filter(c => c.mostrar && c.value)"
+          :key="idx"
+        >
+          <strong>{{ campo.label }}:</strong> {{ campo.value }}
         </li>
-      </ul> -->
-      <div v-html="dadosImovel"></div>
+      </ul>
 
       <hr class="section-divider" />
 
       <!-- ANÁLISE -->
       <h2>O QUE IDENTIFIQUEI NO SEU IMÓVEL:</h2>
-      <h3>METODOLOGIA APLICADA</h3>
 
       <div v-html="identifiqueiNoImovel"></div>
+
+      <!-- METODOLOGIA -->
+      <template v-if="props.metodologiaAplicada">
+        <hr class="section-divider" />
+        <h2>METODOLOGIA APLICADA:</h2>
+        <div v-html="props.metodologiaAplicada"></div>
+      </template>
 
       <!-- <ul class="data-list">
         <li v-for="(item, index) in criteriosComparacao" :key="index">
@@ -403,6 +414,14 @@ const props = defineProps({
   },
   identifiqueiNoImovel: {
     type: String,
+  },
+  metodologiaAplicada: {
+    type: String,
+    default: '',
+  },
+  dadosImovelEstruturado: {
+    type: Array,
+    default: () => [],
   },
   fotocorretor: {
     type: String,

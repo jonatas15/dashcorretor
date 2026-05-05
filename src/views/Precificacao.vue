@@ -221,6 +221,56 @@
           </button>
         </div>
       </div>
+
+      <!-- Resumo dos Filtros Aplicados -->
+      <div v-show="!carregando" class="card mb-4 bg-light">
+        <div class="card-body p-3">
+          <h6 class="card-title mb-3 text-muted">Filtros Aplicados</h6>
+          <div class="row g-2">
+            <div class="col-md-2">
+              <small class="text-muted d-block">Imobiliária</small>
+              <strong>{{ form.imobiliaria || 'Todas' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Cidade</small>
+              <strong>{{ form.cidade || 'Todas' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Bairros</small>
+              <strong>{{ form.bairro.length > 0 ? form.bairro.join(', ') : 'Todos' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Negócios</small>
+              <strong>{{ form.negocio.length > 0 ? form.negocio.join(', ') : 'Todos' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Valor (R$)</small>
+              <strong>{{ formatRangeValor() }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Área (m²)</small>
+              <strong>{{ formatRangeArea() }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Dormitórios</small>
+              <strong>{{ form.dormitorios.length > 0 ? form.dormitorios.join(', ') : 'Todos' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Banheiros</small>
+              <strong>{{ form.banheiros.length > 0 ? form.banheiros.join(', ') : 'Todos' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Garagens</small>
+              <strong>{{ form.garagens.length > 0 ? form.garagens.join(', ') : 'Todos' }}</strong>
+            </div>
+            <div class="col-md-2">
+              <small class="text-muted d-block">Mobiliado</small>
+              <strong>{{ formatMobiliado() }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div>
           <table class="table table-striped" v-show="!carregando && data.length > 0">
           <thead>
@@ -601,6 +651,47 @@ const toggleDiv = () => { verBairros.value = !verBairros.value; };
 const hideDiv = () => { verBairros.value = false; };
 const toggleDiv2 = () => { verNegocios.value = !verNegocios.value; };
 const hideDiv2 = () => { verNegocios.value = false; };
+
+// Formatadores para os resumos de filtros
+const formatRangeValor = () => {
+  // Limpa e converte valores formatados pela diretiva v-money
+  const parseMoneyValue = (val) => {
+    if (!val) return null;
+    const cleaned = String(val).replace(/\./g, '').replace(',', '.');
+    return parseFloat(cleaned);
+  };
+  
+  const minVal = parseMoneyValue(form.valormin);
+  const maxVal = parseMoneyValue(form.valormax);
+  
+  if (!minVal && !maxVal) return 'Todos';
+  
+  const formatCurrency = (num) => `R$ ${Math.round(num).toLocaleString('pt-BR')}`;
+  
+  if (minVal && maxVal) return `${formatCurrency(minVal)} - ${formatCurrency(maxVal)}`;
+  if (minVal) return `a partir de ${formatCurrency(minVal)}`;
+  if (maxVal) return `até ${formatCurrency(maxVal)}`;
+  return 'Todos';
+};
+
+const formatRangeArea = () => {
+  const min = form.areamin ? `${form.areamin} m²` : 'Sem mín.';
+  const max = form.areamax ? `${form.areamax} m²` : 'Sem máx.';
+  if (!form.areamin && !form.areamax) return 'Todos';
+  if (!form.areamin) return `até ${max}`;
+  if (!form.areamax) return `a partir de ${min}`;
+  return `${min} - ${max}`;
+};
+
+const formatMobiliado = () => {
+  const mobileMap = {
+    '0': 'Não mobiliado',
+    '1': 'Mobiliado',
+    '2': 'Semi-mobiliado',
+    '3': 'Tanto faz'
+  };
+  return mobileMap[form.mobiliado] || 'Todos';
+};
 
 const reduz_ns = (palavra) => {
   var retorno = '';

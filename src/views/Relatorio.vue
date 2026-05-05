@@ -38,10 +38,11 @@
                     <th>Área (m²)</th>
                     <th>Cômodos</th>
                     <th>Mobiliado</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in imoveis" :key="index">
+                <tr v-for="(item, index) in imoveis" :key="index" :class="{ 'table-success': item.manual }">
                     <td>{{ item.imobiliaria ? item.imobiliaria : 'N/A' }}</td>
                     <td>{{ item.cidade }}</td>
                     <td>{{ item.bairro }}</td>
@@ -59,9 +60,78 @@
                     <td v-if="item.mobiliado == 1" class="text-success">Mobiliado</td>
                     <td v-else-if="item.mobiliado == 2" class="text-primary">Semi-mobiliado</td>
                     <td v-else class="text-danger">Não mobiliado</td>
+                    <td>
+                        <button
+                            v-if="item.manual"
+                            type="button"
+                            class="btn btn-sm btn-outline-danger py-0 px-1"
+                            @click="removerImovel(index)"
+                            title="Remover"
+                        >✕</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- Adicionar imóvel manualmente -->
+        <div class="mb-2">
+            <button
+                type="button"
+                class="btn btn-sm btn-outline-success"
+                @click="showNovoImovel = !showNovoImovel"
+            >
+                <font-awesome-icon icon="plus" /> Adicionar imóvel manualmente
+            </button>
+        </div>
+
+        <div v-if="showNovoImovel" class="card card-body mb-4 border-success bg-light">
+            <h6 class="mb-3">Novo imóvel comparável</h6>
+            <div class="row g-2">
+                <div class="col-md-3">
+                    <label class="form-label small mb-0">Imobiliária / Fonte</label>
+                    <input type="text" v-model="novoImovel.imobiliaria" class="form-control form-control-sm" placeholder="Ex: ZAP Imóveis" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Cidade</label>
+                    <input type="text" v-model="novoImovel.cidade" class="form-control form-control-sm" placeholder="Ex: Santa Maria" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Bairro</label>
+                    <input type="text" v-model="novoImovel.bairro" class="form-control form-control-sm" placeholder="Ex: Centro" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Negócio</label>
+                    <select v-model="novoImovel.negocio" class="form-select form-select-sm">
+                        <option value="Venda">Venda</option>
+                        <option value="Locação">Locação</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Valor (R$) *</label>
+                    <input type="number" v-model.number="novoImovel.valor" class="form-control form-control-sm" placeholder="450000" min="0" />
+                </div>
+                <div class="col-md-2">
+                    <label class="form-label small mb-0">Área (m²)</label>
+                    <input type="number" v-model.number="novoImovel.area" class="form-control form-control-sm" placeholder="85" min="0" />
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label small mb-0">Dorm.</label>
+                    <input type="number" v-model.number="novoImovel.dormitorios" class="form-control form-control-sm" placeholder="3" min="0" />
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label small mb-0">Banh.</label>
+                    <input type="number" v-model.number="novoImovel.banheiros" class="form-control form-control-sm" placeholder="2" min="0" />
+                </div>
+                <div class="col-md-1">
+                    <label class="form-label small mb-0">Gar.</label>
+                    <input type="number" v-model.number="novoImovel.garagens" class="form-control form-control-sm" placeholder="1" min="0" />
+                </div>
+            </div>
+            <div class="mt-3 d-flex gap-2">
+                <button type="button" class="btn btn-success btn-sm" @click="salvarNovoImovel">Adicionar à lista</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="showNovoImovel = false">Cancelar</button>
+            </div>
+        </div>
 
         <!-- Formulário de Avaliação -->
         <form class="avaliacao-form">
@@ -150,7 +220,6 @@
             <!-- Campo 7: Descrição do Imóvel -->
             <div class="field">
                 <label>O que identifiquei no seu imóvel</label>
-                <!-- <textarea v-model="descricaoImovel" rows="5"></textarea> -->
                  <QuillEditor
                     v-model:content="descricaoImovel"
                     content-type="html"
@@ -162,6 +231,78 @@
                     ['clean']
                     ]"
                 />
+            </div>
+
+            <!-- Campo 8: Metodologia Aplicada -->
+            <div class="field">
+                <label>Metodologia Aplicada</label>
+                <QuillEditor
+                    v-model:content="metodologiaAplicada"
+                    content-type="html"
+                    style="background-color: white;"
+                    theme="snow"
+                    :toolbar="[
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'ordered' }, { list: 'bullet' }],
+                    ['clean']
+                    ]"
+                />
+            </div>
+
+            <!-- Campo 9: Dados do Imóvel -->
+            <div class="field">
+                <label>Dados do Imóvel</label>
+                <small class="text-muted d-block mb-2">Marque os campos para exibir no relatório PDF.</small>
+                <div class="table-responsive">
+                    <table class="table table-sm table-borderless align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th style="width:36px" class="text-center">PDF</th>
+                                <th>Campo</th>
+                                <th>Valor</th>
+                                <th style="width:36px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(campo, idx) in dadosImovelEstruturado" :key="idx">
+                                <td class="text-center">
+                                    <input type="checkbox" v-model="campo.mostrar" class="form-check-input mt-0" />
+                                </td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        v-model="campo.label"
+                                        class="form-control form-control-sm"
+                                        :disabled="campo.fixo"
+                                        :placeholder="campo.fixo ? campo.label : 'Nome do campo'"
+                                    />
+                                </td>
+                                <td>
+                                    <input
+                                        type="text"
+                                        v-model="campo.value"
+                                        class="form-control form-control-sm"
+                                        placeholder="Valor"
+                                    />
+                                </td>
+                                <td>
+                                    <button
+                                        v-if="!campo.fixo"
+                                        type="button"
+                                        class="btn btn-sm btn-outline-danger py-0 px-1"
+                                        @click="dadosImovelEstruturado.splice(idx, 1)"
+                                        title="Remover campo"
+                                    >✕</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-secondary mt-2"
+                    @click="adicionarCampoImovel"
+                >+ Adicionar campo</button>
             </div>
 
             <!-- Avatar do Avaliador -->
@@ -279,14 +420,13 @@
                             :vImprovavel="vImprovavel"
                             :vMercado="vMercado"
                             :vCompetitivo="vCompetitivo"
-                            :corretor ="corretor"
-                            :cliente="{
-                                nome: solicitante
-                            }"
+                            :corretor="corretor"
+                            :cliente="{ nome: solicitante }"
                             :dadosImovel="finalidade"
                             :identifiqueiNoImovel="descricaoImovel"
+                            :metodologiaAplicada="metodologiaAplicada"
+                            :dadosImovelEstruturado="dadosImovelEstruturado"
                             :fotocorretor="corretor.foto || retornaCorretorAvatar(corretor.email)"
-
                         />
                     </div>
                 </div>
@@ -300,7 +440,7 @@
 </template>
 
 <script setup>
-import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import { ref, reactive, computed, watch, onMounted, onUnmounted } from 'vue'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 // import { required } from 'vuelidate/lib/validators'
 import L from 'leaflet'
@@ -411,9 +551,80 @@ function handleCorretorFotoUpload(event) {
 }
 
 //vamos limitar os imóveis a 10 para evitar lentidão
-const imoveis = computed(() => {
-    return props.imoveis.slice(0, 10)
+const imoveis = ref(props.imoveis.slice(0, 10))
+
+// Atualiza a lista quando a prop mudar (ex: voltar e refiltrar)
+watch(() => props.imoveis, (newVal) => {
+    imoveis.value = newVal.slice(0, 10)
 })
+
+// Cadastro manual
+const showNovoImovel = ref(false)
+const novoImovelBase = () => ({
+    imobiliaria: '', bairro: '', negocio: 'Venda', finalidade: 'Venda',
+    valor: null, area: 0, dormitorios: null, banheiros: null, garagens: null,
+    cidade: '', mobiliado: 0, manual: true,
+})
+const novoImovel = reactive(novoImovelBase())
+
+const parseValorNumero = (valor) => {
+    if (typeof valor === 'number') return valor
+    if (typeof valor !== 'string') return NaN
+    const normalizado = valor
+        .trim()
+        .replace(/R\$/gi, '')
+        .replace(/\s/g, '')
+        .replace(/\./g, '')
+        .replace(',', '.')
+    return parseFloat(normalizado)
+}
+
+const calcularMediana = (lista) => {
+    if (!lista.length) return 0
+    const ordenados = [...lista].sort((a, b) => a - b)
+    const meio = Math.floor(ordenados.length / 2)
+    return ordenados.length % 2 === 0
+        ? (ordenados[meio - 1] + ordenados[meio]) / 2
+        : ordenados[meio]
+}
+
+const calcularMedianaLocal = () => {
+    const valoresBase = imoveis.value
+        .map(i => parseValorNumero(i.valor))
+        .filter(v => !isNaN(v) && v > 0)
+
+    if (valoresBase.length === 0) return
+
+    // Alguns registros podem vir em escalas diferentes (ex: centavos).
+    // Testamos escalas comuns e escolhemos a mais próxima da mediana atual.
+    const referencia = Number(adjustedValue.value) || Number(props.mediana) || 0
+    const escalas = [1, 0.1, 0.01]
+
+    const melhorEscala = escalas.reduce((melhor, escala) => {
+        const medianaEscalada = calcularMediana(valoresBase.map(v => v * escala))
+        const distancia = Math.abs(medianaEscalada - referencia)
+        return distancia < melhor.distancia ? { escala, distancia } : melhor
+    }, { escala: 1, distancia: Number.POSITIVE_INFINITY }).escala
+
+    const medianaFinal = calcularMediana(valoresBase.map(v => v * melhorEscala))
+    adjustedValue.value = medianaFinal
+}
+
+const salvarNovoImovel = () => {
+    if (!novoImovel.valor || novoImovel.valor <= 0) {
+        alert('Informe um valor válido para o imóvel.')
+        return
+    }
+    imoveis.value.push({ ...novoImovel })
+    calcularMedianaLocal()
+    Object.assign(novoImovel, novoImovelBase())
+    showNovoImovel.value = false
+}
+
+const removerImovel = (index) => {
+    imoveis.value.splice(index, 1)
+    calcularMedianaLocal()
+}
 
 // Ref para o mapa
 const mapRef = ref(null)
@@ -430,6 +641,23 @@ const descricaoImovel = ref('') //ref('')
 const descricaoRegiao = ref('') //ref('')
 const metodologia = ref('') //ref('')
 const conclusao = ref('') //ref('')
+const metodologiaAplicada = ref('')
+const dadosImovelEstruturado = ref([
+    { label: 'Tipo',                  value: '', mostrar: true,  fixo: true },
+    { label: 'Subtipo',               value: '', mostrar: true,  fixo: true },
+    { label: 'Valor (R$)',            value: '', mostrar: true,  fixo: true },
+    { label: 'Dormitórios / Cômodos', value: '', mostrar: true,  fixo: true },
+    { label: 'Garagens',              value: '', mostrar: true,  fixo: true },
+    { label: 'Banheiros',             value: '', mostrar: true,  fixo: true },
+    { label: 'Área Privativa (m²)',   value: '', mostrar: true,  fixo: true },
+    { label: 'Área Total (m²)',       value: '', mostrar: true,  fixo: true },
+    { label: 'Comodidades',           value: '', mostrar: true,  fixo: true },
+    { label: 'Condomínio',            value: '', mostrar: true,  fixo: true },
+])
+
+function adicionarCampoImovel() {
+    dadosImovelEstruturado.value.push({ label: '', value: '', mostrar: true, fixo: false })
+}
 const apiKey = ref('')
 const fachadaImage = ref(null)
 const fotosPreviews = ref([])
