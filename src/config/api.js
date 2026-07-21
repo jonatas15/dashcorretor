@@ -6,7 +6,7 @@
  * - false: usa servidor remoto (produção)
  */
 
-const useLocal = true; // Mude para false em produção
+const useLocal = false; // Mude para false em produção
 
 const API_CONFIG = {
   local: {

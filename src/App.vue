@@ -26,6 +26,7 @@ let hoje = formatDate(new Date());
 <script>
 import ChatWindow from "./components/ChatWindow.vue";
 import "@fontsource/open-sans"; // Defaults to weight 400.
+import { clearAuthSession, getAuthUser, isAdminUser } from "@/config/adminAccess";
 export default {
   data() {
     return {
@@ -37,6 +38,7 @@ export default {
       ativamenumobile: "",
       menuativo: localStorage.getItem('authUser') ? true : false,
       corretoresadmin: false,
+      sessionValidationIntervalId: null,
       corretordados: [],
       fotocorretor: "",
       caminhofoto: "",
@@ -71,11 +73,47 @@ export default {
   },
   methods: {
     logout() {
-      localStorage.removeItem('authUser');
+      clearAuthSession();
       this.$router.push({
         name: "login"
       });
       this.menuativo = false;
+    },
+    forceLogout(message = "") {
+      clearAuthSession();
+      this.menuativo = false;
+      this.corretoresadmin = false;
+      this.corretor = "Logar";
+      this.corretordados = [];
+
+      if (message) {
+        alert(message);
+      }
+
+      if (this.$route.name !== "login") {
+        this.$router.replace({ name: "login" });
+      }
+    },
+    validateAdminSession(showMessage = false) {
+      const authUser = getAuthUser();
+
+      if (!authUser) {
+        this.menuativo = false;
+        return false;
+      }
+
+      if (!isAdminUser(authUser.id)) {
+        this.forceLogout(showMessage ? "Seu acesso ao sistema foi revogado. Entre em contato com a administração." : "");
+        return false;
+      }
+
+      this.corretor = authUser.nome;
+      this.corretorid = authUser.id;
+      this.corretordados = authUser;
+      this.corretoresadmin = true;
+      this.menuativo = true;
+
+      return true;
     },
     handleFocusOut() {
       // console.log('out');
@@ -122,9 +160,11 @@ export default {
         // console.log(this.$route.meta);
         this.menuativo = this.$route.meta.usuarioativo;
         if (localStorage.getItem('authUser')) {
-          var getnome = JSON.parse(localStorage.getItem('authUser'));
-          this.corretor = getnome.nome;
-          this.corretordados = getnome;
+          if (!this.validateAdminSession()) {
+            return;
+          }
+
+          var getnome = getAuthUser();
           // console.log(this.$route.meta)
           this.menuativo = true;
           const modalEl = document.getElementById('chatModal')
@@ -140,12 +180,11 @@ export default {
   },
   created() {
     if (localStorage.getItem('authUser')) {
-      var getnome = JSON.parse(localStorage.getItem('authUser'));
-      this.corretor = getnome.nome;
-      this.corretorid = getnome.id;
-      if (this.corretorid == 1 || this.corretorid == 10 || this.corretorid == 73  || this.corretorid == 43  || this.corretorid == 91) {
-        this.corretoresadmin = true;
+      if (!this.validateAdminSession(true)) {
+        return;
       }
+
+      var getnome = getAuthUser();
       this.fotocorretor = getnome.jetimobid
           this.fotocorretor += ".jpg"
           // traz arquivo fotocorretor da pasta public/assets
@@ -168,6 +207,18 @@ export default {
       this.menuativo = false;
     }
   },
+  mounted() {
+    this.sessionValidationIntervalId = window.setInterval(() => {
+      if (localStorage.getItem('authUser')) {
+        this.validateAdminSession();
+      }
+    }, 15000);
+  },
+  beforeUnmount() {
+    if (this.sessionValidationIntervalId) {
+      clearInterval(this.sessionValidationIntervalId);
+    }
+  }
 }
 </script>
 <template>

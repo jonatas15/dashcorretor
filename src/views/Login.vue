@@ -59,6 +59,7 @@
 //   import {required, minLength, email} from "vuelidate";
   import axios from "axios";
   import { API_URL } from "@/config/api";
+    import { isAdminUser } from "@/config/adminAccess";
   export default {
     name: 'login',
     data() {
@@ -97,6 +98,7 @@
                 axios.get(this.apibase)
                     .then(response => {
                     this.corretores = response.data // modifica o this.corretores para corretores com 'ativo' true
+                    let acessoPermitido = false;
                     // console.log(this.corretores)
                     for(let u of this.corretores) {
                         // Testte de Login
@@ -114,19 +116,26 @@
 
                         // Testte de Login
                         if (this.form.email.trim() == u.email.trim() && this.form.password.trim() == u.registro.trim() && u.ativo == 1) {
+                            if (!isAdminUser(u.id)) {
+                                this.clearForm();
+                                this.errors.push('Seu acesso foi revogado. Apenas administradores podem acessar o sistema.');
+                                return;
+                            }
+
                             // console.log("usuário válido");
                             localStorage.setItem('authUser', JSON.stringify(u));
+                            acessoPermitido = true;
                             this.$router.push({
                                 name: 'home'
                             });
-                            // location.reload();
-                            // this.$router.push({
-                            //     meta: {
-                            //         usuarioativo: true
-                            //     }
-                            // });
+                            return;
                         }
                     }
+
+                    if (acessoPermitido) {
+                      return;
+                    }
+
                     this.clearForm();
                     this.errors.push('Usuário ou senha inválidos');
                 })

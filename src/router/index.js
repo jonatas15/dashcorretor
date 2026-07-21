@@ -26,6 +26,7 @@ import ChatView from '../views/ChatView.vue';
 import Relatoriov2 from '../views/Relatoriov2.vue';
 import Secao1 from '../views/Secao1.vue';
 import Secao2 from '../views/Secao2.vue';
+import { clearAuthSession, getAuthUser, isAdminUser } from '@/config/adminAccess';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -305,11 +306,31 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.name !== "login" && !localStorage.getItem('authUser')) {
-    next({name: 'login'})
-  } else {
+  if (to.name === "login") {
+    const authUser = getAuthUser();
+
+    if (authUser && isAdminUser(authUser.id)) {
+      next({ name: 'home' });
+      return;
+    }
+
+    if (authUser && !isAdminUser(authUser.id)) {
+      clearAuthSession();
+    }
+
     next();
+    return;
   }
+
+  const authUser = getAuthUser();
+
+  if (!authUser || !isAdminUser(authUser.id)) {
+    clearAuthSession();
+    next({ name: 'login' });
+    return;
+  }
+
+  next();
 })
 
 export default router
